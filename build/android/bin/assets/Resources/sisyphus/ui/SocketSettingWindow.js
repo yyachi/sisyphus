@@ -1,1 +1,0 @@
-/home/probizmo/Titanium_Studio_Workspace/Sisyphus/Resources/sisyphus/ui/SocketSettingWindow.js
