@@ -29,15 +29,15 @@
 			switch(e.rowData.target){
 				case 'Server':
 					var windowServerSetting = si.ui.createServerSettingWindow();
-					si.app.tabGroup.currentTab.open(windowServerSetting,{animated:true});
+					si.app.tabGroup.activeTab.open(windowServerSetting,{animated:true});
 					break;
 				case 'LogIn':
 					var windowLogin = si.ui.createLoginWindow();
-					si.app.tabGroup.currentTab.open(windowLogin,{animated:true});
+					si.app.tabGroup.activeTab.open(windowLogin,{animated:true});
 					break;
 				case 'Connect':
 					var windowConnect = si.ui.createSocketSettingWindow();
-					si.app.tabGroup.currentTab.open(windowConnect,{animated:true});
+					si.app.tabGroup.activeTab.open(windowConnect,{animated:true});
 					break;
 				case 'ScanToLoad':
 				    if (!debug){

@@ -20,12 +20,6 @@
 
         tabGroup.addTab(tabMain);
         tabGroup.addTab(tabSettings);
-        tabGroup.setActiveTab(tabMain);
-        tabGroup.addEventListener('focus', function(e) {
-            if (e.tab) {
-                tabGroup.currentTab = e.tab;
-            }
-        });
         return tabGroup;
     };
 
