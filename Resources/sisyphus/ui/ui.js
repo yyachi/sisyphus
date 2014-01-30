@@ -37,12 +37,12 @@
             opts.imgDimensions = 45;
         }
 
-        var view = Titanium.UI.createView({
+        var view = Ti.UI.createView({
             width : opts.width,
             height : opts.height
         });
         
-        var button = Titanium.UI.createButton({
+        var button = Ti.UI.createButton({
             title : '',
             backgroundColor : 'white',
             width : '100%',
@@ -50,7 +50,7 @@
         });
         view.add(button);
 
-        var imageView = Titanium.UI.createImageView({
+        var imageView = Ti.UI.createImageView({
             image : _image,
         });
         imageView.addEventListener('click', function(e) {
@@ -153,10 +153,10 @@ Ti.include('/sisyphus/ui/SettingsWindow.js');
 Ti.include('/sisyphus/ui/SocketSettingWindow.js');
 Ti.include('/sisyphus/ui/ServerSettingWindow.js');
 
-if (Ti.Platform.name == 'iPhone OS') {
-    //    Ti.include('/sisyphus/ui/AddChildWindow.js');
-}
+//if (Ti.Platform.name == 'iPhone OS') {
+//        Ti.include('/sisyphus/ui/AddChildWindow.js');
+//}
 
-if (Titanium.Platform.osname == 'android') {
+if (Ti.Platform.osname == 'android') {
     Ti.include('/sisyphus/ui/android/AddChildWindow.js');
 }

@@ -22,7 +22,7 @@
 				rowBackgroundColor:'white'
 		};
 
-		var tableView = Titanium.UI.createTableView(tableViewOptions);
+		var tableView = Ti.UI.createTableView(tableViewOptions);
 		
 		tableView.addEventListener('click', function(e){
 			var rowNum = e.index;
@@ -44,7 +44,7 @@
 					   scanAndLoadDefaultBox();
 					} else {
 				      global_id = debug_box_global_id;
-                    Titanium.App.Properties.setString('current_box_global_id',global_id);
+                    Ti.App.Properties.setString('current_box_global_id',global_id);
                     updateHomeRow();
 					};
 					break;
@@ -63,7 +63,7 @@
 		});
 
 		function accountInfo(){
-			var username = Titanium.App.Properties.getString('username');
+			var username = Ti.App.Properties.getString('username');
 			if (username == null){
 				username = 'Click to login.';
 			}
@@ -77,8 +77,8 @@
 
 		function socketInfo(){
 			txt = 'listen to: ';
-			var listen_port = Titanium.App.Properties.getString('socket_listen_to');
-			var write_port = Titanium.App.Properties.getString('socket_write_to');
+			var listen_port = Ti.App.Properties.getString('socket_listen_to');
+			var write_port = Ti.App.Properties.getString('socket_write_to');
 			if (listen_port == null || listen_port == ''){
 				txt += '----';
 			} else {
@@ -95,14 +95,14 @@
 
 		function updateHomeRow(){
 			var row = tableView.data[3].rows[0];
-		    global_id = Titanium.App.Properties.getString('current_box_global_id');
+		    global_id = Ti.App.Properties.getString('current_box_global_id');
 		    if (global_id != null){
 				si.model.medusa.getRecordFromGlobalId({
 					global_id:global_id,
-                 username : Titanium.App.Properties.getString('username'),
-                 password : Titanium.App.Properties.getString('password'),
-					onsuccess:function(record){
-						row.title = record.name;
+                 username : Ti.App.Properties.getString('username'),
+                 password : Ti.App.Properties.getString('password'),
+					onsuccess:function(response){
+						row.title = response.name;
 						row.target = 'ScanToLoad';
 					},
 					onerror:function(e){
@@ -121,7 +121,7 @@
 	        	success:function(data){
 	            	if(data && data.barcode){
 	            		global_id = data.barcode;
-	 					Titanium.App.Properties.setString('current_box_global_id',global_id);
+	 					Ti.App.Properties.setString('current_box_global_id',global_id);
 	 					updateHomeRow();
 	           		}
 	        	},

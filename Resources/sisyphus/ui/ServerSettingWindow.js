@@ -5,14 +5,14 @@
             backgroundColor : 'white'
         });
 
-        var text = Titanium.UI.createTextField(si.combine($$.TextField, {
+        var text = Ti.UI.createTextField(si.combine($$.TextField, {
             value : si.config.Medusa.server,
             top : '5%',
-            keyboardType : Titanium.UI.KEYBOARD_URL,
+            keyboardType : Ti.UI.KEYBOARD_URL,
             hintText : 'URI'
         }));
 
-        var button = Titanium.UI.createButton(si.combine($$.RightBottomButton, {
+        var button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
             title : 'save',
         }));
 

@@ -20,7 +20,7 @@
         });
         var url = si.config.Medusa.server + _args.path;
         client.open('GET', url);
-        var auth_text = 'Basic ' + Titanium.Utils.base64encode(_args.username + ':' + _args.password);
+        var auth_text = 'Basic ' + Ti.Utils.base64encode(_args.username + ':' + _args.password);
         client.setRequestHeader('Authorization', auth_text);
         client.send();
     };
@@ -35,7 +35,7 @@
         });
         var url = si.config.Medusa.server + _args.path;
         client.open('PUT', url);
-        var auth_text = 'Basic ' + Titanium.Utils.base64encode(_args.username + ':' + _args.password);
+        var auth_text = 'Basic ' + Ti.Utils.base64encode(_args.username + ':' + _args.password);
         client.setRequestHeader('Authorization', auth_text);
         client.send();
     };
@@ -45,12 +45,12 @@
             path : '/main/info.json',
             username : _args.username,
             password : _args.password,
-            onsuccess : function(responseText) {
-                var prop = eval('(' + responseText + ')');
+            onsuccess : function(response) {
+                var prop = eval('(' + response + ')');
                 if (prop) {
                     _args.onsuccess(prop);
                 } else {
-                    _args.onerror(responseText);
+                    _args.onerror(response);
                 }
             },
             onerror : _args.onerror
@@ -62,12 +62,12 @@
             path : '/records.json?global_id=' + _args.global_id,
             username : _args.username,
             password : _args.password,
-            onsuccess : function(responseText) {
-                var prop = eval('(' + responseText + ')');
+            onsuccess : function(response) {
+                var prop = eval('(' + response + ')');
                 if (prop) {
                     _args.onsuccess(prop);
                 } else {
-                    _args.onerror(responseText);
+                    _args.onerror(response);
                 }
             },
             onerror : _args.onerror
@@ -119,8 +119,8 @@
             path : si.model.medusa.getLinkPath(_parent,_child),
             username : _args.username,
             password : _args.password,
-            onsuccess : function(responseText) {
-                _args.onsuccess(responseText);
+            onsuccess : function(response) {
+                _args.onsuccess(response);
             },
             onerror : _args.onerror
         });
@@ -149,14 +149,14 @@
     si.model.medusa.uploadImage = function(_args) {
         var client = Ti.Network.createHTTPClient({
             onload : function() {
-                _args.onsuccess(this.responseText);
+                _args.onsuccess(this.response);
             },
             onerror : _args.onerror,
             timeout : 2400000 // in milliseconds
         });
         var url = si.config.Medusa.server + si.model.medusa.getImageUploadPath(_args.record);
         client.open('POST', url);
-        var auth_text = 'Basic ' + Titanium.Utils.base64encode(_args.username + ':' + _args.password);
+        var auth_text = 'Basic ' + Ti.Utils.base64encode(_args.username + ':' + _args.password);
         client.setRequestHeader('Authorization', auth_text);
         client.send({media : _args.image});
     };

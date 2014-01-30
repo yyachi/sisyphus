@@ -1,19 +1,28 @@
-require("/tijasmine/tijasmine").infect(this);
-describe("Medusa", function() {
-    it("Get Medusa Host Name", function() {
+require('/tijasmine/tijasmine').infect(this);
+describe('Medusa', function() {
+    var USERNAME = 'admin';
+    var OK_PASSWORD = 'admin';
+    var NG_PASSWORD = 'xxxx';
+    var CLASSNAME_STONE = 'Stone';
+    var CLASSNAME_BOX = 'Box';
+    var CLASSNAME_ATTACHMENT_FILE = 'Attachment_file';
+    var CLASSNAME_UNKNOWN = 'Unknown';
+    var GET_PATH = '/main/info.json';
+    var PUT_PATH = '/boxes/1/stones/2.json';
+    var GLOBAL_ID = '20110416135129-112-853';
+
+    it('Get Server Host Name', function() {
         var host = si.model.medusa.host();
         expect(host).toBe('192.168.234.141:3000');
     });
 
-    describe("Get", function() {
-        var path = '/main/info.json';
-        var username = 'admin';
-        it("With No Auth", function() {
+    describe('Get', function() {
+        it('With No Auth', function() {
             si.model.medusa.getWithAuth({
-                path : path,
-                username : username,
-                password : 'xxxx',
-                onsuccess : function(responseText) {
+                path : GET_PATH,
+                username : USERNAME,
+                password : NG_PASSWORD,
+                onsuccess : function(response) {
                     expect(false).toBeTruthy();
                 },
                 onerror : function(e) {
@@ -22,12 +31,12 @@ describe("Medusa", function() {
             });
         });
 
-        it("With Auth", function() {
+        it('With Auth', function() {
             si.model.medusa.getWithAuth({
-                path : path,
-                username : username,
-                password : 'adminadmin',
-                onsuccess : function(responseText) {
+                path : GET_PATH,
+                username : USERNAME,
+                password : OK_PASSWORD,
+                onsuccess : function(response) {
                     expect(true).toBeTruthy();
                 },
                 onerror : function(e) {
@@ -37,15 +46,13 @@ describe("Medusa", function() {
         });
     });
 
-    describe("Put", function() {
-        var path = '/boxes/1/stones/2.json';
-        var username = 'admin';
-        it("With No Auth", function() {
+    describe('Put', function() {
+        it('With No Auth', function() {
             si.model.medusa.putWithAuth({
-                path : path,
-                username : username,
-                password : 'xxxx',
-                onsuccess : function(responseText) {
+                path : PUT_PATH,
+                username : USERNAME,
+                password : NG_PASSWORD,
+                onsuccess : function(response) {
                     expect(false).toBeTruthy();
                 },
                 onerror : function(e) {
@@ -54,12 +61,12 @@ describe("Medusa", function() {
             });
         });
 
-        it("With Auth", function() {
+        it('With Auth', function() {
             si.model.medusa.putWithAuth({
-                path : path,
-                username : username,
-                password : 'adminadmin',
-                onsuccess : function(responseText) {
+                path : PUT_PATH,
+                username : USERNAME,
+                password : OK_PASSWORD,
+                onsuccess : function(response) {
                     expect(true).toBeTruthy();
                 },
                 onerror : function(e) {
@@ -69,11 +76,11 @@ describe("Medusa", function() {
         });
     });
 
-    it("Get Account Info", function() {
+    it('Get Account Info', function() {
         si.model.medusa.getAccountInfo({
-            username : 'admin',
-            password : 'adminadmin',
-            onsuccess : function(e) {
+            username : USERNAME,
+            password : OK_PASSWORD,
+            onsuccess : function(response) {
                 expect(true).toBeTruthy();
             },
             onerror : function(e) {
@@ -82,12 +89,12 @@ describe("Medusa", function() {
         });
     });
 
-    it("Get Recored From Global Id", function() {
+    it('Get Record From Global Id', function() {
         si.model.medusa.getRecordFromGlobalId({
-            global_id : '20110416135129-112-853',
-            username : 'admin',
-            password : 'adminadmin',
-            onsuccess : function(e) {
+            global_id : GLOBAL_ID,
+            username : USERNAME,
+            password : OK_PASSWORD,
+            onsuccess : function(response) {
                 expect(true).toBeTruthy();
             },
             onerror : function(e) {
@@ -96,40 +103,40 @@ describe("Medusa", function() {
         });
     });
 
-    describe("Create Link Path", function() {
+    describe('Create Link Path', function() {
         var parent;
         var child;
         beforeEach(function() {
             parent = {
-                '_className' : 'Stone',
+                '_className' : CLASSNAME_STONE,
                 'id' : 1,
             };
             child = {
-                '_className' : 'Stone',
+                '_className' : CLASSNAME_STONE,
                 'id' : 2,
             };
         });
-        it("Stone Stone", function() {
-            parent._className = 'Stone';
-            child._className = 'Stone';
+        it('Stone Stone', function() {
+            parent._className = CLASSNAME_STONE;
+            child._className = CLASSNAME_STONE;
             expect(si.model.medusa.getLinkPath(parent, child)).toBe('/stones/1/daughters/2.json');
         });
 
-        it("Stone Box", function() {
-            parent._className = 'Stone';
-            child._className = 'Box';
+        it('Stone Box', function() {
+            parent._className = CLASSNAME_STONE;
+            child._className = CLASSNAME_BOX;
             expect(si.model.medusa.getLinkPath(parent, child)).toBe('/stones/1/boxes/2.json');
         });
 
-        it("Stone Attachment_file", function() {
-            parent._className = 'Stone';
-            child._className = 'Attachment_file';
+        it('Stone Attachment_file', function() {
+            parent._className = CLASSNAME_STONE;
+            child._className = CLASSNAME_ATTACHMENT_FILE;
             expect(si.model.medusa.getLinkPath(parent, child)).toBe('/stones/1/attachment_files/2.json');
         });
 
-        it("Stone Unknown", function() {
-            parent._className = 'Stone';
-            child._className = 'Unknown';
+        it('Stone Unknown', function() {
+            parent._className = CLASSNAME_STONE;
+            child._className = CLASSNAME_UNKNOWN;
             try {
                 var path = si.model.medusa.getLinkPath(parent, child);
                 expect(false).toBeTruthy();
@@ -137,27 +144,27 @@ describe("Medusa", function() {
                 expect(true).toBeTruthy();
             }
         });
-        it("Box Stone", function() {
-            parent._className = 'Box';
-            child._className = 'Stone';
+        it('Box Stone', function() {
+            parent._className = CLASSNAME_BOX;
+            child._className = CLASSNAME_STONE;
             expect(si.model.medusa.getLinkPath(parent, child)).toBe('/boxes/1/stones/2.json');
         });
 
-        it("Box Box", function() {
-            parent._className = 'Box';
-            child._className = 'Box';
+        it('Box Box', function() {
+            parent._className = CLASSNAME_BOX;
+            child._className = CLASSNAME_BOX;
             expect(si.model.medusa.getLinkPath(parent, child)).toBe('/boxes/1/boxes/2.json');
         });
 
-        it("Box Attachment_file", function() {
-            parent._className = 'Box';
-            child._className = 'Attachment_file';
+        it('Box Attachment_file', function() {
+            parent._className = CLASSNAME_BOX;
+            child._className = CLASSNAME_ATTACHMENT_FILE;
             expect(si.model.medusa.getLinkPath(parent, child)).toBe('/boxes/1/attachment_files/2.json');
         });
 
-        it("Box Unknown", function() {
-            parent._className = 'Box';
-            child._className = 'Unknown';
+        it('Box Unknown', function() {
+            parent._className = CLASSNAME_BOX;
+            child._className = CLASSNAME_UNKNOWN;
             try {
                 var path = si.model.medusa.getLinkPath(parent, child);
                 expect(false).toBeTruthy();
@@ -166,27 +173,27 @@ describe("Medusa", function() {
             }
         });
 
-        it("Attachment_file Stone", function() {
-            parent._className = 'Attachment_file';
-            child._className = 'Stone';
+        it('Attachment_file Stone', function() {
+            parent._className = CLASSNAME_ATTACHMENT_FILE;
+            child._className = CLASSNAME_STONE;
             expect(si.model.medusa.getLinkPath(parent, child)).toBe('/attachment_files/1/stones/2.json');
         });
 
-        it("Attachment_file Box", function() {
-            parent._className = 'Attachment_file';
-            child._className = 'Box';
+        it('Attachment_file Box', function() {
+            parent._className = CLASSNAME_ATTACHMENT_FILE;
+            child._className = CLASSNAME_BOX;
             expect(si.model.medusa.getLinkPath(parent, child)).toBe('/attachment_files/1/boxes/2.json');
         });
 
-        it("Attachment_file Attachment_file", function() {
-            parent._className = 'Attachment_file';
-            child._className = 'Attachment_file';
+        it('Attachment_file Attachment_file', function() {
+            parent._className = CLASSNAME_ATTACHMENT_FILE;
+            child._className = CLASSNAME_ATTACHMENT_FILE;
             expect(si.model.medusa.getLinkPath(parent, child)).toBe('/attachment_files/1/attachment_files/2.json');
         });
 
-        it("Attachment_file Unknown", function() {
-            parent._className = 'Attachment_file';
-            child._className = 'Unknown';
+        it('Attachment_file Unknown', function() {
+            parent._className = CLASSNAME_ATTACHMENT_FILE;
+            child._className = CLASSNAME_UNKNOWN;
             try {
                 var path = si.model.medusa.getLinkPath(parent, child);
                 expect(false).toBeTruthy();
@@ -195,9 +202,9 @@ describe("Medusa", function() {
             }
         });
 
-        it("Unknown Stone", function() {
-            parent._className = 'Unknown';
-            child._className = 'Stone';
+        it('Unknown Stone', function() {
+            parent._className = CLASSNAME_UNKNOWN;
+            child._className = CLASSNAME_STONE;
             try {
                 var path = si.model.medusa.getLinkPath(parent, child);
                 expect(false).toBeTruthy();
@@ -206,9 +213,9 @@ describe("Medusa", function() {
             }
         });
 
-        it("Unknown Box", function() {
-            parent._className = 'Unknown';
-            child._className = 'Box';
+        it('Unknown Box', function() {
+            parent._className = CLASSNAME_UNKNOWN;
+            child._className = CLASSNAME_BOX;
             try {
                 var path = si.model.medusa.getLinkPath(parent, child);
                 expect(false).toBeTruthy();
@@ -217,9 +224,9 @@ describe("Medusa", function() {
             }
         });
 
-        it("Unknown Attachment_file", function() {
-            parent._className = 'Unknown';
-            child._className = 'Attachment_file';
+        it('Unknown Attachment_file', function() {
+            parent._className = CLASSNAME_UNKNOWN;
+            child._className = CLASSNAME_ATTACHMENT_FILE;
             try {
                 var path = si.model.medusa.getLinkPath(parent, child);
                 expect(false).toBeTruthy();
@@ -228,9 +235,9 @@ describe("Medusa", function() {
             }
         });
 
-        it("Unknown Unknown", function() {
-            parent._className = 'Unknown';
-            child._className = 'Unknown';
+        it('Unknown Unknown', function() {
+            parent._className = CLASSNAME_UNKNOWN;
+            child._className = CLASSNAME_UNKNOWN;
             try {
                 var path = si.model.medusa.getLinkPath(parent, child);
                 expect(false).toBeTruthy();
@@ -240,19 +247,19 @@ describe("Medusa", function() {
         });
     });
 
-    it("Create Link", function() {
+    it('Create Link', function() {
         var parent = {
-            '_className' : 'Stone',
+            '_className' : CLASSNAME_STONE,
             'id' : 1,
         };
         var child = {
-            '_className' : 'Stone',
+            '_className' : CLASSNAME_STONE,
             'id' : 2,
         };
         si.model.medusa.createLink(parent, child, {
-            username : 'admin',
-            password : 'adminadmin',
-            onsuccess : function(responseText) {
+            username : USERNAME,
+            password : OK_PASSWORD,
+            onsuccess : function(response) {
                 expect(true).toBeTruthy();
             },
             onerror : function(e) {
@@ -261,31 +268,31 @@ describe("Medusa", function() {
         });
     });
 
-    describe("Get Image Upload Path", function() {
+    describe('Get Image Upload Path', function() {
         var parent;
         beforeEach(function() {
             parent = {
-                '_className' : 'Stone',
+                '_className' : CLASSNAME_STONE,
                 'id' : 1,
             };
         });
-        it("Stone", function() {
-            parent._className = 'Stone';
+        it('Stone', function() {
+            parent._className = CLASSNAME_STONE;
             expect(si.model.medusa.getImageUploadPath(parent)).toBe('/stones/1/attachment_files/upload.json');
         });
 
-        it("Box", function() {
-            parent._className = 'Box';
+        it('Box', function() {
+            parent._className = CLASSNAME_BOX;
             expect(si.model.medusa.getImageUploadPath(parent)).toBe('/boxes/1/attachment_files/upload.json');
         });
 
-        it("Attachment_file", function() {
-            parent._className = 'Attachment_file';
+        it('Attachment_file', function() {
+            parent._className = CLASSNAME_ATTACHMENT_FILE;
             expect(si.model.medusa.getImageUploadPath(parent)).toBe('/attachment_files/upload.json');
         });
 
-        it("Unknown", function() {
-            parent._className = 'Unknown';
+        it('Unknown', function() {
+            parent._className = CLASSNAME_UNKNOWN;
             try {
                 var path = ssi.model.medusa.getImageUploadPath(parent);
                 expect(false).toBeTruthy();
@@ -295,20 +302,19 @@ describe("Medusa", function() {
         });
     });
 
-    describe("Upload Image", function() {
+    describe('Upload Image', function() {
         var record = {
-            '_className' : 'Stone',
+            '_className' : CLASSNAME_STONE,
             'id' : 1,
         };
         var image = {};
-        var username = 'admin';
-        it("With No Auth", function() {
+        it('With No Auth', function() {
             si.model.medusa.uploadImage({
                 record : record,
                 image : image,
-                username : username,
-                password : 'xxxxxxx',
-                onsuccess : function(responseText) {
+                username : USERNAME,
+                password : NG_PASSWORD,
+                onsuccess : function(response) {
                     expect(false).toBeTruthy();
                 },
                 onerror : function(e) {
@@ -317,13 +323,13 @@ describe("Medusa", function() {
             });
         });
 
-        it("With Auth", function() {
+        it('With Auth', function() {
             si.model.medusa.uploadImage({
                 record : record,
                 image : image,
-                username : username,
-                password : 'adminadmin',
-                onsuccess : function(responseText) {
+                username : USERNAME,
+                password : OK_PASSWORD,
+                onsuccess : function(response) {
                     expect(true).toBeTruthy();
                 },
                 onerror : function(e) {

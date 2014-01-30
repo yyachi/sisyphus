@@ -15,7 +15,7 @@
             title : 'Main',
             backgroundColor : 'orange',
             barColor : '#336699',
-            orientationModes : [Titanium.UI.PORTRAIT],
+            orientationModes : [Ti.UI.PORTRAIT],
             backButtonTitle : 'Back',
             layout : 'vertical'
         });
@@ -71,12 +71,12 @@
             height : '90%'
         });
         imageButtonViewHome.button.addEventListener('click', function(e) {
-            default_global_id = Titanium.App.Properties.getString('current_box_global_id');
+            default_global_id = Ti.App.Properties.getString('current_box_global_id');
             loadParent(default_global_id);
         });
         viewHeaderRight.add(imageButtonViewHome);
 
-        var optionDialogForMenu = Titanium.UI.createOptionDialog({
+        var optionDialogForMenu = Ti.UI.createOptionDialog({
             options : [ 'print label',
                         'add a snap shot', 
                         'add a local file', 
@@ -140,7 +140,6 @@
         imageButtonViewScanParent.button.addEventListener('click', callbackButtonScanParentClick);
         viewHeaderLeft.add(imageButtonViewScanParent);
 
-        //viewParentは動的に追加、削除される
         var viewParent = si.ui.createViewParent(null, {
             width : '100%',
             height : '100%',
@@ -148,10 +147,10 @@
         });
         viewParent.addEventListener('click', callbackButtonScanParentClick);
 
-        function printLabelAtRemote(global_id) {
+        function printLabelAtRemote(_global_id) {
 
-            var host = Titanium.App.Properties.getString('socket_server');
-            var port = Titanium.App.Properties.getString('socket_write_to');
+            var host = Ti.App.Properties.getString('socket_server');
+            var port = Ti.App.Properties.getString('socket_write_to');
 
             try {
                 socket = Ti.Network.Socket.createTCP({
@@ -159,7 +158,7 @@
                     port : port,
                     connected : function(e) {
                         e.socket.write(Ti.createBuffer({
-                            value : global_id + '\r\n'
+                            value : _global_id + '\r\n'
                         }));
                         e.socket.write(Ti.createBuffer({
                             value : 'label\r\n'
@@ -185,6 +184,7 @@
             Ti.API.info('image:' + _image);
             Ti.API.info('getFile:' + _image.getFile());
             Ti.API.info('getMimeType:' + _image.getNativePath());
+            
             labelStatus.text = 'Path:' + _image.getNativePath();
             
             viewBody.remove(buttonScanChild);
@@ -197,15 +197,18 @@
         };
 
         function handleImageEvent(_image) {
+            var username = Ti.App.Properties.getString('username');
+            var password = Ti.App.Properties.getString('password');
+
             labelStatus.text = 'uploading ' + _image.getNativePath() + ' ...';
             changeMode('loading');
 
             si.model.medusa.uploadImage({
                 image : _image,
                 record : parent,
-                username : Titanium.App.Properties.getString('username'),
-                password : Titanium.App.Properties.getString('password'),
-                onsuccess : function(e) {
+                username : username,
+                password : password,
+                onsuccess : function(_response) {
                     labelStatus.text += ' OK';
                     
                     viewBody.remove(imageView);
@@ -225,7 +228,7 @@
         }
 
         function uploadImageFromAlbum() {
-            Titanium.Media.openPhotoGallery({
+            Ti.Media.openPhotoGallery({
                 success : function(event) {
                     if(event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO){
                         setImageView(event.media);
@@ -241,7 +244,7 @@
         }
 
         function uploadImageFromCamera() {
-            Titanium.Media.showCamera({
+            Ti.Media.showCamera({
                 success : function(event) {
                     if(event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO){
                         setImageView(event.media);
@@ -257,7 +260,7 @@
             });
         }
 
-        var scrollView = Titanium.UI.createScrollView({
+        var scrollView = Ti.UI.createScrollView({
             top : '2%',
             contentHeight : 'auto',
             contentWidth : 'auto',
@@ -266,11 +269,12 @@
             left : '10%',
             height : '25%',
             borderWidth : 1,
-            borderRadius : 0
+            borderRadius : 0,
+            scrollType : 'vertical'
         });
         viewBody.add(scrollView);
 
-        var labelInfo = Titanium.UI.createLabel(si.combine($$.smallText, {
+        var labelInfo = Ti.UI.createLabel(si.combine($$.smallText, {
             text : '',
             top : 0,
             left : 0,
@@ -287,7 +291,7 @@
             height : '63%',
         });
 
-        var buttonScanChild = Titanium.UI.createButton(si.combine($$.NormalButton, {
+        var buttonScanChild = Ti.UI.createButton(si.combine($$.NormalButton, {
             title : '+',
             width : '100%',
             backgroundColor : 'white',
@@ -319,7 +323,7 @@
         }));
         viewBody.add(labelStatus);
 
-        var switchLock = Titanium.UI.createSwitch({
+        var switchLock = Ti.UI.createSwitch({
             value : !controlable,
             left : '2%',
             bottom : '2%'
@@ -334,7 +338,7 @@
 
         win.addEventListener('focus', function(e) {
             refreshLayout();
-            current_global_id = Titanium.App.Properties.getString('current_global_id');
+            current_global_id = Ti.App.Properties.getString('current_global_id');
             if (parent == null) {
                 if (current_global_id != null) {
                     loadParent(current_global_id);
@@ -361,9 +365,9 @@
         function scanAndLoadParent() {
             si.TiBar.scan({
                 configure : si.config.TiBar,
-                success : function(data) {
-                    if (data && data.barcode) {
-                        global_id = data.barcode;
+                success : function(_data) {
+                    if (_data && _data.barcode) {
+                        global_id = _data.barcode;
                         loadParent(global_id);
                     }
                 },
@@ -377,9 +381,9 @@
         function scanChild() {
             si.TiBar.scan({
                 configure : si.config.TiBar,
-                success : function(data) {
-                    if (data && data.barcode) {
-                        addChild(data.barcode);
+                success : function(_data) {
+                    if (_data && _data.barcode) {
+                        addChild(_data.barcode);
                     }
                 },
                 cancel : function() {
@@ -390,28 +394,31 @@
         };
 
         function addChild(_global_id) {
-            changeMode('loading');
+            var username = Ti.App.Properties.getString('username');
+            var password = Ti.App.Properties.getString('password');
 
+            changeMode('loading');
             labelStatus.text = _global_id + '...';
+            
             si.model.medusa.getRecordFromGlobalId({
                 global_id : _global_id,
-                username : Titanium.App.Properties.getString('username'),
-                password : Titanium.App.Properties.getString('password'),
-                onsuccess : function(child) {
-                    labelStatus.text += child.name + '...';
-                    si.model.medusa.createLink(parent, child, {
-                            username : Titanium.App.Properties.getString('username'),
-                            password : Titanium.App.Properties.getString('password'),
-                            onsuccess : function() {
-                            labelStatus.text += 'OK\n';
-                            si.sound_newmail.play();
-                            labelInfo.text = labelStatus.text + labelInfo.text;
-                            if (isMultiScan) {
-                                buttonScanChild.setEnabled(true);
-                                buttonScanChild.fireEvent('click');
-                            } else {
-                                changeMode('ready');
-                            }
+                username : username,
+                password : password,
+                onsuccess : function(_response) {
+                    labelStatus.text += _response.name + '...';
+                    si.model.medusa.createLink(parent, _response, {
+                            username : username,
+                            password : password,
+                            onsuccess : function(_response2) {
+                                labelStatus.text += 'OK\n';
+                                si.sound_newmail.play();
+                                labelInfo.text = labelStatus.text + labelInfo.text;
+                                if (isMultiScan) {
+                                    buttonScanChild.setEnabled(true);
+                                    buttonScanChild.fireEvent('click');
+                                } else {
+                                    changeMode('ready');
+                                }
                         },
                         onerror : function(e) {
                             labelStatus.text = labelStatus.text + 'ERROR\n';
@@ -456,6 +463,8 @@
         };
 
         function loadParent(_global_id) {
+            var username = Ti.App.Properties.getString('username');
+            var password = Ti.App.Properties.getString('password');
             changeMode('loading');
 
             labelInfo.text = '';
@@ -463,14 +472,14 @@
 
             si.model.medusa.getRecordFromGlobalId({
                 global_id : _global_id,
-                username : Titanium.App.Properties.getString('username'),
-                password : Titanium.App.Properties.getString('password'),
-                onsuccess : function(_parent) {
-                    parent = _parent;
+                username : username,
+                password : password,
+                onsuccess : function(_response) {
+                    parent = _response;
                     viewParent.update(parent);
 
-                    if (_global_id != Titanium.App.Properties.getString('current_global_id')) {
-                        Titanium.App.Properties.setString('current_global_id', _global_id);
+                    if (_global_id != Ti.App.Properties.getString('current_global_id')) {
+                        Ti.App.Properties.setString('current_global_id', _global_id);
                     }
                     if (viewHeaderLeft.children.contains(imageButtonViewScanParent)) {
                         viewHeaderLeft.remove(imageButtonViewScanParent);

@@ -6,28 +6,28 @@
             backgroundColor : '#ffffff'
         });
 
-        var textServer = Titanium.UI.createTextField(si.combine($$.TextField, {
-            value : Titanium.App.Properties.getString('socket_server'),
+        var textServer = Ti.UI.createTextField(si.combine($$.TextField, {
+            value : Ti.App.Properties.getString('socket_server'),
             top : '5%',
-            keyboardType : Titanium.UI.KEYBOARD_URL,
+            keyboardType : Ti.UI.KEYBOARD_URL,
             hintText : 'host name'
         }));
 
-        var textListenTo = Titanium.UI.createTextField(si.combine($$.TextField, {
-            value : Titanium.App.Properties.getString('socket_listen_to'),
+        var textListenTo = Ti.UI.createTextField(si.combine($$.TextField, {
+            value : Ti.App.Properties.getString('socket_listen_to'),
             top : '30%',
-            keyboardType : Titanium.UI.KEYBOARD_NUMBERS_PUNCTUATION,
+            keyboardType : Ti.UI.KEYBOARD_NUMBERS_PUNCTUATION,
             hintText : 'port listen to'
         }));
 
-        var textWriteTo = Titanium.UI.createTextField(si.combine($$.TextField, {
-            value : Titanium.App.Properties.getString('socket_write_to'),
+        var textWriteTo = Ti.UI.createTextField(si.combine($$.TextField, {
+            value : Ti.App.Properties.getString('socket_write_to'),
             top : '55%',
-            keyboardType : Titanium.UI.KEYBOARD_NUMBERS_PUNCTUATION,
+            keyboardType : Ti.UI.KEYBOARD_NUMBERS_PUNCTUATION,
             hintText : 'port write to'
         }));
 
-        var button = Titanium.UI.createButton(si.combine($$.RightBottomButton, {
+        var button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
             title : 'save'
         }));
 
@@ -47,9 +47,9 @@
                 return;
             }
 
-            Titanium.App.Properties.setString('socket_server', textServer.value);
-            Titanium.App.Properties.setString('socket_listen_to', textListenTo.value);
-            Titanium.App.Properties.setString('socket_write_to', textWriteTo.value);
+            Ti.App.Properties.setString('socket_server', textServer.value);
+            Ti.App.Properties.setString('socket_listen_to', textListenTo.value);
+            Ti.App.Properties.setString('socket_write_to', textWriteTo.value);
             win.close();
         });
 

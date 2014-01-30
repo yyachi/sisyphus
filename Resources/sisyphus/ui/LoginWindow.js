@@ -5,25 +5,25 @@
             title : 'account',
             backgroundColor : '#ffffff'
         });
-        var navActInd = Titanium.UI.createActivityIndicator();
-        if (Titanium.Platform.name == 'iPhone OS') {
+        var navActInd = Ti.UI.createActivityIndicator();
+        if (Ti.Platform.name == 'iPhone OS') {
             win.setRightNavButton(navActInd);
         }
 
-        var textUsername = Titanium.UI.createTextField(si.combine($$.TextField, {
-            value : Titanium.App.Properties.getString('username'),
+        var textUsername = Ti.UI.createTextField(si.combine($$.TextField, {
+            value : Ti.App.Properties.getString('username'),
             top : '5%',
             hintText : 'user name'
         }));
         
-        var textPassword = Titanium.UI.createTextField(si.combine($$.TextField, {
-            value : Titanium.App.Properties.getString('password'),
+        var textPassword = Ti.UI.createTextField(si.combine($$.TextField, {
+            value : Ti.App.Properties.getString('password'),
             passwordMask : true,
             top : '30%',
             hintText : 'password'
         }));
         
-        var button = Titanium.UI.createButton(si.combine($$.RightBottomButton, {
+        var button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
             title : 'save',
         }));
         button.addEventListener('click', function() {
@@ -34,13 +34,12 @@
             }
 
             navActInd.show();
-            // （プロビズモ渡部)getAccountInfoはリソースにアクセスできるかの判定にしか使ってないので、他の何かで代用できないか検討する
             si.model.medusa.getAccountInfo({
                 username : textUsername.value,
                 password : textPassword.value,
-                onsuccess : function(info) {
-                    Titanium.App.Properties.setString('username', textUsername.value);
-                    Titanium.App.Properties.setString('password', textPassword.value);
+                onsuccess : function(response) {
+                    Ti.App.Properties.setString('username', textUsername.value);
+                    Ti.App.Properties.setString('password', textPassword.value);
                     navActInd.hide();
                     win.close();
                 },

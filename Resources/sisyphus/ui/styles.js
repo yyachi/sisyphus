@@ -43,7 +43,7 @@
         },
         TableView : {
             backgroundImage : 'images/ruff.png',
-            separatorStyle : Ti.UI.iPhone.TableViewSeparatorStyle.NONE
+            separatorStyle : (Ti.Platform.name == 'iPhone OS') ? Ti.UI.iPhone.TableViewSeparatorStyle.NONE : ''
         },
         TableViewRow : {
             selectedBackgroundColor : si.ui.theme.darkBlue, //I know, this is dumb, but it's currently inconsistent x-platform
@@ -52,8 +52,8 @@
         },
         TextField : {
             width : '90%',
-            autocapitalization : Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE,
-            borderStyle : Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+            autocapitalization : Ti.UI.TEXT_AUTOCAPITALIZATION_NONE,
+            borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
             paddingLeft : 5, // pad left by 20 pixels
             paddingRight : 5, // pad right by 20 pixels
             color : '#000000'
