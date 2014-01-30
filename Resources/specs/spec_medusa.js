@@ -11,9 +11,13 @@ describe('Medusa', function() {
     var PUT_PATH = '/boxes/1/stones/2.json';
     var GLOBAL_ID = '20110416135129-112-853';
 
+    var isSuccess;
+    beforeEach(function() {
+        isSuccess = null;
+    });
+
     it('Get Server Host Name', function() {
-        var host = si.model.medusa.host();
-        expect(host).toBe('192.168.234.141:3000');
+        expect(si.model.medusa.host()).toBe('192.168.234.141:3000');
     });
 
     describe('Get', function() {
@@ -22,12 +26,18 @@ describe('Medusa', function() {
                 path : GET_PATH,
                 username : USERNAME,
                 password : NG_PASSWORD,
-                onsuccess : function(response) {
-                    expect(false).toBeTruthy();
-                },
-                onerror : function(e) {
-                    expect(true).toBeTruthy();
-                },
+                onsuccess : (function(e) {
+                    isSuccess = true;
+                }),
+                onerror : (function(e) {
+                    isSuccess = false;
+                }),
+            });
+            waitsFor(function() {
+                return isSuccess != null;
+            });
+            runs(function() {
+                expect(isSuccess).toBe(false);
             });
         });
 
@@ -36,12 +46,18 @@ describe('Medusa', function() {
                 path : GET_PATH,
                 username : USERNAME,
                 password : OK_PASSWORD,
-                onsuccess : function(response) {
-                    expect(true).toBeTruthy();
-                },
-                onerror : function(e) {
-                    expect(false).toBeTruthy();
-                },
+                onsuccess : (function(e) {
+                    isSuccess = true;
+                }),
+                onerror : (function(e) {
+                    isSuccess = false;
+                }),
+            });
+            waitsFor(function() {
+                return isSuccess != null;
+            });
+            runs(function() {
+                expect(isSuccess).toBe(true);
             });
         });
     });
@@ -52,12 +68,18 @@ describe('Medusa', function() {
                 path : PUT_PATH,
                 username : USERNAME,
                 password : NG_PASSWORD,
-                onsuccess : function(response) {
-                    expect(false).toBeTruthy();
-                },
-                onerror : function(e) {
-                    expect(true).toBeTruthy();
-                },
+                onsuccess : (function(e) {
+                    isSuccess = true;
+                }),
+                onerror : (function(e) {
+                    isSuccess = false;
+                }),
+            });
+            waitsFor(function() {
+                return isSuccess != null;
+            });
+            runs(function() {
+                expect(isSuccess).toBe(false);
             });
         });
 
@@ -66,12 +88,18 @@ describe('Medusa', function() {
                 path : PUT_PATH,
                 username : USERNAME,
                 password : OK_PASSWORD,
-                onsuccess : function(response) {
-                    expect(true).toBeTruthy();
-                },
-                onerror : function(e) {
-                    expect(false).toBeTruthy();
-                },
+                onsuccess : (function(e) {
+                    isSuccess = true;
+                }),
+                onerror : (function(e) {
+                    isSuccess = false;
+                }),
+            });
+            waitsFor(function() {
+                return isSuccess != null;
+            });
+            runs(function() {
+                expect(isSuccess).toBe(true);
             });
         });
     });
@@ -80,12 +108,18 @@ describe('Medusa', function() {
         si.model.medusa.getAccountInfo({
             username : USERNAME,
             password : OK_PASSWORD,
-            onsuccess : function(response) {
-                expect(true).toBeTruthy();
-            },
-            onerror : function(e) {
-                expect(false).toBeTruthy();
-            },
+            onsuccess : (function(e) {
+                isSuccess = true;
+            }),
+            onerror : (function(e) {
+                isSuccess = false;
+            }),
+        });
+        waitsFor(function() {
+            return isSuccess != null;
+        });
+        runs(function() {
+            expect(isSuccess).toBe(true);
         });
     });
 
@@ -94,12 +128,18 @@ describe('Medusa', function() {
             global_id : GLOBAL_ID,
             username : USERNAME,
             password : OK_PASSWORD,
-            onsuccess : function(response) {
-                expect(true).toBeTruthy();
-            },
-            onerror : function(e) {
-                expect(false).toBeTruthy();
-            },
+            onsuccess : (function(e) {
+                isSuccess = true;
+            }),
+            onerror : (function(e) {
+                isSuccess = false;
+            }),
+        });
+        waitsFor(function() {
+            return isSuccess != null;
+        });
+        runs(function() {
+            expect(isSuccess).toBe(true);
         });
     });
 
@@ -259,12 +299,18 @@ describe('Medusa', function() {
         si.model.medusa.createLink(parent, child, {
             username : USERNAME,
             password : OK_PASSWORD,
-            onsuccess : function(response) {
-                expect(true).toBeTruthy();
-            },
-            onerror : function(e) {
-                expect(false).toBeTruthy();
-            },
+            onsuccess : (function(e) {
+                isSuccess = true;
+            }),
+            onerror : (function(e) {
+                isSuccess = false;
+            }),
+        });
+        waitsFor(function() {
+            return isSuccess != null;
+        });
+        runs(function() {
+            expect(isSuccess).toBe(true);
         });
     });
 
@@ -314,12 +360,18 @@ describe('Medusa', function() {
                 image : image,
                 username : USERNAME,
                 password : NG_PASSWORD,
-                onsuccess : function(response) {
-                    expect(false).toBeTruthy();
-                },
-                onerror : function(e) {
-                    expect(true).toBeTruthy();
-                },
+                onsuccess : (function(e) {
+                    isSuccess = true;
+                }),
+                onerror : (function(e) {
+                    isSuccess = false;
+                }),
+            });
+            waitsFor(function() {
+                return isSuccess != null;
+            });
+            runs(function() {
+                expect(isSuccess).toBe(false);
             });
         });
 
@@ -329,12 +381,18 @@ describe('Medusa', function() {
                 image : image,
                 username : USERNAME,
                 password : OK_PASSWORD,
-                onsuccess : function(response) {
-                    expect(true).toBeTruthy();
-                },
-                onerror : function(e) {
-                    expect(false).toBeTruthy();
-                },
+                onsuccess : (function(e) {
+                    isSuccess = true;
+                }),
+                onerror : (function(e) {
+                    isSuccess = false;
+                }),
+            });
+            waitsFor(function() {
+                return isSuccess != null;
+            });
+            runs(function() {
+                expect(isSuccess).toBe(true);
             });
         });
     });
