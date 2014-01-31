@@ -2,6 +2,13 @@
     si.model = {};
     si.model.medusa = {};
 
+    var CLASSNAME_STONE = 'Stone';
+    var CLASSNAME_BOX = 'Box';
+    var CLASSNAME_ANALYSIS = 'Analysis';
+    var CLASSNAME_BIB = 'Bib';
+    var CLASSNAME_PLACE = 'Place';
+    var CLASSNAME_ATTACHMENT_FILE = 'AttachmentFile';
+    
     si.model.medusa.host = function() {
         var url = si.config.Medusa.server;
         var result = url.split('\/\/');
@@ -77,13 +84,22 @@
     si.model.medusa.getLinkPath = function(_parent, _child){
        var parent_path = '';
         switch(_parent._className) {
-            case 'Stone':
+            case CLASSNAME_STONE:
                 parent_path = '/stones/';
                 break;
-            case 'Box':
+            case CLASSNAME_BOX:
                 parent_path = '/boxes/';
                 break;
-            case 'Attachment_file':
+            case CLASSNAME_ANALYSIS:
+                parent_path = '/analyses/';
+                break;
+            case CLASSNAME_BIB:
+                parent_path = '/bibs/';
+                break;
+            case CLASSNAME_PLACE:
+                parent_path = '/places/';
+                break;
+            case CLASSNAME_ATTACHMENT_FILE:
                 parent_path = '/attachment_files/';
                 break;
             default:
@@ -93,17 +109,26 @@
         
         var child_path = '';
         switch(_child._className) {
-            case 'Stone':
-                if (_parent._className == 'Stone'){
+            case CLASSNAME_STONE:
+                if (_parent._className == CLASSNAME_STONE){
                     child_path = '/daughters/';
                 }else{
                     child_path = '/stones/';
                 }
                 break;
-            case 'Box':
+            case CLASSNAME_BOX:
                 child_path = '/boxes/';
                 break;
-            case 'Attachment_file':
+            case CLASSNAME_ANALYSIS:
+                child_path = '/analyses/';
+                break;
+            case CLASSNAME_BIB:
+                child_path = '/bibs/';
+                break;
+            case CLASSNAME_PLACE:
+                child_path = '/places/';
+                break;
+            case CLASSNAME_ATTACHMENT_FILE:
                 child_path = '/attachment_files/';
                 break;
             default:
@@ -129,13 +154,22 @@
     si.model.medusa.getImageUploadPath = function(_parent){
         var path = '';
         switch(_parent._className) {
-            case 'Stone':
+            case CLASSNAME_STONE:
                 path += '/stones/' + _parent.id + '/attachment_files';
                 break;
-            case 'Box':
+            case CLASSNAME_BOX:
                 path += '/boxes/' + _parent.id + '/attachment_files';
                 break;
-            case 'Attachment_file':
+            case CLASSNAME_ANALYSIS:
+                path += '/analyses/' + _parent.id + '/attachment_files';
+                break;
+            case CLASSNAME_BIB:
+                path += '/bibs/' + _parent.id + '/attachment_files';
+                break;
+            case CLASSNAME_PLACE:
+                path += '/places/' + _parent.id + '/attachment_files';
+                break;
+            case CLASSNAME_ATTACHMENT_FILE:
                 path += '/attachment_files';
                 break;
             default:

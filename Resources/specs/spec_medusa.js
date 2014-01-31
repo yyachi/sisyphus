@@ -5,7 +5,10 @@ describe('Medusa', function() {
     var NG_PASSWORD = 'xxxx';
     var CLASSNAME_STONE = 'Stone';
     var CLASSNAME_BOX = 'Box';
-    var CLASSNAME_ATTACHMENT_FILE = 'Attachment_file';
+    var CLASSNAME_ANALYSIS = 'Analysis';
+    var CLASSNAME_BIB = 'Bib';
+    var CLASSNAME_PLACE = 'Place';
+    var CLASSNAME_ATTACHMENT_FILE = 'AttachmentFile';
     var CLASSNAME_UNKNOWN = 'Unknown';
     var GET_PATH = '/main/info.json';
     var PUT_PATH = '/boxes/1/stones/2.json';
@@ -168,6 +171,24 @@ describe('Medusa', function() {
             expect(si.model.medusa.getLinkPath(parent, child)).toBe('/stones/1/boxes/2.json');
         });
 
+        it('Stone Bib', function() {
+            parent._className = CLASSNAME_STONE;
+            child._className = CLASSNAME_BIB;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/stones/1/bibs/2.json');
+        });
+
+        it('Stone Analysis', function() {
+            parent._className = CLASSNAME_STONE;
+            child._className = CLASSNAME_ANALYSIS;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/stones/1/analyses/2.json');
+        });
+
+        it('Stone Place', function() {
+            parent._className = CLASSNAME_STONE;
+            child._className = CLASSNAME_PLACE;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/stones/1/places/2.json');
+        });
+
         it('Stone Attachment_file', function() {
             parent._className = CLASSNAME_STONE;
             child._className = CLASSNAME_ATTACHMENT_FILE;
@@ -196,6 +217,24 @@ describe('Medusa', function() {
             expect(si.model.medusa.getLinkPath(parent, child)).toBe('/boxes/1/boxes/2.json');
         });
 
+        it('Box Bib', function() {
+            parent._className = CLASSNAME_BOX;
+            child._className = CLASSNAME_BIB;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/boxes/1/bibs/2.json');
+        });
+
+        it('Box Analysis', function() {
+            parent._className = CLASSNAME_BOX;
+            child._className = CLASSNAME_ANALYSIS;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/boxes/1/analyses/2.json');
+        });
+
+        it('Box Place', function() {
+            parent._className = CLASSNAME_BOX;
+            child._className = CLASSNAME_PLACE;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/boxes/1/places/2.json');
+        });
+
         it('Box Attachment_file', function() {
             parent._className = CLASSNAME_BOX;
             child._className = CLASSNAME_ATTACHMENT_FILE;
@@ -204,6 +243,150 @@ describe('Medusa', function() {
 
         it('Box Unknown', function() {
             parent._className = CLASSNAME_BOX;
+            child._className = CLASSNAME_UNKNOWN;
+            try {
+                var path = si.model.medusa.getLinkPath(parent, child);
+                expect(false).toBeTruthy();
+            } catch(e) {
+                expect(true).toBeTruthy();
+            }
+        });
+
+        
+        it('Bib Stone', function() {
+            parent._className = CLASSNAME_BIB;
+            child._className = CLASSNAME_STONE;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/bibs/1/stones/2.json');
+        });
+
+        it('Bib Box', function() {
+            parent._className = CLASSNAME_BIB;
+            child._className = CLASSNAME_BOX;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/bibs/1/boxes/2.json');
+        });
+
+        it('Bib Bib', function() {
+            parent._className = CLASSNAME_BIB;
+            child._className = CLASSNAME_BIB;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/bibs/1/bibs/2.json');
+        });
+
+        it('Bib Analysis', function() {
+            parent._className = CLASSNAME_BIB;
+            child._className = CLASSNAME_ANALYSIS;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/bibs/1/analyses/2.json');
+        });
+
+        it('Bib Place', function() {
+            parent._className = CLASSNAME_BIB;
+            child._className = CLASSNAME_PLACE;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/bibs/1/places/2.json');
+        });
+
+        it('Bib Attachment_file', function() {
+            parent._className = CLASSNAME_BIB;
+            child._className = CLASSNAME_ATTACHMENT_FILE;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/bibs/1/attachment_files/2.json');
+        });
+
+        it('Bib Unknown', function() {
+            parent._className = CLASSNAME_BIB;
+            child._className = CLASSNAME_UNKNOWN;
+            try {
+                var path = si.model.medusa.getLinkPath(parent, child);
+                expect(false).toBeTruthy();
+            } catch(e) {
+                expect(true).toBeTruthy();
+            }
+        });
+
+        
+        it('Analysis Stone', function() {
+            parent._className = CLASSNAME_ANALYSIS;
+            child._className = CLASSNAME_STONE;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/analyses/1/stones/2.json');
+        });
+
+        it('Analysis Box', function() {
+            parent._className = CLASSNAME_ANALYSIS;
+            child._className = CLASSNAME_BOX;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/analyses/1/boxes/2.json');
+        });
+
+        it('Analysis Bib', function() {
+            parent._className = CLASSNAME_ANALYSIS;
+            child._className = CLASSNAME_BIB;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/analyses/1/bibs/2.json');
+        });
+
+        it('Analysis Analysis', function() {
+            parent._className = CLASSNAME_ANALYSIS;
+            child._className = CLASSNAME_ANALYSIS;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/analyses/1/analyses/2.json');
+        });
+
+        it('Analysis Place', function() {
+            parent._className = CLASSNAME_ANALYSIS;
+            child._className = CLASSNAME_PLACE;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/analyses/1/places/2.json');
+        });
+
+        it('Analysis Attachment_file', function() {
+            parent._className = CLASSNAME_ANALYSIS;
+            child._className = CLASSNAME_ATTACHMENT_FILE;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/analyses/1/attachment_files/2.json');
+        });
+
+        it('Analysis Unknown', function() {
+            parent._className = CLASSNAME_ANALYSIS;
+            child._className = CLASSNAME_UNKNOWN;
+            try {
+                var path = si.model.medusa.getLinkPath(parent, child);
+                expect(false).toBeTruthy();
+            } catch(e) {
+                expect(true).toBeTruthy();
+            }
+        });
+
+        
+        it('Place Stone', function() {
+            parent._className = CLASSNAME_PLACE;
+            child._className = CLASSNAME_STONE;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/places/1/stones/2.json');
+        });
+
+        it('Place Box', function() {
+            parent._className = CLASSNAME_PLACE;
+            child._className = CLASSNAME_BOX;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/places/1/boxes/2.json');
+        });
+
+        it('Place Bib', function() {
+            parent._className = CLASSNAME_PLACE;
+            child._className = CLASSNAME_BIB;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/places/1/bibs/2.json');
+        });
+
+        it('Place Analysis', function() {
+            parent._className = CLASSNAME_PLACE;
+            child._className = CLASSNAME_ANALYSIS;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/places/1/analyses/2.json');
+        });
+
+        it('Place Place', function() {
+            parent._className = CLASSNAME_PLACE;
+            child._className = CLASSNAME_PLACE;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/places/1/places/2.json');
+        });
+
+        it('Place Attachment_file', function() {
+            parent._className = CLASSNAME_PLACE;
+            child._className = CLASSNAME_ATTACHMENT_FILE;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/places/1/attachment_files/2.json');
+        });
+
+        it('Place Unknown', function() {
+            parent._className = CLASSNAME_PLACE;
             child._className = CLASSNAME_UNKNOWN;
             try {
                 var path = si.model.medusa.getLinkPath(parent, child);
@@ -223,6 +406,24 @@ describe('Medusa', function() {
             parent._className = CLASSNAME_ATTACHMENT_FILE;
             child._className = CLASSNAME_BOX;
             expect(si.model.medusa.getLinkPath(parent, child)).toBe('/attachment_files/1/boxes/2.json');
+        });
+
+        it('Bib Attachment_file', function() {
+            parent._className = CLASSNAME_BIB;
+            child._className = CLASSNAME_ATTACHMENT_FILE;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/bibs/1/attachment_files/2.json');
+        });
+
+        it('Analysis Attachment_file', function() {
+            parent._className = CLASSNAME_ANALYSIS;
+            child._className = CLASSNAME_ATTACHMENT_FILE;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/analyses/1/attachment_files/2.json');
+        });
+
+        it('Place Attachment_file', function() {
+            parent._className = CLASSNAME_PLACE;
+            child._className = CLASSNAME_ATTACHMENT_FILE;
+            expect(si.model.medusa.getLinkPath(parent, child)).toBe('/places/1/attachment_files/2.json');
         });
 
         it('Attachment_file Attachment_file', function() {
@@ -256,6 +457,39 @@ describe('Medusa', function() {
         it('Unknown Box', function() {
             parent._className = CLASSNAME_UNKNOWN;
             child._className = CLASSNAME_BOX;
+            try {
+                var path = si.model.medusa.getLinkPath(parent, child);
+                expect(false).toBeTruthy();
+            } catch(e) {
+                expect(true).toBeTruthy();
+            }
+        });
+
+        it('Unknown Bib', function() {
+            parent._className = CLASSNAME_UNKNOWN;
+            child._className = CLASSNAME_BIB;
+            try {
+                var path = si.model.medusa.getLinkPath(parent, child);
+                expect(false).toBeTruthy();
+            } catch(e) {
+                expect(true).toBeTruthy();
+            }
+        });
+
+        it('Unknown Analysis', function() {
+            parent._className = CLASSNAME_UNKNOWN;
+            child._className = CLASSNAME_ANALYSIS;
+            try {
+                var path = si.model.medusa.getLinkPath(parent, child);
+                expect(false).toBeTruthy();
+            } catch(e) {
+                expect(true).toBeTruthy();
+            }
+        });
+
+        it('Unknown Place', function() {
+            parent._className = CLASSNAME_UNKNOWN;
+            child._className = CLASSNAME_PLACE;
             try {
                 var path = si.model.medusa.getLinkPath(parent, child);
                 expect(false).toBeTruthy();
@@ -330,6 +564,21 @@ describe('Medusa', function() {
         it('Box', function() {
             parent._className = CLASSNAME_BOX;
             expect(si.model.medusa.getImageUploadPath(parent)).toBe('/boxes/1/attachment_files/upload.json');
+        });
+
+        it('Bib', function() {
+            parent._className = CLASSNAME_BIB;
+            expect(si.model.medusa.getImageUploadPath(parent)).toBe('/bibs/1/attachment_files/upload.json');
+        });
+
+        it('Analysis', function() {
+            parent._className = CLASSNAME_ANALYSIS;
+            expect(si.model.medusa.getImageUploadPath(parent)).toBe('/analyses/1/attachment_files/upload.json');
+        });
+
+        it('Place', function() {
+            parent._className = CLASSNAME_PLACE;
+            expect(si.model.medusa.getImageUploadPath(parent)).toBe('/places/1/attachment_files/upload.json');
         });
 
         it('Attachment_file', function() {
