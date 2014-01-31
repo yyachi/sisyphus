@@ -8,8 +8,7 @@
         }
 
         var parent = null;
-        var isMultiScan = false;
-        var controlable = true;
+        var isMultiScan = true;
 
         var win = Ti.UI.createWindow({
             title : 'Main',
@@ -39,12 +38,6 @@
             top : 0,
         });
         viewBase.add(viewBody);
-
-        var viewFooter = Ti.UI.createView({
-            backgroundColor : 'black',
-            top : 20,
-        });
-        viewBase.add(viewFooter);
 
         var viewHeaderLeft = Ti.UI.createView({
             height : '100%',
@@ -323,19 +316,6 @@
         }));
         viewBody.add(labelStatus);
 
-        var switchLock = Ti.UI.createSwitch({
-            value : !controlable,
-            left : '2%',
-            bottom : '2%'
-        });
-        switchLock.addEventListener('change', function(e) {
-            controlable = !switchLock.value;
-            imageButtonViewHome.setEnabled(controlable);
-            imageButtonViewMenu.setEnabled(controlable);
-            viewParent.setEnabled(controlable);
-        });
-        viewFooter.add(switchLock);
-
         win.addEventListener('focus', function(e) {
             refreshLayout();
             current_global_id = Ti.App.Properties.getString('current_global_id');
@@ -354,12 +334,10 @@
             viewBase.setHeight('100%');
             viewBase.setWidth('100%');
             viewBase.setTop(0);
-            viewHeader.setHeight('15%');
+            viewHeader.setHeight('25%');
             viewHeader.setTop(0);
             viewBody.setHeight('75%');
             viewBody.setTop(0);
-            viewFooter.setHeight('10%');
-            viewFooter.setTop(0);
         };
 
         function scanAndLoadParent() {
@@ -445,18 +423,16 @@
                 viewParent.setVisible(true);
                 buttonScanChild.setEnabled(false);
 
-                controlable = true;
-                switchLock.setValue(!controlable);
-                imageButtonViewHome.setEnabled(controlable);
-                imageButtonViewMenu.setEnabled(controlable);
-                viewParent.setEnabled(controlable);
+                imageButtonViewHome.setEnabled(true);
+                imageButtonViewMenu.setEnabled(true);
+                viewParent.setEnabled(true);
              } else if (_mode == 'ready') {
                 viewParent.setVisible(true);
                 buttonScanChild.setEnabled(true);
 
-                imageButtonViewHome.setEnabled(controlable);
-                imageButtonViewMenu.setEnabled(controlable);
-                viewParent.setEnabled(controlable);
+                imageButtonViewHome.setEnabled(true);
+                imageButtonViewMenu.setEnabled(true);
+                viewParent.setEnabled(true);
 
                 labelStatus.text = 'ready for scan';
             }
