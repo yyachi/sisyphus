@@ -12,6 +12,8 @@ describe('Medusa', function() {
     var CLASSNAME_UNKNOWN = 'Unknown';
     var GET_PATH = '/main/info.json';
     var PUT_PATH = '/boxes/1/stones/2.json';
+    var POST_PATH = '/stones.json';
+    var POST_ARGS = {name : 'new name'};
     var GLOBAL_ID = '20110416135129-112-853';
 
     var isSuccess;
@@ -91,6 +93,50 @@ describe('Medusa', function() {
                 path : PUT_PATH,
                 username : USERNAME,
                 password : OK_PASSWORD,
+                onsuccess : (function(e) {
+                    isSuccess = true;
+                }),
+                onerror : (function(e) {
+                    isSuccess = false;
+                }),
+            });
+            waitsFor(function() {
+                return isSuccess != null;
+            });
+            runs(function() {
+                expect(isSuccess).toBe(true);
+            });
+        });
+    });
+
+    describe('POST', function() {
+        it('With No Auth', function() {
+            si.model.medusa.postWithAuth({
+                path : POST_PATH,
+                username : USERNAME,
+                password : NG_PASSWORD,
+                args : POST_ARGS,
+                onsuccess : (function(e) {
+                    isSuccess = true;
+                }),
+                onerror : (function(e) {
+                    isSuccess = false;
+                }),
+            });
+            waitsFor(function() {
+                return isSuccess != null;
+            });
+            runs(function() {
+                expect(isSuccess).toBe(false);
+            });
+        });
+
+        it('With Auth', function() {
+            si.model.medusa.postWithAuth({
+                path : POST_PATH,
+                username : USERNAME,
+                password : OK_PASSWORD,
+                args : POST_ARGS,
                 onsuccess : (function(e) {
                     isSuccess = true;
                 }),

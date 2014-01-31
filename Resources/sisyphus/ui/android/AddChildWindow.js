@@ -58,9 +58,22 @@
         });
         viewHeader.add(viewHeaderRight);
 
+
+        var imageButtonViewAdd = si.ui.createImageButtonView('/images/plus.png', {
+            Top : '5%',
+            width : '30%',
+            height : '90%'
+        });
+        imageButtonViewAdd.button.addEventListener('click', function(e) {
+            Ti.alert('add button click!');
+            //var windowServerSetting = si.ui.createServerSettingWindow();
+            //si.app.tabGroup.activeTab.open(windowServerSetting,{animated:true});
+        });
+        viewHeaderRight.add(imageButtonViewAdd);
+
         var imageButtonViewHome = si.ui.createImageButtonView('/images/home.png', {
             Top : '5%',
-            width : '50%',
+            width : '30%',
             height : '90%'
         });
         imageButtonViewHome.button.addEventListener('click', function(e) {
@@ -108,7 +121,7 @@
 
         var imageButtonViewMenu = si.ui.createImageButtonView('/images/19-gear.png', {
             Top : '5%',
-            width : '50%',
+            width : '30%',
             height : '90%'
         });
         imageButtonViewMenu.button.addEventListener('click', function(e) {
@@ -197,7 +210,7 @@
             changeMode('loading');
 
             si.model.medusa.uploadImage({
-                image : _image,
+                args : {image : _image},
                 record : parent,
                 username : username,
                 password : password,
