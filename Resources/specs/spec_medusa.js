@@ -60,7 +60,7 @@ describe('Medusa', function() {
             });
             waitsFor(function() {
                 return isSuccess != null;
-            });
+            },'',30000);
             runs(function() {
                 expect(isSuccess).toBe(true);
             });
@@ -82,7 +82,7 @@ describe('Medusa', function() {
             });
             waitsFor(function() {
                 return isSuccess != null;
-            });
+            },'',30000);
             runs(function() {
                 expect(isSuccess).toBe(false);
             });
@@ -102,7 +102,7 @@ describe('Medusa', function() {
             });
             waitsFor(function() {
                 return isSuccess != null;
-            });
+            },'',30000);
             runs(function() {
                 expect(isSuccess).toBe(true);
             });
@@ -125,7 +125,7 @@ describe('Medusa', function() {
             });
             waitsFor(function() {
                 return isSuccess != null;
-            });
+            },'',30000);
             runs(function() {
                 expect(isSuccess).toBe(false);
             });
@@ -146,7 +146,7 @@ describe('Medusa', function() {
             });
             waitsFor(function() {
                 return isSuccess != null;
-            });
+            },'',30000);
             runs(function() {
                 expect(isSuccess).toBe(true);
             });
