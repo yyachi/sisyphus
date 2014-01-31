@@ -47,13 +47,6 @@ Array.prototype.contains = function(value) {
 }; 
 
 // Test Code Here!!!
-var testMode = si.config.Medusa.testMode;
-
-if (testMode){
-    var tijasmine = require("/tijasmine/tijasmine"),
-        reporter = new (require("/tijasmine/tijasmine-console").ConsoleReporter)();
-     
-    tijasmine.addSpecModules("/specs/spec_medusa");
-    tijasmine.addReporter(reporter);
-    tijasmine.execute();   
+if (si.config.Medusa.testMode){
+    require('/tijasmine/tests_runner').run(); 
 }
