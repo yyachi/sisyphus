@@ -152,6 +152,7 @@ Ti.include('/sisyphus/ui/LoginWindow.js');
 Ti.include('/sisyphus/ui/SettingsWindow.js');
 Ti.include('/sisyphus/ui/SocketSettingWindow.js');
 Ti.include('/sisyphus/ui/ServerSettingWindow.js');
+Ti.include('/sisyphus/ui/NewStoneWindow.js');
 
 //if (Ti.Platform.name == 'iPhone OS') {
 //        Ti.include('/sisyphus/ui/AddChildWindow.js');

@@ -65,9 +65,8 @@
             height : '90%'
         });
         imageButtonViewAdd.button.addEventListener('click', function(e) {
-            Ti.alert('add button click!');
-            //var windowServerSetting = si.ui.createServerSettingWindow();
-            //si.app.tabGroup.activeTab.open(windowServerSetting,{animated:true});
+            var windowSNewStone = si.ui.createNewStoneWindow();
+            si.app.tabGroup.activeTab.open(windowSNewStone,{animated:true});
         });
         viewHeaderRight.add(imageButtonViewAdd);
 
