@@ -11,7 +11,7 @@ if (Ti.App.Properties.getString('socket_server') == null) {
     Ti.App.Properties.setString('socket_server', si.model.medusa.host());
 }
 if (Ti.App.Properties.getString('printFormatUrl') == null) {
-    Ti.App.Properties.setString('printFormatUrl', si.model.medusa.defaultpPrintFormatUrl);
+    Ti.App.Properties.setString('printFormatUrl', si.config.Medusa.defaultpPrintFormatUrl);
 }
 
 si.app.tabGroup = si.ui.createApplicationTabGroup();

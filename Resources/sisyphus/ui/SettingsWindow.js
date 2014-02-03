@@ -12,7 +12,7 @@
 		var data = [
 			{title:'----', hasChild:false, target:'Server', header:'Medusa server'},
 			{title:'----', hasChild:false, target:'LogIn', header:'account'},
-			{title:'----', hasChild:false, target:'Connect', header:'socket server'},
+			{title:'----', hasChild:false, target:'PrintFormatUrl', header:'print format url'},
 			{title:'----', hasChild:false, target:'ScanToLoad', header:'home'},
 		];
 
@@ -35,9 +35,9 @@
 					var windowLogin = si.ui.createLoginWindow();
 					si.app.tabGroup.activeTab.open(windowLogin,{animated:true});
 					break;
-				case 'Connect':
-					var windowConnect = si.ui.createSocketSettingWindow();
-					si.app.tabGroup.activeTab.open(windowConnect,{animated:true});
+				case 'PrintFormatUrl':
+					var windowsPrintFormatUrlSetting = si.ui.createPrintFormatUrlSetttingWindow();
+					si.app.tabGroup.activeTab.open(windowsPrintFormatUrlSetting,{animated:true});
 					break;
 				case 'ScanToLoad':
 				    if (!debug){
@@ -58,7 +58,7 @@
 	    win.addEventListener('focus', function (e) {
 	    	tableView.data[0].rows[0].title = serverInfo();
 		   	tableView.data[1].rows[0].title = accountInfo();
-		   	tableView.data[2].rows[0].title = socketInfo();
+		   	tableView.data[2].rows[0].title = printFormatUrlInfo();
 		   	updateHomeRow();
 		});
 
@@ -75,22 +75,9 @@
 			return txt;
 		}
 
-		function socketInfo(){
-			txt = 'listen to: ';
-			var listen_port = Ti.App.Properties.getString('socket_listen_to');
-			var write_port = Ti.App.Properties.getString('socket_write_to');
-			if (listen_port == null || listen_port == ''){
-				txt += '----';
-			} else {
-				txt += listen_port;
-			}
-			txt += ', write to: ';
-			if (write_port == null || write_port == ''){
-				txt += '----';
-			} else {
-				txt += write_port;
-			}
-			return txt;
+		function printFormatUrlInfo(){
+            var printFormatUrl = Ti.App.Properties.getString('printFormatUrl');
+            return printFormatUrl;
 		};
 
 		function updateHomeRow(){
