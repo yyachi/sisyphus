@@ -27,6 +27,8 @@
                 username : Ti.App.Properties.getString('username'),
                 password : Ti.App.Properties.getString('password'),
                 onsuccess : function(_response) {
+                    var object = _response;
+                    si.ui.android.printLabel(object.global_id,object.name);
                     win.close();
                 },
                 onerror : function(e) {
