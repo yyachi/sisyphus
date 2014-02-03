@@ -8,7 +8,7 @@
         var text = Ti.UI.createTextField(si.combine($$.TextField, {
             value : '',
             top : '5%',
-            keyboardType :  Ti.UI.KEYBOARD_DEFAULT,
+            keyboardType : Ti.UI.KEYBOARD_DEFAULT,
             hintText : 'Stone Name'
         }));
 
@@ -21,24 +21,48 @@
                 alert('Please input name of new stone');
                 return;
             }
+            onErrorFunction = function(e) {
+                alert('error : ' + e.error);
+            };
+            var stone;
+            var recordProperty;
+            var username = Ti.App.Properties.getString('username');
+            var password = Ti.App.Properties.getString('password');
             si.model.medusa.postWithAuth({
-                args : {name : text.value},
-                path : '/stones.json',
-                username : Ti.App.Properties.getString('username'),
-                password : Ti.App.Properties.getString('password'),
-                onsuccess : function(_response) {
-                    var object = _response;
-                    si.ui.android.printLabel(object.global_id,object.name);
-                    win.close();
+                args : {
+                    name : text.value
                 },
-                onerror : function(e) {
-                    alert('error');
-                }
-            });           
+                path : '/stones.json',
+                username : username,
+                password : password,
+                onsuccess : function(_response) {
+                    stone = eval('(' + _response + ')');
+                    if (stone) {
+                        si.model.medusa.getWithAuth({
+                            path : '/stones/' + stone.id + '/record_property.json',
+                            username : username,
+                            password : password,
+                            onsuccess : function(_recordProperty) {
+                                recordProperty = eval('(' + _recordProperty + ')');
+                                if (recordProperty) {
+                                    si.ui.android.printLabel(recordProperty.global_id, stone.name);
+                                    win.close();
+                                } else {
+                                    onErrorFunction(e);
+                                    }
+                                },
+                            onerror : onErrorFunction,
+                            });
+                    } else {
+                        onErrorFunction(e);
+                    }
+                },
+                onerror : onErrorFunction,
+            });
         });
 
         win.add(text);
         win.add(button);
         return win;
     };
-})(); 
+})();
