@@ -8,7 +8,7 @@
         }
 
         var parent = null;
-        var isMultiScan = true;
+        var isMultiScan = !debug;
 
         var win = Ti.UI.createWindow({
             title : 'Main',
@@ -94,7 +94,7 @@
             switch (e.index) {
                 case 0:
                     if (parent) {
-                        printLabelAtRemote(parent.global_id);
+                        printLabelAtRemote(parent.global_id,parent.name);
                     } else {
                         alert('please load parent first');
                     }
@@ -152,37 +152,33 @@
         });
         viewParent.addEventListener('click', callbackButtonScanParentClick);
 
-        function printLabelAtRemote(_global_id) {
+        function printLabelAtRemote(_global_id,_name) {
+            Ti.API.info('printLabel in ');
+            var client = Ti.Network.createHTTPClient({
+                onload : function() {
+                    Ti.API.info('print global_id : ' + _global_id + ' name : ' + _name);
+                },
+                onerror : function(e){
+                    alert('print error : ' + e.error);
+                },
+                timeout : 30000 // in milliseconds
+            });
 
-            var host = Ti.App.Properties.getString('socket_server');
-            var port = Ti.App.Properties.getString('socket_write_to');
-
-            try {
-                socket = Ti.Network.Socket.createTCP({
-                    host : host,
-                    port : port,
-                    connected : function(e) {
-                        e.socket.write(Ti.createBuffer({
-                            value : _global_id + '\r\n'
-                        }));
-                        e.socket.write(Ti.createBuffer({
-                            value : 'label\r\n'
-                        }));
-                        e.socket.write(Ti.createBuffer({
-                            value : 'pop\r\n'
-                        }));
-                        e.socket.close();
-                    },
-                    error : function(e) {
-                        alert(host + ':' + port + '\nConnection refused.');
-                    },
-                    closed : function(e) {
-                    }
-                });
-                socket.connect();
-            } catch (e) {
-                alert('Could not send command to ' + host + ':' + port);
-            }
+            var formatArchiveUrl = Ti.App.Properties.getString('printFormatUrl');
+            var myAppDir = Ti.Filesystem.getFile(Ti.Filesystem.externalStorageDirectory);
+            var sdcardDir = myAppDir.getParent();
+            Ti.API.info('sdcardDir : ' + sdcardDir.nativePath);
+            var url = 'http://localhost:8080/Format/Print?';
+            url += '__format_archive_url=' + formatArchiveUrl;
+            url +=  '&__format_id_number=1';
+            url +=  '&UID=' + _global_id;
+            url +=  '&UID_QRCODE=' + _global_id;
+            url +=  '&NAME=' + _name;
+            url +=  '&(発行枚数)=1';
+            Ti.API.info('url:' + url);
+            
+            client.open('GET', url);
+            client.send();
         };
 
         function setImageView(_image) {

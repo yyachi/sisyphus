@@ -3,11 +3,15 @@ Ti.include('/sisyphus/sisyphus.js');
 
 si.TiBar.scanditsdk_app_key = 'MtDcnln4EeKdK4dJ4UJ0lnzQS/qlc6/HiAw6LDNYB+4';
 
+//Set Default Value
 if (Ti.App.Properties.getString('current_global_id') == null) {
     Ti.App.Properties.setString('current_global_id', Ti.App.Properties.getString('current_box_global_id'));
 }
 if (Ti.App.Properties.getString('socket_server') == null) {
     Ti.App.Properties.setString('socket_server', si.model.medusa.host());
+}
+if (Ti.App.Properties.getString('printFormatUrl') == null) {
+    Ti.App.Properties.setString('printFormatUrl', si.model.medusa.defaultpPrintFormatUrl);
 }
 
 si.app.tabGroup = si.ui.createApplicationTabGroup();
