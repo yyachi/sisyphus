@@ -1,7 +1,4 @@
-
 Ti.include('/sisyphus/sisyphus.js');
-
-si.TiBar.scanditsdk_app_key = 'MtDcnln4EeKdK4dJ4UJ0lnzQS/qlc6/HiAw6LDNYB+4';
 
 //Set Default Value
 if (Ti.App.Properties.getString('current_global_id') == null) {

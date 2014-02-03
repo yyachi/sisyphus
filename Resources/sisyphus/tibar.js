@@ -1,6 +1,7 @@
 (function() {
     si.TiBar = {};
-
+    var SCANDITSDK_APP_KEY = 'MtDcnln4EeKdK4dJ4UJ0lnzQS/qlc6/HiAw6LDNYB+4';
+    
     si.TiBar.scanditsdk = require('com.mirasense.scanditsdk');
     si.TiBar.create_picker = function(opts) {
         if ( typeof opts === 'undefined') {
@@ -18,7 +19,7 @@
             'height' : opts.height
         });
 
-        picker.init(si.TiBar.scanditsdk_app_key, 0);
+        picker.init(SCANDITSDK_APP_KEY, 0);
         picker.setQrEnabled(true);
 
         picker.setCancelCallback(function(e) {
