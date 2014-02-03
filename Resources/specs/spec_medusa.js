@@ -40,7 +40,7 @@ describe('Medusa', function() {
             });
             waitsFor(function() {
                 return isSuccess != null;
-            });
+            },'',30000);
             runs(function() {
                 expect(isSuccess).toBe(false);
             });
@@ -166,7 +166,7 @@ describe('Medusa', function() {
         });
         waitsFor(function() {
             return isSuccess != null;
-        });
+        },'',30000);
         runs(function() {
             expect(isSuccess).toBe(true);
         });
@@ -186,7 +186,7 @@ describe('Medusa', function() {
         });
         waitsFor(function() {
             return isSuccess != null;
-        });
+        },'',30000);
         runs(function() {
             expect(isSuccess).toBe(true);
         });
@@ -394,7 +394,6 @@ describe('Medusa', function() {
             }
         });
 
-        
         it('Place Stone', function() {
             parent._className = CLASSNAME_PLACE;
             child._className = CLASSNAME_STONE;
@@ -588,7 +587,7 @@ describe('Medusa', function() {
         });
         waitsFor(function() {
             return isSuccess != null;
-        });
+        },'',30000);
         runs(function() {
             expect(isSuccess).toBe(true);
         });
@@ -664,7 +663,7 @@ describe('Medusa', function() {
             });
             waitsFor(function() {
                 return isSuccess != null;
-            });
+            },'',30000);
             runs(function() {
                 expect(isSuccess).toBe(false);
             });
@@ -685,7 +684,7 @@ describe('Medusa', function() {
             });
             waitsFor(function() {
                 return isSuccess != null;
-            });
+            },'',30000);
             runs(function() {
                 expect(isSuccess).toBe(true);
             });
