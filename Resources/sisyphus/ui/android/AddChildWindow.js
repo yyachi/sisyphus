@@ -39,7 +39,7 @@
         }
 
         var parent = null;
-        var isMultiScan = true;
+        var isMultiScan = !debug;
 
         var win = Ti.UI.createWindow({
             title : 'Main',
@@ -88,7 +88,6 @@
             layout : 'horizontal'
         });
         viewHeader.add(viewHeaderRight);
-
 
         var imageButtonViewAdd = si.ui.createImageButtonView('/images/plus.png', {
             Top : '5%',
@@ -200,6 +199,7 @@
 
             labelStatus.text = 'uploading ' + _image.getNativePath() + ' ...';
             changeMode('loading');
+            
 
             si.model.medusa.uploadImage({
                 args : {image : _image},
@@ -209,6 +209,7 @@
                 onsuccess : function(_response) {
                     labelStatus.text += ' OK';
                     
+                    
                     viewBody.remove(imageView);
                     viewBody.add(buttonScanChild);
                     loadParent(parent.global_id);
@@ -216,6 +217,7 @@
                 onerror : function(e) {
                     labelStatus.text += 'ERROR';
                     labelInfo.text = labelStatus.text + labelInfo.text;
+                    
                     
                     viewBody.remove(imageView);
                     viewBody.add(buttonScanChild);
@@ -402,6 +404,7 @@
                                 labelStatus.text += 'OK\n';
                                 si.sound_newmail.play();
                                 labelInfo.text = labelStatus.text + labelInfo.text;
+                                
                                 if (isMultiScan) {
                                     buttonScanChild.setEnabled(true);
                                     buttonScanChild.fireEvent('click');
@@ -411,12 +414,14 @@
                         },
                         onerror : function(e) {
                             labelStatus.text = labelStatus.text + 'ERROR\n';
+                            
                             si.sound_mailerror.play();
                         }
                     });
                 },
                 onerror : function(e) {
                     labelStatus.text = labelStatus.text + 'ERROR\n';
+                    
                     si.sound_mailerror.play();
                 }
             });
@@ -456,7 +461,7 @@
 
             labelInfo.text = '';
             labelStatus.text = 'interacting with ' + si.config.Medusa.server;
-
+            
             si.model.medusa.getRecordFromGlobalId({
                 global_id : _global_id,
                 username : username,
@@ -476,6 +481,7 @@
                     }
                     si.sound_newmail.play();
                     changeMode('ready');
+                    
                 },
                 onerror : function(e) {
                     if (!viewHeaderLeft.children.contains(imageButtonViewScanParent)) {
@@ -485,6 +491,7 @@
                         viewHeaderLeft.remove(viewParent);
                     }
                     labelStatus.text = 'ERROR';
+                    
                 }
             });
         };

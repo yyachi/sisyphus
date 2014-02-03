@@ -5,6 +5,11 @@
             backgroundColor : 'white'
         });
 
+
+        var activityIndicator = Ti.UI.createActivityIndicator({
+            style : Ti.UI.ActivityIndicatorStyle.BIG,
+        });
+
         var text = Ti.UI.createTextField(si.combine($$.TextField, {
             value : '',
             top : '5%',
@@ -22,12 +27,14 @@
                 return;
             }
             onErrorFunction = function(e) {
+                activityIndicator.hide();
                 alert('error : ' + e.error);
             };
             var stone;
             var recordProperty;
             var username = Ti.App.Properties.getString('username');
             var password = Ti.App.Properties.getString('password');
+            activityIndicator.show();
             si.model.medusa.postWithAuth({
                 args : {
                     name : text.value
@@ -45,6 +52,7 @@
                             onsuccess : function(_recordProperty) {
                                 recordProperty = eval('(' + _recordProperty + ')');
                                 if (recordProperty) {
+                                    activityIndicator.hide();
                                     si.ui.android.printLabel(recordProperty.global_id, stone.name);
                                     win.close();
                                 } else {
@@ -63,6 +71,8 @@
 
         win.add(text);
         win.add(button);
+        win.add(activityIndicator);
+        
         return win;
     };
 })();

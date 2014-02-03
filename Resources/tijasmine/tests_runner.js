@@ -4,6 +4,7 @@ function run() {
 
     tijasmine.addSpecModules(
         '/specs/spec_medusa'
+//        ,'/specs/spec_LoginWindow'
     );
     tijasmine.addReporter(reporter);
     tijasmine.execute();
