@@ -23,7 +23,6 @@
 		};
 
 		var tableView = Ti.UI.createTableView(tableViewOptions);
-		
 		tableView.addEventListener('click', function(e){
 			var rowNum = e.index;
 			switch(e.rowData.target){
@@ -40,13 +39,7 @@
 					si.app.tabGroup.activeTab.open(windowsPrintFormatUrlSetting,{animated:true});
 					break;
 				case 'ScanToLoad':
-				    if (!debug){
-					   scanAndLoadDefaultBox();
-					} else {
-				      global_id = debug_box_global_id;
-                    Ti.App.Properties.setString('current_box_global_id',global_id);
-                    updateHomeRow();
-					};
+					scanAndLoadDefaultBox();
 					break;
 				default:
 					break;
@@ -82,7 +75,7 @@
 
 		function updateHomeRow(){
 			var row = tableView.data[3].rows[0];
-		    global_id = Ti.App.Properties.getString('current_box_global_id');
+		    var global_id = Ti.App.Properties.getString('current_box_global_id');
 		    if (global_id != null){
 				si.model.medusa.getRecordFromGlobalId({
 					global_id:global_id,
@@ -103,20 +96,26 @@
 		};
 
 		function scanAndLoadDefaultBox(){
-			si.TiBar.scan({
-	       	configure: si.config.TiBar,
-	        	success:function(data){
-	            	if(data && data.barcode){
-	            		global_id = data.barcode;
-	 					Ti.App.Properties.setString('current_box_global_id',global_id);
-	 					updateHomeRow();
-	           		}
-	        	},
-	        	cancel:function(){
-	        	},
-	        	error:function(){
-	       		}
-	    	});
+            if (!debug){
+                si.TiBar.scan({
+                configure: si.config.TiBar,
+                	success:function(data){
+                    if(data && data.barcode){
+                        var global_id = data.barcode;
+                        Ti.App.Properties.setString('current_box_global_id',global_id);
+                        updateHomeRow();
+                        }
+                	},
+                	cancel:function(){
+                	},
+                	error:function(){
+                	}
+                });
+            } else {
+                var global_id = debug_box_global_id;
+                Ti.App.Properties.setString('current_box_global_id',global_id);
+                updateHomeRow();
+            }
 	   	};
 		return win;
 	};

@@ -77,7 +77,7 @@
             backgroundColor : '#fff',
         });
         window.add(picker);
-        si.app.tabGroup.currentTab.open(window, {
+        si.app.tabGroup.activeTab.open(window, {
             animated : false
         });
     };

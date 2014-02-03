@@ -39,7 +39,7 @@
         }
 
         var parent = null;
-        var isMultiScan = !debug;
+        var isMultiScan = true;
 
         var win = Ti.UI.createWindow({
             title : 'Main',
@@ -165,13 +165,7 @@
             height : '90%'
         });
         callbackButtonScanParentClick = function(e) {
-            if (!debug) {
-                scanAndLoadParent();
-            } else {
-                setTimeout(function() {
-                    loadParent(debug_parent_global_id);
-                }, 1000);
-            }
+            scanAndLoadParent();
         };
         imageButtonViewScanParent.button.addEventListener('click', callbackButtonScanParentClick);
         viewHeaderLeft.add(imageButtonViewScanParent);
@@ -307,13 +301,7 @@
             height : '63%',
         }));
         buttonScanChild.addEventListener('click', function() {
-            if (!debug) {
-                scanChild();
-            } else {
-                setTimeout(function() {
-                    addChild(debug_child_global_id);
-                }, 1000);
-            }
+            scanChild();
         });
         viewBody.add(buttonScanChild);
 
@@ -352,34 +340,46 @@
         };
 
         function scanAndLoadParent() {
-            si.TiBar.scan({
-                configure : si.config.TiBar,
-                success : function(_data) {
-                    if (_data && _data.barcode) {
-                        global_id = _data.barcode;
-                        loadParent(global_id);
+            if (!debug){
+                si.TiBar.scan({
+                    configure : si.config.TiBar,
+                    success : function(_data) {
+                            if (_data && _data.barcode) {
+                                global_id = _data.barcode;
+                                loadParent(global_id);
+                                }
+                    },
+                    cancel : function() {
+                    },
+                    error : function() {
                     }
-                },
-                cancel : function() {
-                },
-                error : function() {
-                }
-            });
+                });
+            }else{
+                setTimeout(function() {
+                    loadParent(debug_parent_global_id);
+                }, 1000);
+            }
         };
 
         function scanChild() {
-            si.TiBar.scan({
-                configure : si.config.TiBar,
-                success : function(_data) {
-                    if (_data && _data.barcode) {
-                        addChild(_data.barcode);
+            if (!debug) {
+                si.TiBar.scan({
+                    configure : si.config.TiBar,
+                    success : function(_data) {
+                                if (_data && _data.barcode) {
+                                    addChild(_data.barcode);
+                                }
+                    },
+                    cancel : function() {
+                    },
+                    error : function() {
                     }
-                },
-                cancel : function() {
-                },
-                error : function() {
-                }
-            });
+                });
+            } else {
+                setTimeout(function() {
+                    addChild(debug_child_global_id);
+                }, 1000);
+            }
         };
 
         function addChild(_global_id) {
