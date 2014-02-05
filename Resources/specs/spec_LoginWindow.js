@@ -4,6 +4,12 @@ describe('Login Window', function() {
     var textUsername;
     var textPassword;
     var button;
+    var OK_USERNAME = 'admin';
+    var NG_USERNAME = 'xxx';
+    var TEST_INIT_USERNAME = 'aaa';
+    var OK_PASSWORD = 'admin';
+    var NG_PASSWORD = 'yyy';
+    var TEST_INIT_PASSWORD = 'aaa';
 
     beforeEach(function() {
         win = si.ui.createLoginWindow();
@@ -36,30 +42,59 @@ describe('Login Window', function() {
             expect(button.title).toBe('save');
         });
         describe('click', function() {
+            beforeEach(function() {
+                Ti.App.Properties.setString('username', TEST_INIT_USERNAME);
+                Ti.App.Properties.setString('password', TEST_INIT_PASSWORD);
+            });
+            afterEach(function() {
+                Ti.App.Properties.setString('username', OK_USERNAME);
+                Ti.App.Properties.setString('password', OK_PASSWORD);
+            });
+
             it('textUsername == nothing', function() {
                 textUsername.value = '';
-                textPassword.value = 'admin';
+                textPassword.value = OK_PASSWORD;
                 button.fireEvent('click');
+                setTimeout(function() {
+                    expect(textUsername.value).not.toBe(Ti.App.Properties.getString('username'));
+                    expect(textPassword.value).not.toBe(Ti.App.Properties.getString('password'));
+                }, 10000);
             });
             it('textPassword == nothing', function() {
-                textUsername.value = 'admin';
+                textUsername.value = OK_USERNAME;
                 textPassword.value = '';
                 button.fireEvent('click');
+                setTimeout(function() {
+                    expect(textUsername.value).not.toBe(Ti.App.Properties.getString('username'));
+                    expect(textPassword.value).not.toBe(Ti.App.Properties.getString('password'));
+                }, 3000);
             });
             it('textUsername == nothing And textPassword == nothing', function() {
                 textUsername.value = '';
                 textPassword.value = '';
                 button.fireEvent('click');
-            });
-            it('Auth OK', function() {
-                textUsername.value = 'admin';
-                textPassword.value = 'admin';
-                button.fireEvent('click');
+                setTimeout(function() {
+                    expect(textUsername.value).not.toBe(Ti.App.Properties.getString('username'));
+                    expect(textPassword.value).not.toBe(Ti.App.Properties.getString('password'));
+                }, 3000);
             });
             it('Auth NG', function() {
-                textUsername.value = 'admin';
-                textPassword.value = 'yyy';
+                textUsername.value = NG_USERNAME;
+                textPassword.value = NG_PASSWORD;
                 button.fireEvent('click');
+                setTimeout(function() {
+                    expect(textUsername.value).not.toBe(Ti.App.Properties.getString('username'));
+                    expect(textPassword.value).not.toBe(Ti.App.Properties.getString('password'));
+                }, 3000);
+            });
+            it('Auth OK', function() {
+                textUsername.value = OK_USERNAME;
+                textPassword.value = OK_PASSWORD;
+                button.fireEvent('click');
+                setTimeout(function() {
+                    expect(textUsername.value).toBe(Ti.App.Properties.getString('username'));
+                    expect(textPassword.value).toBe(Ti.App.Properties.getString('password'));
+                }, 3000);
             });
         });
     });
