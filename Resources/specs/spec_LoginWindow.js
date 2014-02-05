@@ -19,6 +19,8 @@ describe('Login Window', function() {
     });
 
     afterEach(function() {
+        Ti.App.Properties.setString('username', OK_USERNAME);
+        Ti.App.Properties.setString('password', OK_PASSWORD);
         win.close();
     });
     it('title', function() {
@@ -45,10 +47,6 @@ describe('Login Window', function() {
             beforeEach(function() {
                 Ti.App.Properties.setString('username', TEST_INIT_USERNAME);
                 Ti.App.Properties.setString('password', TEST_INIT_PASSWORD);
-            });
-            afterEach(function() {
-                Ti.App.Properties.setString('username', OK_USERNAME);
-                Ti.App.Properties.setString('password', OK_PASSWORD);
             });
 
             it('textUsername == nothing', function() {
