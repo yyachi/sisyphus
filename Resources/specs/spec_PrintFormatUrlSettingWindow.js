@@ -1,12 +1,12 @@
 require('/tijasmine/tijasmine').infect(this);
 describe('Print Form Url Setting Window', function() {
     var win;
-    var text;
+    var textPrintFormUrl;
     var button;
 
     beforeEach(function() {
         win = si.ui.createPrintFormatUrlSetttingWindow();
-        text = win.children[0];
+        textPrintFormUrl = win.children[0];
         button = win.children[1];
     });
 
@@ -19,9 +19,9 @@ describe('Print Form Url Setting Window', function() {
         expect(win.title).toBe('Print format url');
     });
     
-    describe('text', function() {
+    describe('textPrintFormUrl', function() {
         it('init value', function() {
-            expect(text.value).toBe(Ti.App.Properties.getString('printFormatUrl'));
+            expect(textPrintFormUrl.value).toBe(Ti.App.Properties.getString('printFormatUrl'));
         });
     });
     
@@ -31,20 +31,14 @@ describe('Print Form Url Setting Window', function() {
         });
        describe('click', function() {
            Ti.App.Properties.setString('printFormatUrl','xxx');
-            it('text == nothing', function() {
-                text.value = '';
+            it('textPrintFormUrl == nothing', function() {
+                textPrintFormUrl.value = '';
                 button.fireEvent('click');
-                setTimeout(function() {
-                    expect(text.value).not.toBe(Ti.App.Properties.getString('printFormatUrl'));
-                }, 10000);
             });
-            it('text != nothing', function() {
+            it('textPrintFormUrl != nothing', function() {
                 Ti.App.Properties.setString('printFormatUrl','xxx');
-                text.value = 'aaa';
+                textPrintFormUrl.value = 'file:///aaa';
                 button.fireEvent('click');
-                setTimeout(function() {
-                    expect(text.value).toBe(Ti.App.Properties.getString('printFormatUrl'));
-                }, 10000);
             });
         });
     });

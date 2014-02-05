@@ -5,8 +5,9 @@ describe('New Stone Window', function() {
     var button;
 
     beforeEach(function() {
+        Ti.App.Properties.setString('server', si.config.Medusa.defaultServer);
         win = si.ui.createNewStoneWindow();
-        text = win.children[0];
+        textName = win.children[0];
         button = win.children[1];
     });
 
@@ -16,9 +17,9 @@ describe('New Stone Window', function() {
     it('title', function() {
         expect(win.title).toBe('New Stone');
     });
-    describe('text', function() {
+    describe('textName', function() {
         it('init value', function() {
-            expect(text.value).toBe('');
+            expect(textName.value).toBe('');
         });
     });
     describe('button', function() {
@@ -26,17 +27,13 @@ describe('New Stone Window', function() {
             expect(button.title).toBe('create');
         });
        describe('click', function() {
-            it('text == nothing', function() {
-                text.value = '';
+            it('textName == nothing', function() {
+                textName.value = '';
                 button.fireEvent('click');
-                setTimeout(function() {
-                }, 10000);
             });
-            it('text != nothing', function() {
-                text.value = 'new name';
+            it('textName != nothing', function() {
+                textName.value = 'new name';
                 button.fireEvent('click');
-                setTimeout(function() {
-                }, 10000);
             });
         });
     });

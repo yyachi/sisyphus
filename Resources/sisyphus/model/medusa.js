@@ -10,7 +10,7 @@
     var CLASSNAME_ATTACHMENT_FILE = 'AttachmentFile';
 
     si.model.medusa.host = function() {
-        var url = si.config.Medusa.server;
+        var url = Ti.App.Properties.getString('server');
         var result = url.split('\/\/');
         var result2 = result[1].split('\/');
         var host = result2[0];
@@ -25,7 +25,7 @@
             onerror : _args.onerror,
             timeout : 30000 // in milliseconds
         });
-        var url = si.config.Medusa.server + _args.path;
+        var url = Ti.App.Properties.getString('server') + _args.path;
         client.open('GET', url);
         var auth_text = 'Basic ' + Ti.Utils.base64encode(_args.username + ':' + _args.password);
         client.setRequestHeader('Authorization', auth_text);
@@ -40,7 +40,7 @@
             onerror : _args.onerror,
             timeout : 30000 // in milliseconds
         });
-        var url = si.config.Medusa.server + _args.path;
+        var url = Ti.App.Properties.getString('server') + _args.path;
         client.open('PUT', url);
         var auth_text = 'Basic ' + Ti.Utils.base64encode(_args.username + ':' + _args.password);
         client.setRequestHeader('Authorization', auth_text);
@@ -55,7 +55,7 @@
             onerror : _args.onerror,
             timeout : 30000 // in milliseconds
         });
-        var url = si.config.Medusa.server + _args.path;
+        var url = Ti.App.Properties.getString('server') + _args.path;
         client.open('POST', url);
         var auth_text = 'Basic ' + Ti.Utils.base64encode(_args.username + ':' + _args.password);
         client.setRequestHeader('Authorization', auth_text);

@@ -19,6 +19,7 @@ describe('Medusa', function() {
     var isSuccess;
     beforeEach(function() {
         isSuccess = null;
+        Ti.App.Properties.setString('server', si.config.Medusa.defaultServer);
     });
 
     it('Get Server Host Name', function() {

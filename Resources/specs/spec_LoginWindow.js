@@ -4,6 +4,7 @@ describe('Login Window', function() {
     var textUsername;
     var textPassword;
     var button;
+    var activityIndicator;
     var OK_USERNAME = 'admin';
     var NG_USERNAME = 'xxx';
     var TEST_INIT_USERNAME = 'aaa';
@@ -12,10 +13,12 @@ describe('Login Window', function() {
     var TEST_INIT_PASSWORD = 'aaa';
 
     beforeEach(function() {
+        Ti.App.Properties.setString('server', si.config.Medusa.defaultServer);
         win = si.ui.createLoginWindow();
         textUsername = win.children[0];
         textPassword = win.children[1];
         button = win.children[2];
+        activityIndicator = win.children[3];
     });
 
     afterEach(function() {
@@ -53,46 +56,30 @@ describe('Login Window', function() {
                 textUsername.value = '';
                 textPassword.value = OK_PASSWORD;
                 button.fireEvent('click');
-                setTimeout(function() {
-                    expect(textUsername.value).not.toBe(Ti.App.Properties.getString('username'));
-                    expect(textPassword.value).not.toBe(Ti.App.Properties.getString('password'));
-                }, 10000);
             });
+
             it('textPassword == nothing', function() {
                 textUsername.value = OK_USERNAME;
                 textPassword.value = '';
                 button.fireEvent('click');
-                setTimeout(function() {
-                    expect(textUsername.value).not.toBe(Ti.App.Properties.getString('username'));
-                    expect(textPassword.value).not.toBe(Ti.App.Properties.getString('password'));
-                }, 3000);
             });
+
             it('textUsername == nothing And textPassword == nothing', function() {
                 textUsername.value = '';
                 textPassword.value = '';
                 button.fireEvent('click');
-                setTimeout(function() {
-                    expect(textUsername.value).not.toBe(Ti.App.Properties.getString('username'));
-                    expect(textPassword.value).not.toBe(Ti.App.Properties.getString('password'));
-                }, 3000);
             });
+
             it('Auth NG', function() {
                 textUsername.value = NG_USERNAME;
                 textPassword.value = NG_PASSWORD;
                 button.fireEvent('click');
-                setTimeout(function() {
-                    expect(textUsername.value).not.toBe(Ti.App.Properties.getString('username'));
-                    expect(textPassword.value).not.toBe(Ti.App.Properties.getString('password'));
-                }, 3000);
             });
+
             it('Auth OK', function() {
                 textUsername.value = OK_USERNAME;
                 textPassword.value = OK_PASSWORD;
                 button.fireEvent('click');
-                setTimeout(function() {
-                    expect(textUsername.value).toBe(Ti.App.Properties.getString('username'));
-                    expect(textPassword.value).toBe(Ti.App.Properties.getString('password'));
-                }, 3000);
             });
         });
     });

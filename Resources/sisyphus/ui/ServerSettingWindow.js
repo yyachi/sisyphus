@@ -6,7 +6,7 @@
         });
 
         var text = Ti.UI.createTextField(si.combine($$.TextField, {
-            value : si.config.Medusa.server,
+            value : Ti.App.Properties.getString('server'),
             top : '5%',
             keyboardType : Ti.UI.KEYBOARD_URL,
             hintText : 'URI'
@@ -21,7 +21,7 @@
                 alert('Please input uri of medusa server.');
                 return;
             }
-            si.config.Medusa.server = text.value;
+            Ti.App.Properties.getString('server',text.value);
             win.close();
         });
 

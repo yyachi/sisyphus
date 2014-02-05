@@ -4,8 +4,8 @@ Ti.include('/sisyphus/sisyphus.js');
 if (Ti.App.Properties.getString('current_global_id') == null) {
     Ti.App.Properties.setString('current_global_id', Ti.App.Properties.getString('current_box_global_id'));
 }
-if (Ti.App.Properties.getString('socket_server') == null) {
-    Ti.App.Properties.setString('socket_server', si.model.medusa.host());
+if (Ti.App.Properties.getString('server') == null) {
+    Ti.App.Properties.setString('server', si.config.Medusa.defaultServer);
 }
 if (Ti.App.Properties.getString('printFormatUrl') == null) {
     Ti.App.Properties.setString('printFormatUrl', si.config.Medusa.defaultpPrintFormatUrl);

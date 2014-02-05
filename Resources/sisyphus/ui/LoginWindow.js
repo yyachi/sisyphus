@@ -1,6 +1,7 @@
 (function() {
 
     si.ui.createLoginWindow = function(_args) {
+        var isDone = null;
         var win = Ti.UI.createWindow({
             title : 'account',
             backgroundColor : '#ffffff'
@@ -27,6 +28,7 @@
             title : 'save',
         }));
         button.addEventListener('click', function() {
+            isDone = false;
             Ti.API.info('click');
             textPassword.blur();
             if (textUsername.value == '' || textPassword.value == '') {
@@ -43,9 +45,11 @@
                     Ti.App.Properties.setString('password', textPassword.value);
                     activityIndicator.hide();
                     win.close();
+                    isDone = true;
                 },
                 onerror : function(e) {
                     activityIndicator.hide();
+                    isDone = true;
                     alert('Login failed!');
                 }
             });
@@ -55,7 +59,7 @@
         win.add(textPassword);
         win.add(button);
         win.add(activityIndicator);
-
+        win.isDone = isDone; 
         return win;
     };
 })(); 

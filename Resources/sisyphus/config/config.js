@@ -2,7 +2,7 @@
 	si.config = {};
 	
 	si.config.Medusa = {
-		server: 'http://192.168.234.141:3000',
+		defaultServer: 'http://192.168.234.141:3000',
 		testMode : true,
 		defaultpPrintFormatUrl : 'file:///mnt/sdcard/extStorages/SdCard//okayama.spfmtz'
 //		socket_listen_to: '7000',

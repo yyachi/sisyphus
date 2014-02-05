@@ -454,7 +454,7 @@
             changeMode('loading');
 
             labelInfo.text = '';
-            labelStatus.text = 'interacting with ' + si.config.Medusa.server;
+            labelStatus.text = 'interacting with ' + Ti.App.Properties.getString('server');
 
             si.model.medusa.getRecordFromGlobalId({
                 global_id : _global_id,

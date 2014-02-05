@@ -130,7 +130,7 @@
             labelName.text = _record.name;
             //!!!!!!!!!画像のパスの取得は要検討!!!!!!!!!!!!!!!!!!!!!!
             if (_record.image_path) {
-                imageView.image = si.config.Medusa.server + '/' + _record.image_path;
+                imageView.image = Ti.App.Properties.getString('server') + '/' + _record.image_path;
             } else {
                 imageView.image = '';
             }

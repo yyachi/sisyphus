@@ -64,7 +64,7 @@
 		};
 
 		function serverInfo(){
-			txt = si.config.Medusa.server;
+			txt = Ti.App.Properties.getString('server');
 			return txt;
 		}
 
