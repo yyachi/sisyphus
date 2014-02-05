@@ -1,6 +1,6 @@
 (function() {
     si.ui.android = {};
-    
+
     si.ui.android.printLabel = function(_global_id,_name) {
         Ti.API.info('printLabel in ');
         var client = Ti.Network.createHTTPClient({
@@ -25,11 +25,11 @@
         url +=  '&NAME=' + _name;
         url +=  '&(発行枚数)=1';
         Ti.API.info('url:' + url);
-        
+
         client.open('GET', url);
         client.send();
    };
-    
+
     si.ui.createAddChildWindow = function() {
 
         var debug = si.config.Medusa.testMode;
@@ -113,8 +113,8 @@
 
         var optionDialogForMenu = Ti.UI.createOptionDialog({
             options : [ 'print label',
-                        'add a snap shot', 
-                        'add a local file', 
+                        'add a snap shot',
+                        'add a local file',
                         'cancel'
                         ],
             cancel : 3,
@@ -176,18 +176,17 @@
         });
         viewParent.addEventListener('click', callbackButtonScanParentClick);
 
-
         function setImageView(_image) {
             Ti.API.info('image:' + _image);
             Ti.API.info('getFile:' + _image.getFile());
             Ti.API.info('getMimeType:' + _image.getNativePath());
-            
+
             labelStatus.text = 'Path:' + _image.getNativePath();
-            
+
             viewBody.remove(buttonScanChild);
             imageView.setImage(_image);
             viewBody.add(imageView);
-            
+
             if (parent) {
                 handleImageEvent(_image);
             }
@@ -199,7 +198,7 @@
 
             labelStatus.text = 'uploading ' + _image.getNativePath() + ' ...';
             changeMode('loading');
-            
+
 
             si.model.medusa.uploadImage({
                 args : {image : _image},
@@ -208,8 +207,7 @@
                 password : password,
                 onsuccess : function(_response) {
                     labelStatus.text += ' OK';
-                    
-                    
+
                     viewBody.remove(imageView);
                     viewBody.add(buttonScanChild);
                     loadParent(parent.global_id);
@@ -217,11 +215,10 @@
                 onerror : function(e) {
                     labelStatus.text += 'ERROR';
                     labelInfo.text = labelStatus.text + labelInfo.text;
-                    
-                    
+
                     viewBody.remove(imageView);
                     viewBody.add(buttonScanChild);
-                    
+
                     changeMode('ready');
                 }
             });
@@ -347,8 +344,7 @@
                     configure : si.config.TiBar,
                     success : function(_data) {
                             if (_data && _data.barcode) {
-                                global_id = _data.barcode;
-                                loadParent(global_id);
+                                loadParent(_data.barcode);
                                 }
                     },
                     cancel : function() {
@@ -368,9 +364,9 @@
                 si.TiBar.scan({
                     configure : si.config.TiBar,
                     success : function(_data) {
-                                if (_data && _data.barcode) {
-                                    addChild(_data.barcode);
-                                }
+                        if (_data && _data.barcode) {
+                            addChild(_data.barcode);
+                        }
                     },
                     cancel : function() {
                     },
@@ -390,7 +386,7 @@
 
             changeMode('loading');
             labelStatus.text = _global_id + '...';
-            
+
             si.model.medusa.getRecordFromGlobalId({
                 global_id : _global_id,
                 username : username,
@@ -404,7 +400,7 @@
                                 labelStatus.text += 'OK\n';
                                 si.sound_newmail.play();
                                 labelInfo.text = labelStatus.text + labelInfo.text;
-                                
+
                                 if (isMultiScan) {
                                     buttonScanChild.setEnabled(true);
                                     buttonScanChild.fireEvent('click');
@@ -414,14 +410,12 @@
                         },
                         onerror : function(e) {
                             labelStatus.text = labelStatus.text + 'ERROR\n';
-                            
                             si.sound_mailerror.play();
                         }
                     });
                 },
                 onerror : function(e) {
                     labelStatus.text = labelStatus.text + 'ERROR\n';
-                    
                     si.sound_mailerror.play();
                 }
             });
@@ -461,7 +455,7 @@
 
             labelInfo.text = '';
             labelStatus.text = 'interacting with ' + si.config.Medusa.server;
-            
+
             si.model.medusa.getRecordFromGlobalId({
                 global_id : _global_id,
                 username : username,
@@ -481,7 +475,6 @@
                     }
                     si.sound_newmail.play();
                     changeMode('ready');
-                    
                 },
                 onerror : function(e) {
                     if (!viewHeaderLeft.children.contains(imageButtonViewScanParent)) {
@@ -491,7 +484,6 @@
                         viewHeaderLeft.remove(viewParent);
                     }
                     labelStatus.text = 'ERROR';
-                    
                 }
             });
         };

@@ -4,7 +4,7 @@
 
        var debug = si.config.Medusa.testMode;
         if (debug) {
-            debug_box_global_id = '20080616170010.hk';  //ISEI MAIN BUILDING
+            debug_box_global_id = '20080616170010hk';  //ISEI MAIN BUILDING
         }
 
 	    var win = Ti.UI.createWindow({title: 'Settings',backgroundColor:'#ffffff',barColor:'#336699'});

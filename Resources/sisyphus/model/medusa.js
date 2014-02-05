@@ -82,7 +82,7 @@
     si.model.medusa.getRecordFromGlobalId = function(_args) {
         si.model.medusa.getWithAuth({
             args : _args.args,
-            path : '/records.json?global_id=' + _args.global_id,
+            path : '/records/' + _args.global_id + '.json',
             username : _args.username,
             password : _args.password,
             onsuccess : function(response) {
