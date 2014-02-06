@@ -1,13 +1,13 @@
 (function() {
     si.ui.android = {};
 
-    si.ui.android.printLabel = function(_global_id,_name) {
+    si.ui.android.printLabel = function(_global_id, _name) {
         Ti.API.info('printLabel in ');
         var client = Ti.Network.createHTTPClient({
             onload : function() {
                 Ti.API.info('print global_id : ' + _global_id + ' name : ' + _name);
             },
-            onerror : function(e){
+            onerror : function(e) {
                 alert('print error : ' + e.error);
             },
             timeout : 30000 // in milliseconds
@@ -19,19 +19,18 @@
         Ti.API.info('sdcardDir : ' + sdcardDir.nativePath);
         var url = 'http://localhost:8080/Format/Print?';
         url += '__format_archive_url=' + formatArchiveUrl;
-        url +=  '&__format_id_number=1';
-        url +=  '&UID=' + _global_id;
-        url +=  '&UID_QRCODE=' + _global_id;
-        url +=  '&NAME=' + _name;
-        url +=  '&(発行枚数)=1';
+        url += '&__format_id_number=1';
+        url += '&UID=' + _global_id;
+        url += '&UID_QRCODE=' + _global_id;
+        url += '&NAME=' + _name;
+        url += '&(発行枚数)=1';
         Ti.API.info('url:' + url);
 
         client.open('GET', url);
         client.send();
-   };
+    };
 
     si.ui.createAddChildWindow = function() {
-
         var debug = si.config.Medusa.testMode;
         if (debug) {
             debug_parent_global_id = '20110416135129-112-853';
@@ -49,6 +48,26 @@
             backButtonTitle : 'Back',
             layout : 'vertical'
         });
+        win.addEventListener('focus', function(e) {
+            viewBase.setHeight('100%');
+            viewBase.setWidth('100%');
+            viewBase.setTop(0);
+            viewHeader.setHeight('25%');
+            viewHeader.setTop(0);
+            viewBody.setHeight('75%');
+            viewBody.setTop(0);
+
+            current_global_id = Ti.App.Properties.getString('current_global_id');
+            if (parent == null) {
+                if (current_global_id != null) {
+                    loadParent(current_global_id);
+                }
+            } else {
+                if (parent.global_id != current_global_id) {
+                    loadParent(current_global_id);
+                }
+            }
+        });
 
         var viewBase = Ti.UI.createView({
             backgroundColor : 'blue',
@@ -56,19 +75,16 @@
             width : $$.platformWidth,
             layout : 'vertical'
         });
-        win.add(viewBase);
 
         var viewHeader = Ti.UI.createView({
             backgroundColor : 'red',
             top : 0,
         });
-        viewBase.add(viewHeader);
 
         var viewBody = Ti.UI.createView({
             backgroundColor : 'white',
             top : 0,
         });
-        viewBase.add(viewBody);
 
         var viewHeaderLeft = Ti.UI.createView({
             height : '100%',
@@ -77,7 +93,6 @@
             left : 0,
             backgroundColor : 'white',
         });
-        viewHeader.add(viewHeaderLeft);
 
         var viewHeaderRight = Ti.UI.createView({
             height : '100%',
@@ -87,7 +102,6 @@
             backgroundColor : 'white',
             layout : 'horizontal'
         });
-        viewHeader.add(viewHeaderRight);
 
         var imageButtonViewAdd = si.ui.createImageButtonView('/images/plus.png', {
             Top : '5%',
@@ -96,9 +110,10 @@
         });
         imageButtonViewAdd.button.addEventListener('click', function(e) {
             var windowSNewStone = si.ui.createNewStoneWindow();
-            si.app.tabGroup.activeTab.open(windowSNewStone,{animated:true});
+            si.app.tabGroup.activeTab.open(windowSNewStone, {
+                animated : true
+            });
         });
-        viewHeaderRight.add(imageButtonViewAdd);
 
         var imageButtonViewHome = si.ui.createImageButtonView('/images/home.png', {
             Top : '5%',
@@ -109,14 +124,9 @@
             default_global_id = Ti.App.Properties.getString('current_box_global_id');
             loadParent(default_global_id);
         });
-        viewHeaderRight.add(imageButtonViewHome);
 
         var optionDialogForMenu = Ti.UI.createOptionDialog({
-            options : [ 'print label',
-                        'add a snap shot',
-                        'add a local file',
-                        'cancel'
-                        ],
+            options : ['print label', 'add a snap shot', 'add a local file', 'cancel'],
             cancel : 3,
             title : ''
         });
@@ -124,7 +134,7 @@
             switch (e.index) {
                 case 0:
                     if (parent) {
-                        si.ui.android.printLabel(parent.global_id,parent.name);
+                        si.ui.android.printLabel(parent.global_id, parent.name);
                     } else {
                         alert('please load parent first');
                     }
@@ -148,33 +158,38 @@
             };
         });
 
-        var imageButtonViewMenu = si.ui.createImageButtonView('/images/19-gear.png', {
-            Top : '5%',
-            width : '30%',
-            height : '90%'
-        });
-        imageButtonViewMenu.button.addEventListener('click', function(e) {
-            optionDialogForMenu.show();
-        });
-        viewHeaderRight.add(imageButtonViewMenu);
+        function uploadImageFromAlbum() {
+            Ti.Media.openPhotoGallery({
+                success : function(event) {
+                    if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
+                        setImageView(event.media);
+                    }
+                },
+                cancel : function() {
+                },
+                error : function(error) {
+                },
+                allowEditing : true,
+                mediaTypes : [Ti.Media.MEDIA_TYPE_PHOTO]
+            });
+        }
 
-        var imageButtonViewScanParent = si.ui.createImageButtonView('/images/01-refresh.png', {
-            Top : '5%',
-            width : '100%',
-            height : '90%'
-        });
-        callbackButtonScanParentClick = function(e) {
-            scanAndLoadParent();
-        };
-        imageButtonViewScanParent.button.addEventListener('click', callbackButtonScanParentClick);
-        viewHeaderLeft.add(imageButtonViewScanParent);
-
-        var viewParent = si.ui.createViewParent(null, {
-            width : '100%',
-            height : '100%',
-            imgDimensions : 80,
-        });
-        viewParent.addEventListener('click', callbackButtonScanParentClick);
+        function uploadImageFromCamera() {
+            Ti.Media.showCamera({
+                success : function(event) {
+                    if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
+                        setImageView(event.media);
+                    }
+                },
+                cancel : function() {
+                },
+                error : function(error) {
+                },
+                saveToPhotoGallery : true,
+                allowEditing : true,
+                mediaTypes : [Ti.Media.MEDIA_TYPE_PHOTO]
+            });
+        }
 
         function setImageView(_image) {
             Ti.API.info('image:' + _image);
@@ -199,9 +214,10 @@
             labelStatus.text = 'uploading ' + _image.getNativePath() + ' ...';
             changeMode('loading');
 
-
             si.model.medusa.uploadImage({
-                args : {image : _image},
+                args : {
+                    image : _image
+                },
                 record : parent,
                 username : username,
                 password : password,
@@ -224,38 +240,32 @@
             });
         }
 
-        function uploadImageFromAlbum() {
-            Ti.Media.openPhotoGallery({
-                success : function(event) {
-                    if(event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO){
-                        setImageView(event.media);
-                    }
-                },
-                cancel : function() {
-                },
-                error : function(error) {
-                },
-                allowEditing : true,
-                mediaTypes : [Ti.Media.MEDIA_TYPE_PHOTO]
-            });
-        }
+        var imageButtonViewMenu = si.ui.createImageButtonView('/images/19-gear.png', {
+            Top : '5%',
+            width : '30%',
+            height : '90%'
+        });
+        imageButtonViewMenu.button.addEventListener('click', function(e) {
+            optionDialogForMenu.show();
+        });
 
-        function uploadImageFromCamera() {
-            Ti.Media.showCamera({
-                success : function(event) {
-                    if(event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO){
-                        setImageView(event.media);
-                    }
-                },
-                cancel : function() {
-                },
-                error : function(error) {
-                },
-                saveToPhotoGallery : true,
-                allowEditing : true,
-                mediaTypes : [Ti.Media.MEDIA_TYPE_PHOTO]
-            });
-        }
+        var imageButtonViewScanParent = si.ui.createImageButtonView('/images/01-refresh.png', {
+            Top : '5%',
+            width : '100%',
+            height : '90%'
+        });
+        imageButtonViewScanParent.button.addEventListener('click', function(e) {
+            scanAndLoadParent();
+        });
+
+        var viewParent = si.ui.createViewParent(null, {
+            width : '100%',
+            height : '100%',
+            imgDimensions : 80,
+        });
+        viewParent.addEventListener('click', function(e) {
+            scanAndLoadParent();
+        });
 
         var scrollView = Ti.UI.createScrollView({
             top : '2%',
@@ -269,7 +279,6 @@
             borderRadius : 0,
             scrollType : 'vertical'
         });
-        viewBody.add(scrollView);
 
         var labelInfo = Ti.UI.createLabel(si.combine($$.smallText, {
             text : '',
@@ -279,7 +288,6 @@
             height : 'auto',
             textAlign : 'left'
         }));
-        scrollView.add(labelInfo);
 
         var imageView = Ti.UI.createImageView({
             backgroundColor : 'black',
@@ -302,7 +310,6 @@
         buttonScanChild.addEventListener('click', function() {
             scanChild();
         });
-        viewBody.add(buttonScanChild);
 
         var labelStatus = Ti.UI.createLabel(si.combine($$.smallText, {
             text : '',
@@ -312,60 +319,14 @@
             width : '90%',
             borderWidth : 1,
         }));
-        viewBody.add(labelStatus);
-
-        win.addEventListener('focus', function(e) {
-            refreshLayout();
-            current_global_id = Ti.App.Properties.getString('current_global_id');
-            if (parent == null) {
-                if (current_global_id != null) {
-                    loadParent(current_global_id);
-                }
-            } else {
-                if (parent.global_id != current_global_id) {
-                    loadParent(current_global_id);
-                }
-            }
-        });
-
-        function refreshLayout() {
-            viewBase.setHeight('100%');
-            viewBase.setWidth('100%');
-            viewBase.setTop(0);
-            viewHeader.setHeight('25%');
-            viewHeader.setTop(0);
-            viewBody.setHeight('75%');
-            viewBody.setTop(0);
-        };
 
         function scanAndLoadParent() {
-            if (!debug){
-                si.TiBar.scan({
-                    configure : si.config.TiBar,
-                    success : function(_data) {
-                            if (_data && _data.barcode) {
-                                loadParent(_data.barcode);
-                                }
-                    },
-                    cancel : function() {
-                    },
-                    error : function() {
-                    }
-                });
-            }else{
-                setTimeout(function() {
-                    loadParent(debug_parent_global_id);
-                }, 1000);
-            }
-        };
-
-        function scanChild() {
             if (!debug) {
                 si.TiBar.scan({
                     configure : si.config.TiBar,
                     success : function(_data) {
                         if (_data && _data.barcode) {
-                            addChild(_data.barcode);
+                            loadParent(_data.barcode);
                         }
                     },
                     cancel : function() {
@@ -375,76 +336,8 @@
                 });
             } else {
                 setTimeout(function() {
-                    addChild(debug_child_global_id);
+                    loadParent(debug_parent_global_id);
                 }, 1000);
-            }
-        };
-
-        function addChild(_global_id) {
-            var username = Ti.App.Properties.getString('username');
-            var password = Ti.App.Properties.getString('password');
-
-            changeMode('loading');
-            labelStatus.text = _global_id + '...';
-
-            si.model.medusa.getRecordFromGlobalId({
-                global_id : _global_id,
-                username : username,
-                password : password,
-                onsuccess : function(_response) {
-                    labelStatus.text += _response.name + '...';
-                    si.model.medusa.createLink(parent, _response, {
-                            username : username,
-                            password : password,
-                            onsuccess : function(_response2) {
-                                labelStatus.text += 'OK\n';
-                                si.sound_newmail.play();
-                                labelInfo.text = labelStatus.text + labelInfo.text;
-
-                                if (isMultiScan) {
-                                    buttonScanChild.setEnabled(true);
-                                    buttonScanChild.fireEvent('click');
-                                } else {
-                                    changeMode('ready');
-                                }
-                        },
-                        onerror : function(e) {
-                            labelStatus.text = labelStatus.text + 'ERROR\n';
-                            si.sound_mailerror.play();
-                        }
-                    });
-                },
-                onerror : function(e) {
-                    labelStatus.text = labelStatus.text + 'ERROR\n';
-                    si.sound_mailerror.play();
-                }
-            });
-        };
-
-        function changeMode(_mode) {
-            if (_mode == 'loading') {
-                viewParent.setVisible(false);
-                buttonScanChild.setEnabled(false);
-
-                imageButtonViewHome.setEnabled(false);
-                imageButtonViewMenu.setEnabled(false);
-                viewParent.setEnabled(false);
-            } else if (_mode == 'record_load_error') {
-                viewParent.setVisible(true);
-                buttonScanChild.setEnabled(false);
-
-                imageButtonViewHome.setEnabled(true);
-                imageButtonViewMenu.setEnabled(true);
-                viewParent.setEnabled(true);
-             } else if (_mode == 'ready') {
-                viewParent.setVisible(true);
-                buttonScanChild.setEnabled(true);
-
-                imageButtonViewHome.setEnabled(true);
-                imageButtonViewMenu.setEnabled(true);
-                viewParent.setEnabled(true);
-
-                labelStatus.text = 'ready for scan';
             }
         };
 
@@ -487,6 +380,110 @@
                 }
             });
         };
+
+        function scanChild() {
+            if (!debug) {
+                si.TiBar.scan({
+                    configure : si.config.TiBar,
+                    success : function(_data) {
+                        if (_data && _data.barcode) {
+                            addChild(_data.barcode);
+                        }
+                    },
+                    cancel : function() {
+                    },
+                    error : function() {
+                    }
+                });
+            } else {
+                setTimeout(function() {
+                    addChild(debug_child_global_id);
+                }, 1000);
+            }
+        };
+
+        function addChild(_global_id) {
+            var username = Ti.App.Properties.getString('username');
+            var password = Ti.App.Properties.getString('password');
+
+            changeMode('loading');
+            labelStatus.text = _global_id + '...';
+
+            si.model.medusa.getRecordFromGlobalId({
+                global_id : _global_id,
+                username : username,
+                password : password,
+                onsuccess : function(_response) {
+                    labelStatus.text += _response.name + '...';
+                    si.model.medusa.createLink(parent, _response, {
+                        username : username,
+                        password : password,
+                        onsuccess : function(_response2) {
+                            labelStatus.text += 'OK\n';
+                            si.sound_newmail.play();
+                            labelInfo.text = labelStatus.text + labelInfo.text;
+
+                            if (isMultiScan) {
+                                buttonScanChild.setEnabled(true);
+                                buttonScanChild.fireEvent('click');
+                            } else {
+                                changeMode('ready');
+                            }
+                        },
+                        onerror : function(e) {
+                            labelStatus.text = labelStatus.text + 'ERROR\n';
+                            si.sound_mailerror.play();
+                        }
+                    });
+                },
+                onerror : function(e) {
+                    labelStatus.text = labelStatus.text + 'ERROR\n';
+                    si.sound_mailerror.play();
+                }
+            });
+        };
+
+        function changeMode(_mode) {
+            if (_mode == 'loading') {
+                viewParent.setVisible(false);
+                buttonScanChild.setEnabled(false);
+
+                imageButtonViewHome.setEnabled(false);
+                imageButtonViewMenu.setEnabled(false);
+                viewParent.setEnabled(false);
+            } else if (_mode == 'record_load_error') {
+                viewParent.setVisible(true);
+                buttonScanChild.setEnabled(false);
+
+                imageButtonViewHome.setEnabled(true);
+                imageButtonViewMenu.setEnabled(true);
+                viewParent.setEnabled(true);
+            } else if (_mode == 'ready') {
+                viewParent.setVisible(true);
+                buttonScanChild.setEnabled(true);
+
+                imageButtonViewHome.setEnabled(true);
+                imageButtonViewMenu.setEnabled(true);
+                viewParent.setEnabled(true);
+
+                labelStatus.text = 'ready for scan';
+            }
+        };
+
+        win.add(viewBase);
+        viewBase.add(viewHeader);
+        viewHeader.add(viewHeaderLeft);
+        viewHeaderLeft.add(imageButtonViewScanParent);
+        viewHeader.add(viewHeaderRight);
+        viewHeaderRight.add(imageButtonViewAdd);
+        viewHeaderRight.add(imageButtonViewHome);
+        viewHeaderRight.add(imageButtonViewMenu);
+        viewBase.add(viewBody);
+        viewBody.add(scrollView);
+        scrollView.add(labelInfo);
+        viewBody.add(buttonScanChild);
+        viewBody.add(labelStatus);
+
         return win;
     };
 })();

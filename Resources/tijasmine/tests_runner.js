@@ -7,7 +7,8 @@ function run() {
         '/specs/spec_LoginWindow', 
         '/specs/spec_NewStoneWindow', 
         '/specs/spec_PrintFormatUrlSettingWindow',
-        '/specs/spec_ServerSettingWindow'
+        '/specs/spec_ServerSettingWindow',
+        '/specs/spec_PrintLabel'
         );
     tijasmine.addReporter(reporter);
     tijasmine.execute();
