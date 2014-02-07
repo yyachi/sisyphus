@@ -4,10 +4,17 @@
 
     var CLASSNAME_STONE = 'Stone';
     var CLASSNAME_BOX = 'Box';
-    var CLASSNAME_ANALYSIS = 'Analysis';
-    var CLASSNAME_BIB = 'Bib';
-    var CLASSNAME_PLACE = 'Place';
     var CLASSNAME_ATTACHMENT_FILE = 'AttachmentFile';
+    var PATH_JSON = '.json';
+    var PATH_RECORED = '/records';
+    var PATH_STONE = '/stones';
+    var PATH_BOX = '/boxes';
+    var PATH_ATTACHMENT_FILE = '/attachment_files';
+    var PATH_ATTACHMENT_FILE_JSON = PATH_ATTACHMENT_FILE + PATH_JSON;
+    var PATH_DAUGHTERS = '/daughters';
+    var PATH_UPLOAD_JSON = '/upload' + PATH_JSON;
+    var PATH_RECORED_PROPERTY = '/record_property';
+    var PATH_RECORED_PROPERTY_JSON = PATH_RECORED_PROPERTY + PATH_JSON;
 
     si.model.medusa.host = function() {
         var url = Ti.App.Properties.getString('server');
@@ -20,9 +27,12 @@
     si.model.medusa.getWithAuth = function(_args) {
         var client = Ti.Network.createHTTPClient({
             onload : function() {
-                _args.onsuccess(this.responseText);
+                _args.onsuccess(eval('(' + this.responseText + ')'));
             },
-            onerror : _args.onerror,
+            onerror : function(e) {
+                e.status = this.status;
+                _args.onerror(e);
+            },
             timeout : 30000 // in milliseconds
         });
         var url = Ti.App.Properties.getString('server') + _args.path;
@@ -35,9 +45,12 @@
     si.model.medusa.putWithAuth = function(_args) {
         var client = Ti.Network.createHTTPClient({
             onload : function() {
-                _args.onsuccess(this.responseText);
+                _args.onsuccess(eval('(' + this.responseText + ')'));
             },
-            onerror : _args.onerror,
+            onerror : function(e) {
+                e.status = this.status;
+                _args.onerror(e);
+            },
             timeout : 30000 // in milliseconds
         });
         var url = Ti.App.Properties.getString('server') + _args.path;
@@ -50,9 +63,12 @@
     si.model.medusa.postWithAuth = function(_args) {
         var client = Ti.Network.createHTTPClient({
             onload : function() {
-                _args.onsuccess(this.responseText);
+                _args.onsuccess(eval('(' + this.responseText + ')'));
             },
-            onerror : _args.onerror,
+            onerror : function(e) {
+                e.status = this.status;
+                _args.onerror(e);
+            },
             timeout : 30000 // in milliseconds
         });
         var url = Ti.App.Properties.getString('server') + _args.path;
@@ -64,95 +80,94 @@
 
     si.model.medusa.getAccountInfo = function(_args) {
         si.model.medusa.getWithAuth({
-            path : '/main/info.json',
+            path : PATH_STONE + '/1' + PATH_JSON,
             username : _args.username,
             password : _args.password,
-            onsuccess : function(response) {
-                var prop = eval('(' + response + ')');
-                if (prop) {
-                    _args.onsuccess(prop);
+            onsuccess : _args.onsuccess,
+            onerror : function(e) {
+                if (e.status == 404) {
+                    _args.onsuccess();
                 } else {
-                    _args.onerror(response);
+                    _args.onerror();
                 }
             },
-            onerror : _args.onerror
         });
     };
 
     si.model.medusa.getRecordFromGlobalId = function(_args) {
+        var record = {
+            global_id : _args.global_id,
+        };
         si.model.medusa.getWithAuth({
             args : _args.args,
-            path : '/records/' + _args.global_id + '.json',
+            path : PATH_RECORED + '/' + _args.global_id + PATH_RECORED_PROPERTY_JSON,
             username : _args.username,
             password : _args.password,
+            onerror : _args.onerror,
             onsuccess : function(response) {
-                var prop = eval('(' + response + ')');
-                if (prop) {
-                    _args.onsuccess(prop);
-                } else {
-                    _args.onerror(response);
-                }
+                record.id = response.datum_id;
+                record._className = response.datum_type;
+                si.model.medusa.getWithAuth({
+                    args : _args.args,
+                    path : si.model.medusa.getClassPath(record) + '/' + record.id + PATH_JSON,
+                    username : _args.username,
+                    password : _args.password,
+                    onerror : _args.onerror,
+                    onsuccess : function(_response) {
+                        record.name = _response.name;
+                        si.model.medusa.getWithAuth({
+                            args : _args.args,
+                            path : si.model.medusa.getClassPath(record) + '/' + record.id + PATH_ATTACHMENT_FILE_JSON,
+                            username : _args.username,
+                            password : _args.password,
+                            onerror : _args.onerror,
+                            onsuccess : function(__response) {
+                                record.image_path = '';
+                                if (__response.length > 0) {
+                                    attachmentFile = __response[0];
+                                    record.image_path = '/system/attachment_files/' + attachmentFile.id + '/' + attachmentFile.data_file_name;
+                                }
+                                _args.onsuccess(record);
+                            }
+                        });
+                    }
+                });
             },
-            onerror : _args.onerror
         });
     };
 
+    si.model.medusa.getClassPath = function(_record) {
+        var path = '';
+        switch(_record._className) {
+            case CLASSNAME_STONE:
+                path = PATH_STONE;
+                break;
+            case CLASSNAME_BOX:
+                path = PATH_BOX;
+                break;
+            case CLASSNAME_ATTACHMENT_FILE:
+                path = PATH_ATTACHMENT_FILE;
+                break;
+            default:
+                throw new Error(_record._className + ' is not supported .');
+        }
+        return path;
+    };
+
     si.model.medusa.getLinkPath = function(_parent, _child) {
-        var parent_path = '';
-        switch(_parent._className) {
-            case CLASSNAME_STONE:
-                parent_path = '/stones/';
-                break;
-            case CLASSNAME_BOX:
-                parent_path = '/boxes/';
-                break;
-            case CLASSNAME_ANALYSIS:
-                parent_path = '/analyses/';
-                break;
-            case CLASSNAME_BIB:
-                parent_path = '/bibs/';
-                break;
-            case CLASSNAME_PLACE:
-                parent_path = '/places/';
-                break;
-            case CLASSNAME_ATTACHMENT_FILE:
-                parent_path = '/attachment_files/';
-                break;
-            default:
-                throw new Error(_parent._className + ' is not supported for parent.');
-        }
-        parent_path += _parent.id;
+        var path = '';
+        path += si.model.medusa.getClassPath(_parent);
+        path += '/' + _parent.id;
+        ;
 
-        var child_path = '';
-        switch(_child._className) {
-            case CLASSNAME_STONE:
-                if (_parent._className == CLASSNAME_STONE) {
-                    child_path = '/daughters/';
-                } else {
-                    child_path = '/stones/';
-                }
-                break;
-            case CLASSNAME_BOX:
-                child_path = '/boxes/';
-                break;
-            case CLASSNAME_ANALYSIS:
-                child_path = '/analyses/';
-                break;
-            case CLASSNAME_BIB:
-                child_path = '/bibs/';
-                break;
-            case CLASSNAME_PLACE:
-                child_path = '/places/';
-                break;
-            case CLASSNAME_ATTACHMENT_FILE:
-                child_path = '/attachment_files/';
-                break;
-            default:
-                throw new Error(_child._className + ' is not supported for child.');
+        if ((_parent._className == CLASSNAME_STONE) && (_child._className == CLASSNAME_STONE)) {
+            path += PATH_DAUGHTERS;
+        } else {
+            path += si.model.medusa.getClassPath(_child);
         }
-        child_path += _child.id;
-
-        return parent_path + child_path + '.json';
+        path += '/' + _child.id;
+        path += PATH_JSON;
+        return path;
     };
 
     si.model.medusa.createLink = function(_parent, _child, _args) {
@@ -172,27 +187,18 @@
         var path = '';
         switch(_parent._className) {
             case CLASSNAME_STONE:
-                path += '/stones/' + _parent.id + '/attachment_files';
+                path += PATH_STONE + '/' + _parent.id;
                 break;
             case CLASSNAME_BOX:
-                path += '/boxes/' + _parent.id + '/attachment_files';
-                break;
-            case CLASSNAME_ANALYSIS:
-                path += '/analyses/' + _parent.id + '/attachment_files';
-                break;
-            case CLASSNAME_BIB:
-                path += '/bibs/' + _parent.id + '/attachment_files';
-                break;
-            case CLASSNAME_PLACE:
-                path += '/places/' + _parent.id + '/attachment_files';
+                path += PATH_BOX + '/' + _parent.id;
                 break;
             case CLASSNAME_ATTACHMENT_FILE:
-                path += '/attachment_files';
                 break;
             default:
-                throw new Error(_parent._className + ' is not supported for parent.');
+                throw new Error(_parent._className + ' is not supported.');
         }
-        path += '/upload.json';
+        path += PATH_ATTACHMENT_FILE;
+        path += PATH_UPLOAD_JSON;
 
         return path;
     };
