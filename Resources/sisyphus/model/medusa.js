@@ -4,11 +4,17 @@
 
     var CLASSNAME_STONE = 'Stone';
     var CLASSNAME_BOX = 'Box';
+    var CLASSNAME_PLACE = 'Place';
+    var CLASSNAME_ANALYSIS = 'Analysis';
+    var CLASSNAME_BIB = 'Bib';
     var CLASSNAME_ATTACHMENT_FILE = 'AttachmentFile';
     var PATH_JSON = '.json';
     var PATH_RECORED = '/records';
     var PATH_STONE = '/stones';
     var PATH_BOX = '/boxes';
+    var PATH_PLACE = '/places';
+    var PATH_ANALYSIS = '/analyses';
+    var PATH_BIB = '/bibs';
     var PATH_ATTACHMENT_FILE = '/attachment_files';
     var PATH_ATTACHMENT_FILE_JSON = PATH_ATTACHMENT_FILE + PATH_JSON;
     var PATH_DAUGHTERS = '/daughters';
@@ -145,6 +151,15 @@
             case CLASSNAME_BOX:
                 path = PATH_BOX;
                 break;
+            case CLASSNAME_PLACE:
+                path = PATH_PLACE;
+                break;
+            case CLASSNAME_ANALYSIS:
+                path = PATH_ANALYSIS;
+                break;
+            case CLASSNAME_BIB:
+                path = PATH_BIB;
+                break;
             case CLASSNAME_ATTACHMENT_FILE:
                 path = PATH_ATTACHMENT_FILE;
                 break;
@@ -191,6 +206,15 @@
                 break;
             case CLASSNAME_BOX:
                 path += PATH_BOX + '/' + _parent.id;
+                break;
+            case CLASSNAME_PLACE:
+                path += PATH_PLACE + '/' + _parent.id;
+                break;
+            case CLASSNAME_ANALYSIS:
+                path += PATH_ANALYSIS + '/' + _parent.id;
+                break;
+            case CLASSNAME_BIB:
+                path += PATH_BIB + '/' + _parent.id;
                 break;
             case CLASSNAME_ATTACHMENT_FILE:
                 break;
