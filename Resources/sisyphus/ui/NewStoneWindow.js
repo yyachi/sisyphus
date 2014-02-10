@@ -29,8 +29,19 @@
                 activityIndicator.hide();
                 alert('error : ' + e.error);
             };
+            var now = new Date();
+            var global_id = String.format('%04d%02d%02d%02d%02d%02d-%03d-%03.0f',
+                        now.getFullYear(),
+                        now.getMonth(),
+                        now.getDay(),
+                        now.getHours(),
+                        now.getMinutes(),
+                        now.getSeconds(),
+                        now.getMilliseconds(),
+                        Math.random() * 1000);
             var params = {};
             params['stone[name]'] = text.value;
+            params['stone[record_property_attributes][global_id]'] = global_id;
             var username = Ti.App.Properties.getString('username');
             var password = Ti.App.Properties.getString('password');
             activityIndicator.show();

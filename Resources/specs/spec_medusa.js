@@ -15,6 +15,7 @@ describe('Medusa', function() {
     var POST_PATH = '/stones.json';
     var params = {};
     params['stone[name]'] = 'new name';
+    params['stone[record_property_attributes][global_id]'] = '20140210135641-385-523';
     var POST_ARGS = params;
     var GLOBAL_ID = '20110416135129-112-853';
 
