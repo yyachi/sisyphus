@@ -14,9 +14,6 @@ describe('Medusa', function() {
     var PUT_PATH = '/boxes/1/stones/2.json';
     var POST_PATH = '/stones.json';
     var params = {};
-    params['stone[record_property_attributes][global_id]'] = '20140210135641-385-523';
-    params['stone[record_property_attributes][user_id]'] = '1';
-    params['stone[record_property_attributes][group_id]'] = '1';
     params['stone[name]'] = 'new name';
     var POST_ARGS = params;
     var GLOBAL_ID = '20110416135129-112-853';
@@ -166,6 +163,52 @@ describe('Medusa', function() {
         });
     });
 
+
+    describe('Create New Stone', function() {
+        it('With No Auth', function() {
+            si.model.medusa.createNewStone({
+                name : params['stone[name]'],
+                username : USERNAME,
+                password : NG_PASSWORD,
+                onsuccess : (function(e) {
+                    response = e;
+                    isSuccess = true;
+                }),
+                onerror : (function(e) {
+                    isSuccess = false;
+                }),
+            });
+            waitsFor(function() {
+                return isSuccess != null;
+            }, '', 30000);
+            runs(function() {
+                expect(isSuccess).toBe(false);
+            });
+        });
+
+        it('With Auth', function() {
+            si.model.medusa.createNewStone({
+                name : params['stone[name]'],
+                username : USERNAME,
+                password : OK_PASSWORD,
+                onsuccess : (function(e) {
+                    response = e;
+                    isSuccess = true;
+                }),
+                onerror : (function(e) {
+                    isSuccess = false;
+                }),
+            });
+            waitsFor(function() {
+                return isSuccess != null;
+            }, '', 30000);
+            runs(function() {
+                expect(isSuccess).toBe(true);
+                expect(response.name).toBe(params['stone[name]']);
+                expect(response.global_id).not.toBe('');
+            });
+        });
+    });
     describe('Get Account Info', function() {
         it('GWith No Auth', function() {
             si.model.medusa.getAccountInfo({

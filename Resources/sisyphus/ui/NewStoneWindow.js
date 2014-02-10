@@ -25,59 +25,20 @@
                 alert('Please input name of new stone');
                 return;
             }
-            onErrorFunction = function(e) {
-                activityIndicator.hide();
-                alert('error : ' + e.error);
-            };
-            var now = new Date();
-            var global_id = String.format('%04d%02d%02d%02d%02d%02d-%03d-%03.0f',
-                        now.getFullYear(),
-                        now.getMonth(),
-                        now.getDay(),
-                        now.getHours(),
-                        now.getMinutes(),
-                        now.getSeconds(),
-                        now.getMilliseconds(),
-                        Math.random() * 1000);
-            var params = {};
-            params['stone[record_property_attributes][global_id]'] = global_id;
-            params['stone[record_property_attributes][user_id]'] = '1';
-            params['stone[record_property_attributes][group_id]'] = '1';
-           params['stone[name]'] = text.value;
-            var username = Ti.App.Properties.getString('username');
-            var password = Ti.App.Properties.getString('password');
             activityIndicator.show();
-            si.model.medusa.postWithAuth({
-                args : params,
-                path : '/stones.json',
-                username : username,
-                password : password,
-                onsuccess : function(stone) {
-                    if (stone) {
-                        si.model.medusa.getWithAuth({
-                            path : '/stones/' + stone.id + '/record_property.json',
-                            username : username,
-                            password : password,
-                            onsuccess : function(recordProperty) {
-                                if (recordProperty) {
-                                    activityIndicator.hide();
-                                    si.ui.android.printLabel(recordProperty.global_id, stone.name);
-                                    win.close();
-                                } else {
-                                    var e = {};
-                                    e.error = "recored property not found";
-                                    onErrorFunction(e);
-                                }
-                            },
-                            onerror : onErrorFunction,
-                        });
-                    } else {
-                        var e = {};
-                        e.error = "stone not found";
-                        onErrorFunction(e);
-                    }
+            si.model.medusa.createNewStone({
+                name : text.value,
+                username : Ti.App.Properties.getString('username'),
+                password : Ti.App.Properties.getString('password'),
+                onsuccess : function(_record) {
+                    activityIndicator.hide();
+                    si.ui.android.printLabel(_record.global_id, _record.name);
+                    win.close();
                 },
-                onerror : onErrorFunction,
+                onerror : function(e) {
+                    activityIndicator.hide();
+                    alert('error : ' + e.error);
+               },
             });
         });
 
