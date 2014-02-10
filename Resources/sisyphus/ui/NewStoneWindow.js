@@ -40,8 +40,10 @@
                         now.getMilliseconds(),
                         Math.random() * 1000);
             var params = {};
-            params['stone[name]'] = text.value;
             params['stone[record_property_attributes][global_id]'] = global_id;
+            params['stone[record_property_attributes][user_id]'] = '1';
+            params['stone[record_property_attributes][group_id]'] = '1';
+           params['stone[name]'] = text.value;
             var username = Ti.App.Properties.getString('username');
             var password = Ti.App.Properties.getString('password');
             activityIndicator.show();
