@@ -49,13 +49,6 @@
             layout : 'vertical'
         });
         win.addEventListener('focus', function(e) {
-            viewBase.setHeight('100%');
-            viewBase.setWidth('100%');
-            viewBase.setTop(0);
-            viewHeader.setHeight('25%');
-            viewHeader.setTop(0);
-            viewBody.setHeight('75%');
-            viewBody.setTop(0);
 
             current_global_id = Ti.App.Properties.getString('current_global_id');
             if (parent == null) {
@@ -71,19 +64,23 @@
 
         var viewBase = Ti.UI.createView({
             backgroundColor : 'blue',
-            top : 5,
-            width : $$.platformWidth,
+            top : 0,
+            width : '100%',
+            height : '100%',
             layout : 'vertical'
         });
 
         var viewHeader = Ti.UI.createView({
             backgroundColor : 'red',
             top : 0,
+            height : '15%'
         });
 
         var viewBody = Ti.UI.createView({
             backgroundColor : 'white',
             top : 0,
+            top : 0,
+            height : '85%'
         });
 
         var viewHeaderLeft = Ti.UI.createView({
@@ -235,6 +232,7 @@
                     viewBody.remove(imageView);
                     viewBody.add(buttonScanChild);
 
+                    labelStatus.text = 'ready for scan';
                     changeMode('ready');
                 }
             });
@@ -367,6 +365,7 @@
                         viewHeaderLeft.add(viewParent);
                     }
                     si.sound_newmail.play();
+                    labelStatus.text = 'ready for scan';
                     changeMode('ready');
                 },
                 onerror : function(e) {
@@ -427,6 +426,7 @@
                                 buttonScanChild.setEnabled(true);
                                 buttonScanChild.fireEvent('click');
                             } else {
+                                labelStatus.text = 'ready for scan';
                                 changeMode('ready');
                             }
                         },
@@ -444,30 +444,20 @@
         };
 
         function changeMode(_mode) {
+            var isEnabled = true;
             if (_mode == 'loading') {
-                viewParent.setVisible(false);
-                buttonScanChild.setEnabled(false);
-
-                imageButtonViewHome.setEnabled(false);
-                imageButtonViewMenu.setEnabled(false);
-                viewParent.setEnabled(false);
-            } else if (_mode == 'record_load_error') {
-                viewParent.setVisible(true);
-                buttonScanChild.setEnabled(false);
-
-                imageButtonViewHome.setEnabled(true);
-                imageButtonViewMenu.setEnabled(true);
-                viewParent.setEnabled(true);
+                isEnabled = false;
             } else if (_mode == 'ready') {
-                viewParent.setVisible(true);
-                buttonScanChild.setEnabled(true);
-
-                imageButtonViewHome.setEnabled(true);
-                imageButtonViewMenu.setEnabled(true);
-                viewParent.setEnabled(true);
-
-                labelStatus.text = 'ready for scan';
+                isEnabled = true;
+            } else {
+                Ti.API.warn('changeMode unkown mode : ' + _mode );
             }
+            viewParent.setEnabled(isEnabled);
+            buttonScanChild.setEnabled(isEnabled);
+
+            imageButtonViewHome.setEnabled(isEnabled);
+            imageButtonViewMenu.setEnabled(isEnabled);
+            viewParent.setEnabled(isEnabled);
         };
 
         win.add(viewBase);
