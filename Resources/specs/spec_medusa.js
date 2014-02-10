@@ -10,7 +10,9 @@ describe('Medusa', function() {
     var GET_PATH = '/stones/1.json';
     var PUT_PATH = '/boxes/1/stones/2.json';
     var POST_PATH = '/stones.json';
-    var POST_ARGS = {name : 'new name'};
+    var params = {};
+    params['stone[name]'] = 'new name';
+    var POST_ARGS = params;
     var GLOBAL_ID = '20110416135129-112-853';
 
     var response;
@@ -153,7 +155,7 @@ describe('Medusa', function() {
             },'',30000);
             runs(function() {
                 expect(isSuccess).toBe(true);
-                expect(response.name).toBe(POST_ARGS.name);
+                expect(response.name).toBe(params['stone[name]']);
            });
         });
     });

@@ -5,7 +5,6 @@
             backgroundColor : 'white'
         });
 
-
         var activityIndicator = Ti.UI.createActivityIndicator({
             style : Ti.UI.ActivityIndicatorStyle.BIG,
         });
@@ -30,38 +29,38 @@
                 activityIndicator.hide();
                 alert('error : ' + e.error);
             };
-            var stone;
-            var recordProperty;
+            var params = {};
+            params['stone[name]'] = text.value;
             var username = Ti.App.Properties.getString('username');
             var password = Ti.App.Properties.getString('password');
             activityIndicator.show();
             si.model.medusa.postWithAuth({
-                args : {
-                    name : text.value
-                },
+                args : params,
                 path : '/stones.json',
                 username : username,
                 password : password,
-                onsuccess : function(_response) {
-                    stone = eval('(' + _response + ')');
+                onsuccess : function(stone) {
                     if (stone) {
                         si.model.medusa.getWithAuth({
                             path : '/stones/' + stone.id + '/record_property.json',
                             username : username,
                             password : password,
-                            onsuccess : function(_recordProperty) {
-                                recordProperty = eval('(' + _recordProperty + ')');
+                            onsuccess : function(recordProperty) {
                                 if (recordProperty) {
                                     activityIndicator.hide();
                                     si.ui.android.printLabel(recordProperty.global_id, stone.name);
                                     win.close();
                                 } else {
+                                    var e = {};
+                                    e.error = "recored property not found";
                                     onErrorFunction(e);
-                                    }
-                                },
+                                }
+                            },
                             onerror : onErrorFunction,
-                            });
+                        });
                     } else {
+                        var e = {};
+                        e.error = "stone not found";
                         onErrorFunction(e);
                     }
                 },
@@ -72,7 +71,7 @@
         win.add(text);
         win.add(button);
         win.add(activityIndicator);
-        
+
         return win;
     };
 })();
