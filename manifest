@@ -1,8 +1,8 @@
-#appname: Sisyphus
-#publisher: yyachi
-#url: http://dream.misasa.okayama-u.ac.jp
-#image: appicon.png
-#appid: jp.ac.okayama.misasa.Sisyphus
-#desc: undefined
-#type: ipad
-#guid: b3358da6-c6ca-49c1-a33a-c96f2df7a91e
+#appname:Sisyphus
+#publisher:yyachi
+#url:http://dream.misasa.okayama-u.ac.jp
+#image:appicon.png
+#appid:jp.ac.okayama.misasa.Sisyphus
+#desc:not specified
+#type:mobile
+#guid:b3358da6-c6ca-49c1-a33a-c96f2df7a91e
