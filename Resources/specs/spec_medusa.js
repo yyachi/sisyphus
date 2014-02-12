@@ -739,7 +739,13 @@ describe('Medusa', function() {
 
         it(CLASSNAME_ATTACHMENT_FILE, function() {
             parent._className = CLASSNAME_ATTACHMENT_FILE;
-            expect(si.model.medusa.getImageUploadPath(parent)).toBe('/attachment_files/upload.json');
+//            expect(si.model.medusa.getImageUploadPath(parent)).toBe('/attachment_files/upload.json');
+            try {
+                var path = ssi.model.medusa.getImageUploadPath(parent);
+                expect(false).toBeTruthy();
+            } catch(e) {
+                expect(true).toBeTruthy();
+            }
         });
 
         it(CLASSNAME_UNKNOWN, function() {
@@ -836,7 +842,7 @@ describe('Medusa', function() {
             });
         });
 
-        xit(CLASSNAME_PLACE, function() {
+        it(CLASSNAME_PLACE, function() {
             record._className = CLASSNAME_PLACE;
             si.model.medusa.uploadImage({
                 record : record,
@@ -862,7 +868,7 @@ describe('Medusa', function() {
             });
         });
 
-        xit(CLASSNAME_ANALYSIS, function() {
+        it(CLASSNAME_ANALYSIS, function() {
             record._className = CLASSNAME_ANALYSIS;
             si.model.medusa.uploadImage({
                 record : record,
@@ -888,7 +894,7 @@ describe('Medusa', function() {
             });
         });
 
-        xit(CLASSNAME_BIB, function() {
+        it(CLASSNAME_BIB, function() {
             record._className = CLASSNAME_BIB;
             si.model.medusa.uploadImage({
                 record : record,
@@ -914,30 +920,34 @@ describe('Medusa', function() {
             });
         });
 
-        xit(CLASSNAME_ATTACHMENT_FILE, function() {
-            record._className = CLASSNAME_BOX;
-            si.model.medusa.uploadImage({
-                record : record,
-                args : {
-                    media : image,
-                },
-                username : USERNAME,
-                password : OK_PASSWORD,
-                onsuccess : (function(e) {
-                    response = e;
-                    isSuccess = true;
-                }),
-                onerror : (function(e) {
-                    isSuccess = false;
-                }),
-            });
-            waitsFor(function() {
-                return isSuccess != null;
-            }, '', 30000);
-            runs(function() {
-                expect(isSuccess).toBe(true);
-                expect(response.id).toBe(1);
-            });
+        it(CLASSNAME_ATTACHMENT_FILE, function() {
+            record._className = CLASSNAME_ATTACHMENT_FILE;
+            try {
+                si.model.medusa.uploadImage({
+                    record : record,
+                    args : {
+                        media : image,
+                    },
+                    username : USERNAME,
+                    password : OK_PASSWORD,
+                    onsuccess : (function(e) {
+                        response = e;
+                        isSuccess = true;
+                    }),
+                    onerror : (function(e) {
+                        isSuccess = false;
+                    }),
+                });
+                waitsFor(function() {
+                    return isSuccess != null;
+                }, '', 30000);
+                runs(function() {
+                    expect(isSuccess).toBe(false);
+                });
+                expect(false).toBeTruthy();
+            } catch(e) {
+                expect(true).toBeTruthy();
+            }
         });
 
     });

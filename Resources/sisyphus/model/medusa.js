@@ -216,8 +216,8 @@
             case CLASSNAME_BIB:
                 path += PATH_BIB + '/' + _parent.id;
                 break;
-            case CLASSNAME_ATTACHMENT_FILE:
-                break;
+//            case CLASSNAME_ATTACHMENT_FILE:
+//                break;
             default:
                 throw new Error(_parent._className + ' is not supported.');
         }
