@@ -205,6 +205,9 @@ describe('Medusa', function() {
             runs(function() {
                 expect(isSuccess).toBe(true);
                 expect(response.name).toBe(params['stone[name]']);
+                expect(response.id).not.toBe('');
+                expect(response._className).toBe('Stone');
+                expect(response.user_id).not.toBe('');
                 expect(response.global_id).not.toBe('');
             });
         });

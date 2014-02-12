@@ -241,21 +241,7 @@
     };
 
     si.model.medusa.createNewStone = function(_args) {
-        var now = new Date();
-        var global_id = String.format(
-            '%04d%02d%02d%02d%02d%02d-%03d-%03.0f', 
-            now.getFullYear(), 
-            now.getMonth(), 
-            now.getDay(), 
-            now.getHours(), 
-            now.getMinutes(), 
-            now.getSeconds(), 
-            now.getMilliseconds(), 
-            Math.random() * 1000);
         var params = {};
-        params['stone[record_property_attributes][global_id]'] = global_id;
-        params['stone[record_property_attributes][user_id]'] = '1';
-        params['stone[record_property_attributes][group_id]'] = '1';
         params['stone[name]'] = _args.name;
         si.model.medusa.postWithAuth({
             args : params,
@@ -264,16 +250,17 @@
             password : _args.password,
             onsuccess : function(_stone) {
                 if (_stone) {
+                    var record = _stone;
                     si.model.medusa.getWithAuth({
-                        path : PATH_STONE + '/' + _stone.id + PATH_RECORED_PROPERTY_JSON,
+                        path : PATH_STONE + '/' + record.id + PATH_RECORED_PROPERTY_JSON,
                         username : _args.username,
                         password : _args.password,
                         onsuccess : function(_recordProperty) {
                             if (_recordProperty) {
-                                _args.onsuccess({
-                                    name : _stone.name,
-                                    global_id : _recordProperty.global_id
-                                    });
+                                 record._className = _recordProperty.datum_type;
+                                 record.user_id = _recordProperty.user_id;
+                                 record.global_id = _recordProperty.global_id;
+                                _args.onsuccess(record);
                             } else {
                                 _args.onerror({error : 'recored property not found'});
                             }
