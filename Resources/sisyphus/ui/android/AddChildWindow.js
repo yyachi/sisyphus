@@ -31,7 +31,7 @@
     };
 
     si.ui.createAddChildWindow = function() {
-        var debug = si.config.Medusa.testMode;
+        var debug = true;
         if (debug) {
             debug_parent_global_id = '20110416135129-112-853';
             debug_child_global_id = '20110416134901-075-241';

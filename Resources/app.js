@@ -48,6 +48,7 @@ Array.prototype.contains = function(value) {
 }; 
 
 // Test Code Here!!!
-if (si.config.Medusa.testMode){
+var test = false;
+if (test){
     require('/tijasmine/tests_runner').run(); 
 }
