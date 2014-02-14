@@ -131,7 +131,7 @@
                                 record.image_path = '';
                                 if (__response.length > 0) {
                                     attachmentFile = __response[0];
-                                    record.image_path = '/system/attachment_files/' + attachmentFile.id + '/' + attachmentFile.data_file_name;
+                                    record.image_path = attachmentFile.path;
                                 }
                                 _args.onsuccess(record);
                             }
