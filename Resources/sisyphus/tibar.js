@@ -19,7 +19,7 @@
             'height' : opts.height
         });
 
-        picker.init(SCANDITSDK_APP_KEY, 0);
+        picker.init(SCANDITSDK_APP_KEY, si.config.Medusa.facing);
         picker.setQrEnabled(true);
 
         picker.setCancelCallback(function(e) {

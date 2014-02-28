@@ -31,14 +31,13 @@
     };
 
     si.ui.createAddChildWindow = function() {
-        var debug = true;
-        if (debug) {
+        if (si.config.Medusa.debug) {
             debug_parent_global_id = '20110416135129-112-853';
             debug_child_global_id = '20110416134901-075-241';
         }
 
         var parent = null;
-        var isMultiScan = !debug;
+        var isMultiScan = !si.config.Medusa.debug;
 
         var win = Ti.UI.createWindow({
             title : 'Main',
@@ -319,7 +318,7 @@
         }));
 
         function scanAndLoadParent() {
-            if (!debug) {
+            if (!si.config.Medusa.debug) {
                 si.TiBar.scan({
                     configure : si.config.TiBar,
                     success : function(_data) {
@@ -381,7 +380,7 @@
         };
 
         function scanChild() {
-            if (!debug) {
+            if (!si.config.Medusa.debug) {
                 si.TiBar.scan({
                     configure : si.config.TiBar,
                     success : function(_data) {
