@@ -212,7 +212,7 @@
 
             si.model.medusa.uploadImage({
                 args : {
-                    media : _image
+                    data : _image
                 },
                 record : parent,
                 username : username,
