@@ -31,11 +31,6 @@
     };
 
     si.ui.createAddChildWindow = function() {
-        if (si.config.Medusa.debug) {
-            debug_parent_global_id = '20110416135129-112-853';
-            debug_child_global_id = '20110416134901-075-241';
-        }
-
         var parent = null;
         var isMultiScan = !si.config.Medusa.debug;
 
@@ -211,9 +206,7 @@
             changeMode('loading');
 
             si.model.medusa.uploadImage({
-                args : {
-                    data : _image
-                },
+                data : _image,
                 record : parent,
                 username : username,
                 password : password,
@@ -225,7 +218,7 @@
                     loadParent(parent.global_id);
                 },
                 onerror : function(e) {
-                    labelStatus.text += 'ERROR';
+                    labelStatus.text += 'ERROR\n';
                     labelInfo.text = labelStatus.text + labelInfo.text;
 
                     viewBody.remove(imageView);
@@ -333,7 +326,7 @@
                 });
             } else {
                 setTimeout(function() {
-                    loadParent(debug_parent_global_id);
+                    loadParent(si.config.debug.parent_global_id);
                 }, 1000);
             }
         };
@@ -395,7 +388,7 @@
                 });
             } else {
                 setTimeout(function() {
-                    addChild(debug_child_global_id);
+                    addChild(si.config.debug.child_global_id);
                 }, 1000);
             }
         };

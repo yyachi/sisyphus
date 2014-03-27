@@ -12,6 +12,12 @@
 		test: false
 	};
 	
+	si.config.debug = {
+        parent_global_id: '20140327113836-901432',
+        child_global_id: '20140327113913-987802',
+        box_global_id: '20140325163044-289437',
+	};
+
 	si.config.TiBar = {
 		classType: 'ZBarReaderViewController',
     	sourceType: 'Camera',

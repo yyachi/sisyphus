@@ -18,7 +18,6 @@
     var PATH_ATTACHMENT_FILE = '/attachment_files';
     var PATH_ATTACHMENT_FILE_JSON = PATH_ATTACHMENT_FILE + PATH_JSON;
     var PATH_DAUGHTERS = '/daughters';
-    var PATH_UPLOAD_JSON = '/upload' + PATH_JSON;
     var PATH_RECORED_PROPERTY = '/record_property';
     var PATH_RECORED_PROPERTY_JSON = PATH_RECORED_PROPERTY + PATH_JSON;
 
@@ -222,14 +221,16 @@
                 throw new Error(_parent._className + ' is not supported.');
         }
         path += PATH_ATTACHMENT_FILE;
-        path += PATH_UPLOAD_JSON;
+        path += PATH_JSON;
 
         return path;
     };
 
     si.model.medusa.uploadImage = function(_args) {
+        var params = {};
+        params['attachment_file[data]'] = _args.data;
         si.model.medusa.postWithAuth({
-            args : _args.args,
+            args : params,
             path : si.model.medusa.getImageUploadPath(_args.record),
             username : _args.username,
             password : _args.password,
