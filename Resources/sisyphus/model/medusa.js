@@ -130,7 +130,7 @@
                                 record.image_path = '';
                                 if (__response.length > 0) {
                                     attachmentFile = __response[0];
-                                    record.image_path = attachmentFile.path;
+                                    record.image_path = attachmentFile.thumbnail_path;
                                 }
                                 _args.onsuccess(record);
                             }
