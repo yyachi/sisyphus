@@ -4,24 +4,28 @@
 	si.config.Medusa = {
 		defaultServer: 'http://database.misasa.okayama-u.ac.jp/stone/',
 		defaultpPrintFormatUrl : 'http://database.misasa.okayama-u.ac.jp/format_archive/dream-label.spfmtz'
-//		defaultpPrintFormatUrl : 'file:///mnt/sdcard/extStorages/SdCard//okayama.spfmtz'		
-//		socket_listen_to: '7000',
-//		socket_write_to: '7000',		
-//		current_box_global_id: '20090305054821900.admin',
+		facing: 1, //0 for backward (default) camera, 1 for front camera
+		debug: false,
+		test: false
 	};
 	
-	si.config.TiBar = {
+	si.config.debug = {
+        	parent_global_id: '20140327113836-901432',
+        	child_global_id: '20140327113913-987802',
+        	box_global_id: '20140325163044-289437',
+	};
 
+	si.config.TiBar = {
 		classType: 'ZBarReaderViewController',
-    	sourceType: 'Camera',
-    	cameraMode: 'Sampling', // Default, Sampling, Sequence            
-    	config:{
-    		'showsCameraControls':true, // (VC)
-    		'showsZBarControls':true,
-        	'tracksSymbols':true, // the tracking rectangle that highlights barcodes
-        	'enableCache':true,
-        	'showsHelpOnFail':true,
-        	'takesPicture':false
-    	},
+    		sourceType: 'Camera',
+    		cameraMode: 'Sampling', // Default, Sampling, Sequence            
+    		config:{
+    			'showsCameraControls':true, // (VC)
+    			'showsZBarControls':true,
+        		'tracksSymbols':true, // the tracking rectangle that highlights barcodes
+        		'enableCache':true,
+        		'showsHelpOnFail':true,
+        		'takesPicture':false
+    		},	
 	};
 })();

@@ -1,12 +1,6 @@
 (function() {
 
  	si.ui.createSettingsWindow = function(_args) {
-
-       var debug = false;
-        if (debug) {
-            debug_box_global_id = '20080616170010.hk';  //ISEI MAIN BUILDING
-        }
-
 	    var win = Ti.UI.createWindow({title: 'Settings',backgroundColor:'#ffffff',barColor:'#336699'});
 
 		var data = [
@@ -96,7 +90,7 @@
 		};
 
 		function scanAndLoadDefaultBox(){
-            if (!debug){
+            if (!si.config.Medusa.debug){
                 si.TiBar.scan({
                 configure: si.config.TiBar,
                 	success:function(data){
@@ -112,7 +106,7 @@
                 	}
                 });
             } else {
-                var global_id = debug_box_global_id;
+                var global_id = si.config.debug.box_global_id;
                 Ti.App.Properties.setString('current_box_global_id',global_id);
                 updateHomeRow();
             }

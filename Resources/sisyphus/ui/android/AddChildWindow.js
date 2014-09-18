@@ -32,14 +32,8 @@
     };
 
     si.ui.createAddChildWindow = function() {
-        var debug = false;
-        if (debug) {
-            debug_parent_global_id = '20110416135129-112-853';
-            debug_child_global_id = '20110416134901-075-241';
-        }
-
         var parent = null;
-        var isMultiScan = !debug;
+        var isMultiScan = !si.config.Medusa.debug;
 
         var win = Ti.UI.createWindow({
             title : 'Main',
@@ -213,9 +207,7 @@
             changeMode('loading');
 
             si.model.medusa.uploadImage({
-                args : {
-                    media : _image
-                },
+                data : _image,
                 record : parent,
                 username : username,
                 password : password,
@@ -227,7 +219,7 @@
                     loadParent(parent.global_id);
                 },
                 onerror : function(e) {
-                    labelStatus.text += 'ERROR';
+                    labelStatus.text += 'ERROR\n';
                     labelInfo.text = labelStatus.text + labelInfo.text;
 
                     viewBody.remove(imageView);
@@ -320,7 +312,7 @@
         }));
 
         function scanAndLoadParent() {
-            if (!debug) {
+            if (!si.config.Medusa.debug) {
                 si.TiBar.scan({
                     configure : si.config.TiBar,
                     success : function(_data) {
@@ -335,7 +327,7 @@
                 });
             } else {
                 setTimeout(function() {
-                    loadParent(debug_parent_global_id);
+                    loadParent(si.config.debug.parent_global_id);
                 }, 1000);
             }
         };
@@ -382,7 +374,7 @@
         };
 
         function scanChild() {
-            if (!debug) {
+            if (!si.config.Medusa.debug) {
                 si.TiBar.scan({
                     configure : si.config.TiBar,
                     success : function(_data) {
@@ -397,7 +389,7 @@
                 });
             } else {
                 setTimeout(function() {
-                    addChild(debug_child_global_id);
+                    addChild(si.config.debug.child_global_id);
                 }, 1000);
             }
         };

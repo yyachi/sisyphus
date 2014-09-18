@@ -773,7 +773,7 @@ describe('Medusa', function() {
             si.model.medusa.uploadImage({
                 record : record,
                 args : {
-                    media : image,
+                    data : image,
                 },
                 username : USERNAME,
                 password : NG_PASSWORD,
@@ -798,7 +798,7 @@ describe('Medusa', function() {
             si.model.medusa.uploadImage({
                 record : record,
                 args : {
-                    media : image,
+                    data : image,
                 },
                 username : USERNAME,
                 password : OK_PASSWORD,
@@ -824,7 +824,7 @@ describe('Medusa', function() {
             si.model.medusa.uploadImage({
                 record : record,
                 args : {
-                    media : image,
+                    data : image,
                 },
                 username : USERNAME,
                 password : OK_PASSWORD,
@@ -850,7 +850,7 @@ describe('Medusa', function() {
             si.model.medusa.uploadImage({
                 record : record,
                 args : {
-                    media : image,
+                    data : image,
                 },
                 username : USERNAME,
                 password : OK_PASSWORD,
@@ -876,7 +876,7 @@ describe('Medusa', function() {
             si.model.medusa.uploadImage({
                 record : record,
                 args : {
-                    media : image,
+                    data : image,
                 },
                 username : USERNAME,
                 password : OK_PASSWORD,
@@ -902,7 +902,7 @@ describe('Medusa', function() {
             si.model.medusa.uploadImage({
                 record : record,
                 args : {
-                    media : image,
+                    data : image,
                 },
                 username : USERNAME,
                 password : OK_PASSWORD,
@@ -929,7 +929,7 @@ describe('Medusa', function() {
                 si.model.medusa.uploadImage({
                     record : record,
                     args : {
-                        media : image,
+                        data : image,
                     },
                     username : USERNAME,
                     password : OK_PASSWORD,
