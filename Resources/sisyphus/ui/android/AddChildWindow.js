@@ -21,9 +21,10 @@
         url += '__format_archive_url=' + formatArchiveUrl;
         url += '&__format_id_number=1';
         url += '&UID=' + _global_id;
-        url += '&UID_QRCODE=' + _global_id;
+//        url += '&UID_QRCODE=' + _global_id;
         url += '&NAME=' + _name;
-        url += '&(発行枚数)=1';
+        url += '&SET=1';
+//        url += '&(発行枚数)=1';
         Ti.API.info('url:' + url);
 
         client.open('GET', url);
