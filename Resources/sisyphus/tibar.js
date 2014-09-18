@@ -19,7 +19,7 @@
             'height' : opts.height
         });
 
-        picker.init(SCANDITSDK_APP_KEY, 0);
+        picker.init(SCANDITSDK_APP_KEY, 1);
         picker.setQrEnabled(true);
 
         picker.setCancelCallback(function(e) {

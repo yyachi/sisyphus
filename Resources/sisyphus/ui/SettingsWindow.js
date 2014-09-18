@@ -2,7 +2,7 @@
 
  	si.ui.createSettingsWindow = function(_args) {
 
-       var debug = true;
+       var debug = false;
         if (debug) {
             debug_box_global_id = '20080616170010.hk';  //ISEI MAIN BUILDING
         }

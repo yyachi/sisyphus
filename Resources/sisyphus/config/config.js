@@ -2,8 +2,9 @@
 	si.config = {};
 	
 	si.config.Medusa = {
-		defaultServer: 'http://192.168.234.141:3000',
-		defaultpPrintFormatUrl : 'file:///mnt/sdcard/extStorages/SdCard//okayama.spfmtz'
+		defaultServer: 'http://database.misasa.okayama-u.ac.jp/stone/',
+		defaultpPrintFormatUrl : 'http://database.misasa.okayama-u.ac.jp/format_archive/dream-label.spfmtz'
+//		defaultpPrintFormatUrl : 'file:///mnt/sdcard/extStorages/SdCard//okayama.spfmtz'		
 //		socket_listen_to: '7000',
 //		socket_write_to: '7000',		
 //		current_box_global_id: '20090305054821900.admin',
