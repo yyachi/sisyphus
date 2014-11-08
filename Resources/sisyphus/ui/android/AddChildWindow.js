@@ -13,11 +13,14 @@
             timeout : 30000 // in milliseconds
         });
 
+		var printServer = Ti.App.Properties.getString('printServer');
         var formatArchiveUrl = Ti.App.Properties.getString('printFormatUrl');
         var myAppDir = Ti.Filesystem.getFile(Ti.Filesystem.externalStorageDirectory);
         var sdcardDir = myAppDir.getParent();
         Ti.API.info('sdcardDir : ' + sdcardDir.nativePath);
-        var url = 'http://localhost:8080/Format/Print?';
+        //var url = 'http://localhost:8080/Format/Print?';
+        var url = printServer;
+        url += 'Format/Print?';
         url += '__format_archive_url=' + formatArchiveUrl;
         url += '&__format_id_number=1';
         url += '&UID=' + _global_id;

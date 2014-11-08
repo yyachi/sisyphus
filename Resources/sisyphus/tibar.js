@@ -19,7 +19,8 @@
             'height' : opts.height
         });
 
-        picker.init(SCANDITSDK_APP_KEY, si.config.Medusa.facing);
+        //picker.init(SCANDITSDK_APP_KEY, si.config.Medusa.facing);
+        picker.init(SCANDITSDK_APP_KEY, Ti.App.Properties.getInt('facing'));
         picker.setQrEnabled(true);
 
         picker.setCancelCallback(function(e) {

@@ -21,7 +21,7 @@
                 alert('Please input uri of medusa server.');
                 return;
             }
-            Ti.App.Properties.getString('server',text.value);
+            Ti.App.Properties.setString('server',text.value);
             win.close();
         });
 

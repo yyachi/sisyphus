@@ -150,6 +150,7 @@
 Ti.include('/sisyphus/ui/styles.js');
 Ti.include('/sisyphus/ui/LoginWindow.js');
 Ti.include('/sisyphus/ui/SettingsWindow.js');
+Ti.include('/sisyphus/ui/PrintServerSettingWindow.js');
 Ti.include('/sisyphus/ui/PrintFormatUrlSettingWindow.js');
 Ti.include('/sisyphus/ui/ServerSettingWindow.js');
 Ti.include('/sisyphus/ui/NewStoneWindow.js');

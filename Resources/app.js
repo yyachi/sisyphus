@@ -26,8 +26,13 @@ if (Ti.App.Properties.getString('current_global_id') == null) {
 if (Ti.App.Properties.getString('server') == null) {
     Ti.App.Properties.setString('server', si.config.Medusa.defaultServer);
 }
-if (Ti.App.Properties.getString('printFormatUrl') == null) {
-    Ti.App.Properties.setString('printFormatUrl', si.config.Medusa.defaultpPrintFormatUrl);
+if (Ti.App.Properties.getString('printServer') == null) {
+    Ti.App.Properties.setString('printServer', si.config.Medusa.defaultPrintServer);
+}
+
+
+if (Ti.App.Properties.getInt('facing') == null) {
+    Ti.App.Properties.setInt('facing', si.config.Medusa.facing);
 }
 
 si.app.tabGroup = si.ui.createApplicationTabGroup();
