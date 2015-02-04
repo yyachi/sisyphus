@@ -1,9 +1,9 @@
 require('/tijasmine/tijasmine').infect(this);
-describe('New Stone Window', function() {
+describe('New Box Window', function() {
     var win;
     var text;
     var button;
-    var newstone;
+    var newbox;
     var isSuccess;
 
     beforeEach(function() {
@@ -11,15 +11,15 @@ describe('New Stone Window', function() {
         Ti.App.Properties.setString('username', 'admin');
         Ti.App.Properties.setString('password', 'password');
 
-        win = si.ui.createNewStoneWindow({
-            onsuccess: function(_newstone){
-                Ti.API.info("new stone");
-                Ti.API.debug(_newstone.global_id);
-                if (_newstone.image){
+        win = si.ui.createNewBoxWindow({
+            onsuccess: function(_newbox){
+                Ti.API.info("new box");
+                Ti.API.debug(_newbox.global_id);
+                if (_newbox.image){
                     Ti.API.info("image")
-                    Ti.API.info(_newstone.image.global_id);
+                    Ti.API.info(_newbox.image.global_id);
                 }
-                newstone = _newstone;
+                newbox = _newbox;
                 isSuccess = true;
             }
         });
@@ -29,12 +29,12 @@ describe('New Stone Window', function() {
 
     afterEach(function(){
         Ti.API.info("after 2...");
-        if (newstone){
-            Ti.API.info(newstone.global_id);
-            if (newstone.image){
-                Ti.API.info(newstone.image.global_id);
+        if (newbox){
+            Ti.API.info(newbox.global_id);
+            if (newbox.image){
+                Ti.API.info(newbox.image.global_id);
                 si.model.medusa.delete({
-                    global_id : newstone.image.global_id,
+                    global_id : newbox.image.global_id,
                     username : Ti.App.Properties.getString('username'),
                     password : Ti.App.Properties.getString('password'),
                     onsuccess : (function(e) {}),
@@ -42,7 +42,7 @@ describe('New Stone Window', function() {
                 });                        
             }
             si.model.medusa.delete({
-                global_id : newstone.global_id,
+                global_id : newbox.global_id,
                 username : Ti.App.Properties.getString('username'),
                 password : Ti.App.Properties.getString('password'),                        
                 onsuccess : (function(e) {}),
@@ -72,15 +72,15 @@ describe('New Stone Window', function() {
                 //win.set_image(image);
             });
             afterEach(function(){
-                Ti.API.info(newstone);
-                if (newstone){
-                    Ti.API.info(newstone.name);
+                Ti.API.info(newbox);
+                if (newbox){
+                    Ti.API.info(newbox.name);
                 }
             });
-            it('textName == nothing', function() {
-                textName.value = '';
-                button.fireEvent('click');
-            });
+            // it('textName == nothing', function() {
+            //     textName.value = '';
+            //     button.fireEvent('click');
+            // });
             it('textName != nothing and image', function() {
                 win.set_image(image);    
                 textName.value = 'new name';
@@ -97,7 +97,7 @@ describe('New Stone Window', function() {
             }, '', 60000);
             runs(function() {
                 expect(isSuccess).toBe(true);
-                expect(newstone.name).toBe('new name');  
+                expect(newbox.name).toBe('new name');  
             });
         });
     });

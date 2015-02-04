@@ -1,5 +1,5 @@
 (function() {
-    si.ui.createNewStoneWindow = function(_args) {
+    si.ui.createNewBoxWindow = function(_args) {
         var win = Ti.UI.createWindow({
             title : 'NEW',
             backgroundColor : 'white'
@@ -7,7 +7,7 @@
 
 
         var viewBase = Ti.UI.createView({
-            backgroundColor : 'white',
+            backgroundColor : 'blue',
             top : 0,
             width : '100%',
             height : '100%',
@@ -43,6 +43,7 @@
             //layout : 'horizontal'
         });
 
+
         var activityIndicator = Ti.UI.createActivityIndicator({
             style : Ti.UI.ActivityIndicatorStyle.BIG,
         });
@@ -51,7 +52,7 @@
             value : '',
             top : '2%',
             keyboardType : Ti.UI.KEYBOARD_DEFAULT,
-            hintText : 'my great stone'
+            hintText : 'my great box'
         }));
 
         var button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
@@ -64,7 +65,7 @@
                 return;
             }
             activityIndicator.show();
-            si.model.medusa.createNewStone({
+            si.model.medusa.createNewBox({
                 name : text.value,
                 username : Ti.App.Properties.getString('username'),
                 password : Ti.App.Properties.getString('password'),
@@ -101,11 +102,11 @@
         });
 
         var myImageView = si.ui.createMyImageView();
+
         win.add(viewBase);
         viewBase.add(viewHeader);
         viewHeader.add(viewHeaderLeft);
         viewHeaderLeft.add(myImageView);
-
         viewHeader.add(viewHeaderRight);
         viewHeaderRight.add(text);
         viewHeaderRight.add(button);

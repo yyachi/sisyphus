@@ -1,6 +1,20 @@
 (function() {
     si.ui.android = {};
 
+    si.ui.android.printServerURL = function(){
+        var printServer = Ti.App.Properties.getString('printServer');
+        var url = printServer;
+        if (printServer.match(/^\w+:\/\//) == null) {
+            url = 'http://' + url;
+        }
+
+        if (printServer.match(/\/$/) == null) {
+            url = url + '/';
+        }
+
+        return url;
+    };
+
     si.ui.android.printLabel = function(_global_id, _name) {
         Ti.API.info('printLabel in ');
         var client = Ti.Network.createHTTPClient({
@@ -12,14 +26,15 @@
             },
             timeout : 30000 // in milliseconds
         });
-
-		var printServer = Ti.App.Properties.getString('printServer');
+        Ti.API.info(client);
+		//var printServer = Ti.App.Properties.getString('printServer');
         var formatArchiveUrl = Ti.App.Properties.getString('printFormatUrl');
         var myAppDir = Ti.Filesystem.getFile(Ti.Filesystem.externalStorageDirectory);
         var sdcardDir = myAppDir.getParent();
         Ti.API.info('sdcardDir : ' + sdcardDir.nativePath);
         //var url = 'http://localhost:8080/Format/Print?';
-        var url = printServer;
+        //var url = printServer;
+        var url = si.ui.android.printServerURL();
         url += 'Format/Print?';
         url += '__format_archive_url=' + formatArchiveUrl;
         url += '&__format_id_number=1';
@@ -36,7 +51,7 @@
 
     si.ui.createAddChildWindow = function() {
         var parent = null;
-        var isMultiScan = !si.config.Medusa.debug;
+        //var isMultiScan = !si.config.Medusa.debug;
 
         var win = Ti.UI.createWindow({
             title : 'Main',
@@ -98,17 +113,6 @@
             layout : 'horizontal'
         });
 
-        var imageButtonViewAdd = si.ui.createImageButtonView('/images/plus.png', {
-            Top : '5%',
-            width : '30%',
-            height : '90%'
-        });
-        imageButtonViewAdd.button.addEventListener('click', function(e) {
-            var windowSNewStone = si.ui.createNewStoneWindow();
-            si.app.tabGroup.activeTab.open(windowSNewStone, {
-                animated : true
-            });
-        });
 
         var imageButtonViewHome = si.ui.createImageButtonView('/images/home.png', {
             Top : '5%',
@@ -121,7 +125,7 @@
         });
 
         var optionDialogForMenu = Ti.UI.createOptionDialog({
-            options : ['print label', 'add a snap shot', 'add a local file', 'cancel'],
+            options : ['add a snap shot', 'add a local file', 'print on SATO or TEPRA', 'cancel'],
             cancel : 3,
             title : ''
         });
@@ -129,21 +133,21 @@
             switch (e.index) {
                 case 0:
                     if (parent) {
-                        si.ui.android.printLabel(parent.global_id, parent.name);
+                        uploadImageFromCamera();
                     } else {
                         alert('please load parent first');
                     }
                     break;
                 case 1:
                     if (parent) {
-                        uploadImageFromCamera();
+                        uploadImageFromAlbum();
                     } else {
                         alert('please load parent first');
                     }
                     break;
                 case 2:
                     if (parent) {
-                        uploadImageFromAlbum();
+                        si.ui.android.printLabel(parent.global_id, parent.name);
                     } else {
                         alert('please load parent first');
                     }
@@ -152,6 +156,46 @@
                     break;
             };
         });
+
+        var optionDialogForAdd = Ti.UI.createOptionDialog({
+            options : ['new stone', 'new box', 'cancel'],
+            cancel : 2,
+            title : ''
+        });
+        optionDialogForAdd.addEventListener('click', function(e) {
+            switch (e.index) {
+                case 0:
+                    var windowNewStone = si.ui.createNewStoneWindow({
+                        onsuccess: function(_new){
+                            if (parent){
+                                addChild(_new.global_id, false);
+                            }
+                            si.ui.android.printLabel(_new.global_id, _new.name);
+                        }
+                    });
+                    si.app.tabGroup.activeTab.open(windowNewStone, {
+                        animated : true
+                    });
+                    break;
+                case 1:
+                    var windowNewBox = si.ui.createNewBoxWindow({
+                        onsuccess: function(_new){
+                            if (parent){
+                                addChild(_new.global_id, false);
+                            }
+                            si.ui.android.printLabel(_new.global_id, _new.name);
+                        }
+                    });
+                    si.app.tabGroup.activeTab.open(windowNewBox, {
+                        animated : true
+                    });
+                    break;
+                default:
+                    break;
+            };
+        });
+
+
 
         function uploadImageFromAlbum() {
             Ti.Media.openPhotoGallery({
@@ -242,6 +286,16 @@
         imageButtonViewMenu.button.addEventListener('click', function(e) {
             optionDialogForMenu.show();
         });
+
+        var imageButtonViewAdd = si.ui.createImageButtonView('/images/plus.png', {
+            Top : '5%',
+            width : '30%',
+            height : '90%'
+        });
+        imageButtonViewAdd.button.addEventListener('click', function(e) {
+            optionDialogForAdd.show();
+        });
+
 
         var imageButtonViewScanParent = si.ui.createImageButtonView('/images/01-refresh.png', {
             Top : '5%',
@@ -382,7 +436,7 @@
                     configure : si.config.TiBar,
                     success : function(_data) {
                         if (_data && _data.barcode) {
-                            addChild(_data.barcode);
+                            addChild(_data.barcode, true);
                         }
                     },
                     cancel : function() {
@@ -392,12 +446,12 @@
                 });
             } else {
                 setTimeout(function() {
-                    addChild(si.config.debug.child_global_id);
+                    addChild(si.config.debug.child_global_id, false);
                 }, 1000);
             }
         };
 
-        function addChild(_global_id) {
+        function addChild(_global_id, isMultiScan) {
             var username = Ti.App.Properties.getString('username');
             var password = Ti.App.Properties.getString('password');
 
@@ -470,6 +524,7 @@
         viewBody.add(buttonScanChild);
         viewBody.add(labelStatus);
 
+        win.addChild = addChild;
         return win;
     };
 })();

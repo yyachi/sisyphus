@@ -13,7 +13,7 @@
         });
 
         var tabSettings = Ti.UI.createTab({
-            title : 'Settings',
+            title : 'Options',
             icon : '/images/preferences.png',
             window : si.ui.createSettingsWindow()
         });
@@ -21,6 +21,92 @@
         tabGroup.addTab(tabMain);
         tabGroup.addTab(tabSettings);
         return tabGroup;
+    };
+
+    si.ui.createMyImageView = function(opts){
+        if ( typeof opts == 'undefined') {
+            opts = {};
+        };
+        if (!('width' in opts)) {
+            opts.width = '100%';
+        }
+        if (!('height' in opts)) {
+            opts.height = '100%';
+        }
+
+        var view = Ti.UI.createView({
+            width : opts.width,
+            height : opts.height            
+        });
+
+        var optionDialog = Ti.UI.createOptionDialog({
+            options : ['add a snap shot', 'add a local file', 'cancel'],
+            cancel : 2,
+            title : ''
+        });
+        optionDialog.addEventListener('click', function(e) {
+            switch (e.index) {
+                case 0:
+                    Ti.Media.showCamera({
+                        success : function(event) {
+                            if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
+                                view.set_image(event.media);
+                            }
+                        },
+                        cancel : function() {
+                        },
+                        error : function(error) {
+                        },
+                        saveToPhotoGallery : true,
+                        allowEditing : true,
+                        mediaTypes : [Ti.Media.MEDIA_TYPE_PHOTO]
+                    });
+                    break;
+                case 1:
+                    Ti.Media.openPhotoGallery({
+                        success : function(event) {
+                            if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
+                                view.set_image(event.media);
+                            }
+                        },
+                        cancel : function() {
+                        },
+                        error : function(error) {
+                        },
+                        allowEditing : true,
+                        mediaTypes : [Ti.Media.MEDIA_TYPE_PHOTO]
+                    });
+                    break;
+                default:
+                    break;
+            };
+        });
+
+        if (!opts.image){
+            var photoButtonView = si.ui.createImageButtonView('/images/167-upload-photo.png', {});
+            photoButtonView.button.addEventListener('click', function(e) {
+                optionDialog.show();
+            });
+            view.add(photoButtonView);
+        } else {
+            view.set_image(opts.image);
+        }
+
+        view.set_image = function(_image){
+            view.removeAllChildren();
+
+            var imageView = Ti.UI.createImageView({
+                center : { x: '50%', y : '50%'},
+                image : _image
+            });
+            imageView.addEventListener('click', function(e) {
+                optionDialog.show();
+            });
+            view.add(imageView);
+            view.image = _image;
+        }
+
+        return view;
     };
 
     si.ui.createImageButtonView = function(_image, opts) {
@@ -66,6 +152,96 @@
             self.imageView.setTouchEnabled(value);
         };
         return self;
+    };
+
+    si.ui.createInputOrScanWindow = function(opts){
+        if ( typeof opts === 'undefined') {
+            opts = {};
+        }
+
+        var win = Ti.UI.createWindow({
+            title : opts.title || 'ScanInput',
+            backgroundColor : 'white'
+        });
+
+
+        var text = Ti.UI.createTextField(si.combine($$.TextField, {
+            value : opts.value || '',
+            width : '95%',
+            top : '50%',
+            //left : 0,
+            keyboardType :  Ti.UI.KEYBOARD_URL,
+            hintText : opts.hintText || ''
+        }));
+        win.text_field = text;
+
+        var viewHeader = Ti.UI.createView({
+            backgroundColor : 'red',
+            top : 0,
+            height : '15%'
+        });
+
+        var viewHeaderLeft = Ti.UI.createView({
+            height : '100%',
+            width : '80%',
+            top : 0,
+            left : 0,
+            backgroundColor : 'white',
+        });
+
+        var viewHeaderRight = Ti.UI.createView({
+            height : '100%',
+            width : '20%',
+            top : 0,
+            right : 0,
+            backgroundColor : 'red',
+            layout : 'horizontal'
+        });
+
+
+
+        var imageButtonScan = si.ui.createImageButtonView('/images/barcode.png', {
+//            top : '5%',
+//            right : 0,
+//            width : '95%',
+//            height : '95%'
+        });
+
+        imageButtonScan.button.addEventListener('click', function(e) {
+            if (!si.config.Medusa.debug) {
+                si.TiBar.scan({
+                    configure : si.config.TiBar,
+                    success : function(_data) {
+                        if (_data && _data.barcode) {
+                            text.value = _data.barcode;
+                        }
+                    },
+                    cancel : function() {
+                    },
+                    error : function() {
+                    }
+                });
+            }
+        });
+
+
+
+        var save_button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
+            title : 'save',
+        }));
+
+        save_button.addEventListener('click', function() {
+            opts.save(win);
+        });
+        win.save_button = save_button;
+
+        win.add(viewHeader);
+        viewHeader.add(viewHeaderLeft);
+        viewHeader.add(viewHeaderRight);
+        viewHeaderLeft.add(text);        
+        viewHeaderRight.add(imageButtonScan);
+        win.add(save_button);
+        return win;        
     };
 
     si.ui.createViewParent = function(_record, opts) {
@@ -130,6 +306,8 @@
             labelName.text = _record.name;
             //!!!!!!!!!画像のパスの取得は要検討!!!!!!!!!!!!!!!!!!!!!!
             if (_record.image_path) {
+                //Ti.API.info("image_path");
+                //Ti.API.info(_record.image_path);
                 imageView.image = Ti.App.Properties.getString('server') + '/' + _record.image_path;
             } else {
                 imageView.image = '';
@@ -154,6 +332,7 @@ Ti.include('/sisyphus/ui/PrintServerSettingWindow.js');
 Ti.include('/sisyphus/ui/PrintFormatUrlSettingWindow.js');
 Ti.include('/sisyphus/ui/ServerSettingWindow.js');
 Ti.include('/sisyphus/ui/NewStoneWindow.js');
+Ti.include('/sisyphus/ui/NewBoxWindow.js');
 
 //if (Ti.Platform.name == 'iPhone OS') {
 //        Ti.include('/sisyphus/ui/AddChildWindow.js');

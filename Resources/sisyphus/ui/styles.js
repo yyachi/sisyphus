@@ -85,10 +85,10 @@
             height : 80,
             right : '2%',
             bottom : '2%',
-            backgroundColor : 'white',
-            borderColor : 'black',
-            borderWidth : 1,
-            borderRadius : 10
+            // backgroundColor : 'white',
+            // borderColor : 'black',
+            // borderWidth : 1,
+            // borderRadius : 10
         },
 
         animationDuration : 500,

@@ -59,14 +59,30 @@
 					break;
 				case 'PrintServer':
 					var windowPrintServerSetting = si.ui.createPrintServerSetttingWindow();
-					si.app.tabGroup.activeTab.open(windowPrintServerSetting,{animated:true});
+					si.app.tabGroup.activeTab.open(
+						windowPrintServerSetting,
+						{animated:true}
+					);
 					break;
 				case 'PrintFormatUrl':
 					var windowsPrintFormatUrlSetting = si.ui.createPrintFormatUrlSetttingWindow();
 					si.app.tabGroup.activeTab.open(windowsPrintFormatUrlSetting,{animated:true});
 					break;
 				case 'ScanToLoad':
-					scanAndLoadDefaultBox();
+					si.app.tabGroup.activeTab.open(
+						si.ui.createInputOrScanWindow({
+	        				title: 'default box',
+	        				value: Ti.App.Properties.getString('current_box_global_id'),
+                			save : function(w) {
+                				var global_id = w.text_field.value;
+	                        	Ti.App.Properties.setString('current_box_global_id',global_id);
+	                        	w.close();
+                        		updateHomeRow();
+                			}
+	        			}),
+	        			{animated:true}
+					);
+					//scanAndLoadDefaultBox();
 					break;
 				case 'ScanCamera':
 				    optionDialogForScanCamera.show();
