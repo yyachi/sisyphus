@@ -86,11 +86,11 @@ describe('New Stone Window', function() {
                 textName.value = 'new name';
                 button.fireEvent('click');
             });
-
-            // it('textName != nothing', function() {
-            //     textName.value = 'new name';
-            //     button.fireEvent('click');
-            // });
+            it('textName != nothing and global_id', function() {
+                win.set_global_id('0101001-234101');    
+                textName.value = 'new name';
+                button.fireEvent('click');
+            });
 
             waitsFor(function() {
                 return isSuccess != null;

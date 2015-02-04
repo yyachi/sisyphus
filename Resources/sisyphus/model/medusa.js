@@ -200,10 +200,42 @@
         return class_path + '/' + _record.id + PATH_JSON;
     };
 
+    si.model.medusa.className2Path = function(_className) {
+        var path = '';
+        switch(_className) {
+            case CLASSNAME_STONE:
+                path = PATH_STONE;
+                break;
+            case CLASSNAME_BOX:
+                path = PATH_BOX;
+                break;
+            case CLASSNAME_PLACE:
+                path = PATH_PLACE;
+                break;
+            case CLASSNAME_ANALYSIS:
+                path = PATH_ANALYSIS;
+                break;
+            case CLASSNAME_BIB:
+                path = PATH_BIB;
+                break;
+            case CLASSNAME_ATTACHMENT_FILE:
+                path = PATH_ATTACHMENT_FILE;
+                break;
+            default:
+                throw new Error(_className + ' is not supported .');
+        }
+        return path;
+    };
+
     si.model.medusa.getResourcePropertyPath = function(_record) {
         var class_path = si.model.medusa.getClassPath(_record);
         //var path = [class_path, _record.id + JSON_PATH].join('/')
         return class_path + '/' + _record.id + PATH_RECORED_PROPERTY_JSON;
+    };
+
+    si.model.medusa.getCollectionPath = function(_className) {
+        var class_path = si.model.medusa.className2Path(_className);
+        return class_path + PATH_JSON;
     };
 
     si.model.medusa.getClassPath = function(_record) {
@@ -230,6 +262,7 @@
             default:
                 throw new Error(_record._className + ' is not supported .');
         }
+        var path = si.model.medusa.className2Path(_record._className);
         return path;
     };
 
@@ -364,9 +397,6 @@
 
     si.model.medusa.load_property = function(_record, _args) {
         var path = si.model.medusa.getResourcePropertyPath(_record);
-        Ti.API.info(_record);
-        Ti.API.info(_args);
-        Ti.API.info(path);
         si.model.medusa.getWithAuth({
             path : path,
             username : _args.username,
@@ -389,20 +419,56 @@
 
     };
 
-    si.model.medusa.createNewStone = function(_args) {
+    si.model.medusa.create = function(_className, _args) {
         var params = {};
-        params['stone[name]'] = _args.name;
-        var create_path = PATH_STONE + PATH_JSON;
+        var properties = null;
+        var _paramName = _className.toLowerCase();
+        for (var key in _args.args){
+            var param_key = _paramName;
+            param_key += '[' + key +  ']';
+
+            if (key == 'global_id' || key == 'user_id'){
+                if (!properties){
+                    properties = {};
+                }
+                properties[key] = _args.args[key];
+            } else {
+                params[param_key] = _args.args[key];
+            }
+        }
+//        Ti.API.info(params);
+//        Ti.API.info(properties);
+        var path = si.model.medusa.getCollectionPath(_className);
         si.model.medusa.postWithAuth({
             args : params,
-            path : create_path,
+            path : path,
             username : _args.username,
             password : _args.password,
             onsuccess : function(_stone) {
                 if (_stone) {
                     var record = _stone;
-                    record._className = 'Stone';
-                    si.model.medusa.load_property(record, _args);
+                    record._className = _className;
+                    si.model.medusa.load_property(record, {
+                        username : _args.username,
+                        password : _args.password,
+                        onsuccess : function(_record) {
+                            if (properties){
+                                // update record_properties
+                                si.model.medusa.update_attributes(_record, {
+                                    args: properties,
+                                    username : _args.username,
+                                    password : _args.password,
+                                    onsuccess : function(_updated){
+                                        _args.onsuccess(_updated);
+                                    },
+                                    onerror : function(e) { _args.onerror(e) }
+                                });
+                            } else {
+                                _args.onsuccess(_record);
+                            }
+                        },
+                        onerror: function(e) {_args.onerror(e)}         
+                    });
                 } else {
                     _args.onerror({error : 'stone not found'});
                 }
@@ -411,25 +477,12 @@
         });
     };
 
+    si.model.medusa.createNewStone = function(_args) {
+        si.model.medusa.create('Stone', _args);
+    };
+
     si.model.medusa.createNewBox = function(_args) {
-        var params = {};
-        params['box[name]'] = _args.name;
-        si.model.medusa.postWithAuth({
-            args : params,
-            path : PATH_BOX + PATH_JSON,
-            username : _args.username,
-            password : _args.password,
-            onsuccess : function(_record) {
-                if (_record) {
-                    var record = _record;
-                    record._className = 'Box';
-                    si.model.medusa.load_property(record, _args);
-                } else {
-                    _args.onerror({error : 'box not found'});
-                }
-            },
-            onerror : _args.onerror,
-        });
+        si.model.medusa.create('Box', _args);
     };
 
 

@@ -28,12 +28,12 @@ describe('Medusa', function() {
         Ti.App.Properties.setString('server', si.config.Medusa.defaultServer);
     });
 
-    xit('Get Server Host Name', function() {
+    it('Get Server Host Name', function() {
         expect(si.model.medusa.host()).toBe('192.168.56.102:3000');
     });
 
 
-    xdescribe('Get', function() {
+    describe('Get', function() {
         it('With No Auth', function() {
             si.model.medusa.getWithAuth({
                 path : GET_PATH,
@@ -77,7 +77,7 @@ describe('Medusa', function() {
         });
     });
 
-    xdescribe('Put', function() {
+    describe('Put', function() {
         it('With No Auth', function() {
             si.model.medusa.putWithAuth({
                 path : PUT_PATH,
@@ -119,7 +119,7 @@ describe('Medusa', function() {
         });
     });
 
-    xdescribe('Post', function() {
+    describe('Post', function() {
         afterEach(function(){
             if (response && response.global_id){
                 //Ti.API.info(response.id);
@@ -180,10 +180,10 @@ describe('Medusa', function() {
         });
     });
 
-    xdescribe('DELETE', function(){
+    describe('DELETE', function(){
         it('does something',function(){
             si.model.medusa.createNewStone({
-                name : params['stone[name]'],
+                args : {name: 'deleteme'},
                 username : USERNAME,
                 password : OK_PASSWORD,
                 onsuccess : (function(e) {
@@ -213,11 +213,6 @@ describe('Medusa', function() {
                 expect(isSuccess).toBe(true);
                 //expect(response.name).toBe(params['stone[name]']);
             });
-
-
-
-
-            expect(null).toBe(null);
         });
         afterEach(function(){
             Ti.API.info("after...");
@@ -225,12 +220,12 @@ describe('Medusa', function() {
     });
 
     
-    xdescribe('Update attributes', function() {
+    describe('Update attributes', function() {
         var record;
         beforeEach(function(){
             Ti.API.info("creating stone...")
             si.model.medusa.createNewStone({
-                name : params['stone[name]'],
+                args : {name: 'updateme'},
                 username : USERNAME,
                 password : OK_PASSWORD,
                 onsuccess : (function(e) {
@@ -291,7 +286,74 @@ describe('Medusa', function() {
         });
     });
 
+    describe('Create', function(){
+        afterEach(function(){
+            Ti.API.info("after...")
+            if (response && response.global_id){
+                si.model.medusa.delete({
+                    global_id : response.global_id,
+                    username : USERNAME,
+                    password : OK_PASSWORD,
+                    onsuccess : (function(e) {}),
+                    onerror : (function(e) {}),
+                });
+            }
+        });
+
+        it('Stone', function(){
+            si.model.medusa.create('Stone', {
+                args : {
+                    global_id : '000000-010123',
+                    name : 'stone-1'
+                },
+                username : USERNAME,
+                password : OK_PASSWORD,
+                onsuccess : function(_stone){
+                    response = _stone;
+                    isSuccess = true;
+                },
+                onerror : function(e) {
+                    isSuccess = false;
+                }
+            });
+            waitsFor(function() {
+                return isSuccess != null;
+            }, '', 30000);
+            runs(function() {
+                expect(response.name).toBe('stone-1');
+                expect(response.global_id).toBe('000000-010123');
+            });
+        });
+
+        it('Box', function(){
+            si.model.medusa.create('Box', {
+                args : {
+                    global_id : '000000-010123',
+                    name : 'box-1'
+                },
+                username : USERNAME,
+                password : OK_PASSWORD,
+                onsuccess : function(_record){
+                    response = _record;
+                    isSuccess = true;
+                },
+                onerror : function(e) {
+                    isSuccess = false;
+                }
+            });
+            waitsFor(function() {
+                return isSuccess != null;
+            }, '', 30000);
+            runs(function() {
+                expect(response.name).toBe('box-1');
+                expect(response.global_id).toBe('000000-010123');
+            });
+        });
+
+    });
+
     describe('Create New Box', function(){
+        var params = {name : 'new-1', global_id : '010101-1112'};
         beforeEach(function(){
             Ti.API.info("before...");
             Ti.API.info(response);
@@ -300,7 +362,7 @@ describe('Medusa', function() {
         it('With Auth', function(){
             Ti.API.info("creating...");
             si.model.medusa.createNewBox({
-                name : 'new box',
+                args : params,
                 username : USERNAME,
                 password : OK_PASSWORD,
                 onsuccess : (function(e) {
@@ -316,7 +378,8 @@ describe('Medusa', function() {
             }, '', 30000);
             runs(function() {
                 expect(isSuccess).toBe(true);
-                expect(response.name).toBe('new box');
+                expect(response.name).toBe(params['name']);
+                expect(response.global_id).toBe(params['global_id']);                
                 expect(response.id).not.toBe('');
                 expect(response._className).toBe('Box');
                 expect(response.user_id).not.toBe('');
@@ -346,6 +409,7 @@ describe('Medusa', function() {
 
 
     describe('Create New Stone', function() {
+        var params = {name : 'new-1', global_id : '010101-1112'};
         afterEach(function(){
             if (response && response.global_id){
                 //Ti.API.info(response.id);
@@ -363,7 +427,7 @@ describe('Medusa', function() {
 
         it('With No Auth', function() {
             si.model.medusa.createNewStone({
-                name : params['stone[name]'],
+                args : params,
                 username : USERNAME,
                 password : NG_PASSWORD,
                 onsuccess : (function(e) {
@@ -384,7 +448,7 @@ describe('Medusa', function() {
 
         it('With Auth', function() {
             si.model.medusa.createNewStone({
-                name : params['stone[name]'],
+                args : params,
                 username : USERNAME,
                 password : OK_PASSWORD,
                 onsuccess : (function(e) {
@@ -400,7 +464,8 @@ describe('Medusa', function() {
             }, '', 30000);
             runs(function() {
                 expect(isSuccess).toBe(true);
-                expect(response.name).toBe(params['stone[name]']);
+                expect(response.name).toBe(params['name']);
+                expect(response.global_id).toBe(params['global_id']);                
                 expect(response.id).not.toBe('');
                 expect(response._className).toBe('Stone');
                 expect(response.user_id).not.toBe('');
@@ -409,7 +474,7 @@ describe('Medusa', function() {
         });
 
     });
-    xdescribe('Get Account Info', function() {
+    describe('Get Account Info', function() {
         it('With No Auth', function() {
             si.model.medusa.getAccountInfo({
                 username : USERNAME,
@@ -498,7 +563,7 @@ describe('Medusa', function() {
 
     });
 
-    xit('Get Record From Global Id', function() {
+    it('Get Record From Global Id', function() {
         si.model.medusa.getRecordFromGlobalId({
             global_id : GLOBAL_ID,
             username : USERNAME,
@@ -523,7 +588,7 @@ describe('Medusa', function() {
         });
     });
 
-    xit('Get Record From Global URL', function() {
+    it('Get Record From Global URL', function() {
         si.model.medusa.getRecordFromGlobalId({
             global_id : GLOBAL_URL,
             username : USERNAME,
@@ -548,7 +613,7 @@ describe('Medusa', function() {
         });
     });
 
-    xdescribe('getClassPath', function() {
+    describe('getClassPath', function() {
         var record = {};
         it(CLASSNAME_STONE, function() {
             record._className = CLASSNAME_STONE;
@@ -591,7 +656,7 @@ describe('Medusa', function() {
         });
     });
 
-    xdescribe('Create Link Path', function() {
+    describe('Create Link Path', function() {
         var parent;
         var child;
         beforeEach(function() {
@@ -951,7 +1016,7 @@ describe('Medusa', function() {
         });
     });
 
-    xit('Create Link', function() {
+    it('Create Link', function() {
         var parent = {
             '_className' : CLASSNAME_STONE,
             'id' : 17062,
@@ -978,7 +1043,7 @@ describe('Medusa', function() {
         });
     });
 
-    xdescribe('Get Image Upload Path', function() {
+    describe('Get Image Upload Path', function() {
         var parent;
         beforeEach(function() {
             parent = {
@@ -1033,7 +1098,7 @@ describe('Medusa', function() {
         });
     });
 
-    xdescribe('Upload Image', function() {
+    describe('Upload Image', function() {
         Ti.API.info("aaa...");
         var record = {
             '_className' : CLASSNAME_STONE,

@@ -5,7 +5,6 @@
             backgroundColor : 'white'
         });
 
-
         var viewBase = Ti.UI.createView({
             backgroundColor : 'white',
             top : 0,
@@ -40,6 +39,24 @@
             top : 0,
             right : 0,
             backgroundColor : 'white',
+            layout : 'vertical'
+        });
+
+        var viewHeaderRight1 = Ti.UI.createView({
+            height : '50%',
+            width : '100%',
+            top : 0,
+            right : 0,
+            backgroundColor : 'white',
+            //layout : 'horizontal'
+        });
+
+        var viewHeaderRight2 = Ti.UI.createView({
+            height : '50%',
+            width : '100%',
+            top : 0,
+            right : 0,
+            backgroundColor : 'white',
             //layout : 'horizontal'
         });
 
@@ -49,7 +66,7 @@
 
         var text = Ti.UI.createTextField(si.combine($$.TextField, {
             value : '',
-            top : '2%',
+         //   top : '2%',
             keyboardType : Ti.UI.KEYBOARD_DEFAULT,
             hintText : 'my great stone'
         }));
@@ -63,9 +80,17 @@
                 alert('Please input name of new stone');
                 return;
             }
+            var params = {};
+            params['name'] = text.value;
+            if (win.global_id.value){
+                Ti.API.info("global_id:" + win.global_id.value);
+                params['global_id'] = win.global_id.value;
+            } else {
+                Ti.API.info("no global_id");
+            }
             activityIndicator.show();
             si.model.medusa.createNewStone({
-                name : text.value,
+                args : params,
                 username : Ti.App.Properties.getString('username'),
                 password : Ti.App.Properties.getString('password'),
                 onsuccess : function(_record) {
@@ -100,6 +125,12 @@
             });
         });
 
+        var scan_input = si.ui.createScanInput(si.combine($$.TextField, {
+            value : '',
+            keyboardType : Ti.UI.KEYBOARD_DEFAULT,
+            hintText : 'my great ID'
+        }));
+
         var myImageView = si.ui.createMyImageView();
         win.add(viewBase);
         viewBase.add(viewHeader);
@@ -107,17 +138,23 @@
         viewHeaderLeft.add(myImageView);
 
         viewHeader.add(viewHeaderRight);
-        viewHeaderRight.add(text);
-        viewHeaderRight.add(button);
+        viewHeaderRight.add(viewHeaderRight1);
+        viewHeaderRight1.add(scan_input);
+        viewHeaderRight.add(viewHeaderRight2);        
+        viewHeaderRight2.add(text);
+        //viewHeaderRight.add(button);
         viewBase.add(viewBody);
-        //viewBody.add(button);
+        viewBody.add(button);
         win.add(activityIndicator);
         win.name_field = text;
         win.save_button = button;
         win.set_image = function(_image) {
             myImageView.set_image(_image);
         };
-
+        win.set_global_id = function(gid) {
+            scan_input.set_value(gid);
+        }
+        win.global_id = scan_input.input;
         return win;
     };
 })();

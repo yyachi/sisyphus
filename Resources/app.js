@@ -55,13 +55,13 @@ si.app.tabGroup.open();
 
 // Test Code Here!!!
 if (si.config.Medusa.test){
-        // var w = si.ui.createNewStoneWindow();
+        var w = si.ui.createNewStoneWindow();
         // //var file = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, "specs", "files", "homeros.jpeg");
-        // var file = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, "specs", "files", "homeros-2.jpg");
-        // var image = file.read();
-        // w.set_image(image);
-        // w.open({
-        //     modal : true
-        // });
+        var file = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, "specs", "files", "homeros-2.jpg");
+        var image = file.read();
+        w.set_image(image);
+        w.open({
+             modal : true
+        });
     require('/tijasmine/tests_runner').run(); 
 }

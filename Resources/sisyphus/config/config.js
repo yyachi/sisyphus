@@ -8,7 +8,7 @@
 		defaultpPrintFormatUrl : 'http://database.misasa.okayama-u.ac.jp/format_archive/dream-label.spfmtz',
 		facing: 0, //0 for backward (default) camera, 1 for front camera
 		debug: false,
-		test: true
+		test: false
 	};
 	
 	si.config.debug = {

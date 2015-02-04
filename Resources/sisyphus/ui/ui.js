@@ -23,6 +23,83 @@
         return tabGroup;
     };
 
+    si.ui.createScanInput = function(opts){
+        var view = Ti.UI.createView({
+            height : Ti.UI.SIZE,
+            //backgroundColor : 'red',
+            layout : 'horizontal'
+        });
+
+        var text = Ti.UI.createTextField(opts);
+
+        var imageButtonScan = si.ui.createImageButtonView('/images/barcode.png', {
+            height : Ti.UI.SiZE
+//            top : '5%',
+//            right : 0,
+//            width : '95%',
+//            height : '95%'
+        });
+
+        var imageView = Ti.UI.createImageView({
+            image : '/images/barcode.png'
+        });
+
+
+        var button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
+            title : '',
+            width : '100%'
+        }));
+
+        button.addEventListener('click', function(e) {
+            if (!si.config.Medusa.debug) {
+                si.TiBar.scan({
+                    configure : si.config.TiBar,
+                    success : function(_data) {
+                        if (_data && _data.barcode) {
+                            text.value = _data.barcode;
+                        }
+                    },
+                    cancel : function() {
+                    },
+                    error : function() {
+                    }
+                });
+            }
+        });
+        imageView.addEventListener('click', function(e) {
+            button.fireEvent('click', e);
+        });
+
+
+        var view_left = Ti.UI.createView({
+            height : Ti.UI.SIZE,
+            width : '80%',
+            left : 0,
+            //backgroundColor : 'orange',
+            layout : 'vertical'
+        });
+        var view_right = Ti.UI.createView({
+            height : Ti.UI.SIZE,
+            width : '20%',
+            right : 0,
+            //backgroundColor : 'yellow',
+        });
+
+        view.add(view_left);
+        view.add(view_right);
+        view_left.add(text);
+
+        view_right.add(button);
+        view_right.add(imageView);
+
+        view.set_value = function(value){
+            text.value = value;
+        }
+        view.input = text;
+
+        return view;
+    }
+
     si.ui.createMyImageView = function(opts){
         if ( typeof opts == 'undefined') {
             opts = {};
