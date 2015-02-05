@@ -15,10 +15,10 @@ describe('Login Window', function() {
     beforeEach(function() {
         Ti.App.Properties.setString('server', si.config.Medusa.defaultServer);
         win = si.ui.createLoginWindow();
-        textUsername = win.children[0];
-        textPassword = win.children[1];
-        button = win.children[2];
-        activityIndicator = win.children[3];
+        textUsername = win.textUsername;
+        textPassword = win.textPassword;
+        button = win.save_button;
+        activityIndicator = win.activityIndicator;
     });
 
     afterEach(function() {

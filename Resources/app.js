@@ -26,6 +26,9 @@ if (Ti.App.Properties.getString('current_global_id') == null) {
 if (Ti.App.Properties.getString('server') == null) {
     Ti.App.Properties.setString('server', si.config.Medusa.defaultServer);
 }
+if (Ti.App.Properties.getInt('printLabel') == null) {
+    Ti.App.Properties.setInt('printLabel', si.config.Medusa.printLabel);
+}
 if (Ti.App.Properties.getString('printServer') == null) {
     Ti.App.Properties.setString('printServer', si.config.Medusa.defaultPrintServer);
 }
@@ -35,6 +38,11 @@ if (Ti.App.Properties.getInt('facing') == null) {
 
 si.app.tabGroup = si.ui.createApplicationTabGroup();
 si.app.tabGroup.open();
+
+Ti.API.info(Ti.Network.networkTypeName);
+if (Ti.Network.networkType == Ti.Network.NETWORK_NONE){
+    alert('no network is available.');
+}
 // if (Ti.App.Properties.getString('username') == null || Ti.App.Properties.getString('username') == '') {
 //     setTimeout(function() {
 //         var w = si.ui.createLoginWindow();
@@ -55,13 +63,13 @@ si.app.tabGroup.open();
 
 // Test Code Here!!!
 if (si.config.Medusa.test){
-        var w = si.ui.createNewStoneWindow();
-        // //var file = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, "specs", "files", "homeros.jpeg");
-        var file = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, "specs", "files", "homeros-2.jpg");
-        var image = file.read();
-        w.set_image(image);
-        w.open({
-             modal : true
-        });
+        // var w = si.ui.createNewBoxWindow();
+        // var file = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, "specs", "files", "homeros.jpeg");
+        // // //var file = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, "specs", "files", "homeros-2.jpg");
+        // var image = file.read();
+        // w.set_image(image);
+        // w.open({
+        //      modal : true
+        // });
     require('/tijasmine/tests_runner').run(); 
 }

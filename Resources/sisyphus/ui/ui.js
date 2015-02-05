@@ -1,6 +1,7 @@
 (function() {
     si.ui = {};
 
+
     si.ui.createApplicationTabGroup = function(_args) {
         var tabGroup = Ti.UI.createTabGroup({
             height : 300
@@ -32,23 +33,18 @@
 
         var text = Ti.UI.createTextField(opts);
 
-        var imageButtonScan = si.ui.createImageButtonView('/images/barcode.png', {
-            height : Ti.UI.SiZE
-//            top : '5%',
-//            right : 0,
-//            width : '95%',
-//            height : '95%'
-        });
-
         var imageView = Ti.UI.createImageView({
             image : '/images/barcode.png'
         });
 
 
-        var button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
+        var button = Ti.UI.createButton({
             title : '',
-            width : '100%'
-        }));
+            //borderColor : 'black',
+            //borderRadius : 5,
+            //backgroundColor : 'white',
+            width : '90%'
+        });
 
         button.addEventListener('click', function(e) {
             if (!si.config.Medusa.debug) {
@@ -73,14 +69,14 @@
 
         var view_left = Ti.UI.createView({
             height : Ti.UI.SIZE,
-            width : '80%',
+            width : '90%',
             left : 0,
             //backgroundColor : 'orange',
             layout : 'vertical'
         });
         var view_right = Ti.UI.createView({
             height : Ti.UI.SIZE,
-            width : '20%',
+            width : '10%',
             right : 0,
             //backgroundColor : 'yellow',
         });
@@ -171,7 +167,11 @@
 
         view.set_image = function(_image){
             view.removeAllChildren();
-
+            var flame = Ti.UI.createView({
+                height : '95%',
+                width : '95%',
+                backgroundColor : 'black'
+            });
             var imageView = Ti.UI.createImageView({
                 center : { x: '50%', y : '50%'},
                 image : _image
@@ -179,7 +179,8 @@
             imageView.addEventListener('click', function(e) {
                 optionDialog.show();
             });
-            view.add(imageView);
+            view.add(flame);
+            flame.add(imageView);
             view.image = _image;
         }
 
@@ -241,83 +242,56 @@
             backgroundColor : 'white'
         });
 
-
-        var text = Ti.UI.createTextField(si.combine($$.TextField, {
-            value : opts.value || '',
-            width : '95%',
-            top : '50%',
-            //left : 0,
-            keyboardType :  Ti.UI.KEYBOARD_URL,
-            hintText : opts.hintText || ''
-        }));
-        win.text_field = text;
+       var viewBase = Ti.UI.createView({
+            backgroundColor : 'white',
+            top : 0,
+            width : '100%',
+            height : '100%',
+            layout : 'vertical'
+        });
 
         var viewHeader = Ti.UI.createView({
-            backgroundColor : 'red',
-            top : 0,
-            height : '15%'
-        });
-
-        var viewHeaderLeft = Ti.UI.createView({
-            height : '100%',
-            width : '80%',
-            top : 0,
-            left : 0,
             backgroundColor : 'white',
+            height : '25%'
         });
 
-        var viewHeaderRight = Ti.UI.createView({
-            height : '100%',
-            width : '20%',
+        var viewBody = Ti.UI.createView({
+            backgroundColor : 'white',
             top : 0,
-            right : 0,
-            backgroundColor : 'red',
-            layout : 'horizontal'
+            top : 0,
+            height : '85%'
         });
 
 
-
-        var imageButtonScan = si.ui.createImageButtonView('/images/barcode.png', {
-//            top : '5%',
-//            right : 0,
-//            width : '95%',
-//            height : '95%'
-        });
-
-        imageButtonScan.button.addEventListener('click', function(e) {
-            if (!si.config.Medusa.debug) {
-                si.TiBar.scan({
-                    configure : si.config.TiBar,
-                    success : function(_data) {
-                        if (_data && _data.barcode) {
-                            text.value = _data.barcode;
-                        }
-                    },
-                    cancel : function() {
-                    },
-                    error : function() {
-                    }
-                });
-            }
-        });
-
+        var scan_input = si.ui.createScanInput(si.combine($$.TextField, {
+            value : opts.value || '',
+            keyboardType : opts.keyboardType || Ti.UI.KEYBOARD_DEFAULT,
+            hintText : opts.hintText || ''
+        }));
 
 
         var save_button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
+            top : 0,
             title : 'save',
         }));
 
         save_button.addEventListener('click', function() {
-            opts.save(win);
+            opts.save(scan_input.input.value);
         });
         win.save_button = save_button;
 
-        win.add(viewHeader);
-        viewHeader.add(viewHeaderLeft);
-        viewHeader.add(viewHeaderRight);
-        viewHeaderLeft.add(text);        
-        viewHeaderRight.add(imageButtonScan);
-        win.add(save_button);
+        win.add(viewBase);
+        viewBase.add(viewHeader);
+        viewBase.add(viewBody);
+
+        viewHeader.add(scan_input);
+        viewBody.add(save_button);
+
+        win.set_value = function(value) {
+            scan_input.set_value(value);
+        }
+        win.input = scan_input.input;
+
         return win;        
     };
 

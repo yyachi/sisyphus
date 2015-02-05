@@ -5,9 +5,9 @@ describe('Print Form Url Setting Window', function() {
     var button;
 
     beforeEach(function() {
-        win = si.ui.createPrintFormatUrlSetttingWindow();
-        textPrintFormUrl = win.children[0];
-        button = win.children[1];
+        win = si.ui.createPrintFormatUrlSettingWindow();
+        textPrintFormUrl = win.textPrintFormUrl;
+        button = win.save_button;
     });
 
     afterEach(function() {

@@ -6,6 +6,7 @@
 		var data = [
 			{title:'----', hasChild:false, target:'Server', header:'Medusa server'},
 			{title:'----', hasChild:false, target:'LogIn', header:'account'},
+			{title:'----', hasChild:false, target:'PrintLabel', header:'print label'},			
 			{title:'----', hasChild:false, target:'PrintServer', header:'print server'},
 			{title:'----', hasChild:false, target:'PrintFormatUrl', header:'print format url'},
 			{title:'----', hasChild:false, target:'ScanToLoad', header:'home'},
@@ -16,6 +17,7 @@
 		var index_print_server = findIndex('PrintServer');
 		var index_print_format_url = findIndex('PrintFormatUrl');
 		var index_home = findIndex('ScanToLoad');
+		var index_print_label = findIndex('PrintLabel');
 		var index_scan_camera = findIndex('ScanCamera');
 
 		var tableViewOptions = {
@@ -23,6 +25,27 @@
 				backgroundColor:'transparent',
 				rowBackgroundColor:'white'
 		};
+
+        var optionDialogForPrintLabel = Ti.UI.createOptionDialog({
+            options : ['enable', 'disable', 'cancel'],
+            cancel : 2,
+            title : 'Print Label'
+        });
+        optionDialogForPrintLabel.addEventListener('click', function(e) {
+            switch (e.index) {
+                case 0:
+					Ti.App.Properties.setInt('printLabel',1);        
+                    break;
+                case 1:
+					Ti.App.Properties.setInt('printLabel',0);                
+                    break;
+                default:
+                    break;
+            };
+            updatePrintLabelRow();
+			//tableView.data[4].rows[0].title = ScanCameraInfo();
+        });
+
 
         var optionDialogForScanCamera = Ti.UI.createOptionDialog({
             options : ['backward', 'front', 'cancel'],
@@ -58,34 +81,37 @@
 					si.app.tabGroup.activeTab.open(windowLogin,{animated:true});
 					break;
 				case 'PrintServer':
-					var windowPrintServerSetting = si.ui.createPrintServerSetttingWindow();
+					var windowPrintServerSetting = si.ui.createPrintServerSettingWindow();
 					si.app.tabGroup.activeTab.open(
 						windowPrintServerSetting,
 						{animated:true}
 					);
 					break;
 				case 'PrintFormatUrl':
-					var windowsPrintFormatUrlSetting = si.ui.createPrintFormatUrlSetttingWindow();
+					var windowsPrintFormatUrlSetting = si.ui.createPrintFormatUrlSettingWindow();
 					si.app.tabGroup.activeTab.open(windowsPrintFormatUrlSetting,{animated:true});
 					break;
 				case 'ScanToLoad':
+					var w = si.ui.createInputOrScanWindow({
+        				title: 'default box',
+        				value: Ti.App.Properties.getString('current_box_global_id'),
+            			save : function(value) {
+            				var global_id = value;
+                        	Ti.App.Properties.setString('current_box_global_id',global_id);
+                        	w.close();
+                    		updateHomeRow();
+            			}
+        			});
 					si.app.tabGroup.activeTab.open(
-						si.ui.createInputOrScanWindow({
-	        				title: 'default box',
-	        				value: Ti.App.Properties.getString('current_box_global_id'),
-                			save : function(w) {
-                				var global_id = w.text_field.value;
-	                        	Ti.App.Properties.setString('current_box_global_id',global_id);
-	                        	w.close();
-                        		updateHomeRow();
-                			}
-	        			}),
-	        			{animated:true}
+						w,{animated:true}
 					);
 					//scanAndLoadDefaultBox();
 					break;
 				case 'ScanCamera':
 				    optionDialogForScanCamera.show();
+					break;
+				case 'PrintLabel':
+				    optionDialogForPrintLabel.show();
 					break;
 				default:
 					break;
@@ -101,6 +127,7 @@
 		   	tableView.data[index_print_format_url].rows[0].title = printFormatUrlInfo();
 		   	updateHomeRow();
 		   	updateScanCameraRow();
+		   	updatePrintLabelRow();
 		});
 
 		function findIndex(target) {
@@ -146,8 +173,21 @@
 			}
 		}
 
+		function PrintLabelInfo(){
+			var flag = Ti.App.Properties.getInt('printLabel');
+			if (flag == 1){
+				return 'enabled';
+			} else {
+				return 'disabled';
+			}
+		}
+
 		function updateScanCameraRow(){
 			tableView.data[index_scan_camera].rows[0].title = ScanCameraInfo();
+		}
+
+		function updatePrintLabelRow(){
+			tableView.data[index_print_label].rows[0].title = PrintLabelInfo();
 		}
 
 		function updateHomeRow(){

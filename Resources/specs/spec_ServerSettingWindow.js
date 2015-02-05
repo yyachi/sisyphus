@@ -6,8 +6,8 @@ describe('Server Setting Window', function() {
 
     beforeEach(function() {
         win = si.ui.createServerSettingWindow();
-        textServer = win.children[0];
-        button = win.children[1];
+        textServer = win.input;
+        button = win.save_button;
     });
 
     afterEach(function() {

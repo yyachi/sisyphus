@@ -1,19 +1,41 @@
 (function() {
-    si.ui.createPrintFormatUrlSetttingWindow = function(_args) {
+    si.ui.createPrintFormatUrlSettingWindow = function(_args) {
         var win = Ti.UI.createWindow({
             title : 'Print format url',
             backgroundColor : 'white'
         });
 
+       var viewBase = Ti.UI.createView({
+            backgroundColor : 'white',
+            top : 0,
+            width : '100%',
+            height : '100%',
+            layout : 'vertical'
+        });
+
+        var viewHeader = Ti.UI.createView({
+            backgroundColor : 'white',
+            height : '25%'
+        });
+
+        var viewBody = Ti.UI.createView({
+            backgroundColor : 'white',
+            top : 0,
+            top : 0,
+            height : '85%'
+        });
+
+
         var text = Ti.UI.createTextField(si.combine($$.TextField, {
             value : Ti.App.Properties.getString('printFormatUrl'),
-            top : '5%',
+            //top : '5%',
             keyboardType :  Ti.UI.KEYBOARD_URL,
             hintText : 'Print format url'
         }));
 
         var button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
             title : 'save',
+            top : 0
         }));
 
         button.addEventListener('click', function() {
@@ -25,8 +47,14 @@
             win.close();
         });
 
-        win.add(text);
-        win.add(button);
+        win.add(viewBase);
+        viewBase.add(viewHeader);
+        viewBase.add(viewBody);
+
+        viewHeader.add(text);
+        viewBody.add(button);
+        win.textPrintFormUrl = text;
+        win.save_button = button;
         return win;
     };
 })(); 

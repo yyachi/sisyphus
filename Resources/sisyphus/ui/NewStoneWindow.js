@@ -73,6 +73,7 @@
 
         var button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
             title : 'create',
+            top : 0
         }));
 
         button.addEventListener('click', function() {
@@ -128,7 +129,7 @@
         var scan_input = si.ui.createScanInput(si.combine($$.TextField, {
             value : '',
             keyboardType : Ti.UI.KEYBOARD_DEFAULT,
-            hintText : 'my great ID'
+            hintText : 'ID'
         }));
 
         var myImageView = si.ui.createMyImageView();
@@ -138,10 +139,15 @@
         viewHeaderLeft.add(myImageView);
 
         viewHeader.add(viewHeaderRight);
-        viewHeaderRight.add(viewHeaderRight1);
-        viewHeaderRight1.add(scan_input);
-        viewHeaderRight.add(viewHeaderRight2);        
-        viewHeaderRight2.add(text);
+        if (!Ti.App.Properties.getInt('printLabel')){
+            viewHeaderRight.add(viewHeaderRight1);
+            viewHeaderRight1.add(scan_input);
+            viewHeaderRight.add(viewHeaderRight2);        
+            viewHeaderRight2.add(text);
+        } else {
+            viewHeaderRight.add(viewHeaderRight1);
+            viewHeaderRight1.add(text);
+        }
         //viewHeaderRight.add(button);
         viewBase.add(viewBody);
         viewBody.add(button);

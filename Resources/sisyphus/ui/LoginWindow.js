@@ -7,25 +7,48 @@
             backgroundColor : '#ffffff'
         });
 
+       var viewBase = Ti.UI.createView({
+            backgroundColor : 'white',
+            top : 0,
+            width : '100%',
+            height : '100%',
+            layout : 'vertical'
+        });
+
+        var viewHeader = Ti.UI.createView({
+            backgroundColor : 'white',
+            height : '25%',
+            layout : 'vertical'
+        });
+
+        var viewBody = Ti.UI.createView({
+            backgroundColor : 'white',
+            top : 0,
+            top : 0,
+            height : '85%'
+        });
+
+
         var activityIndicator = Ti.UI.createActivityIndicator({
             style : Ti.UI.ActivityIndicatorStyle.BIG,
         });
 
         var textUsername = Ti.UI.createTextField(si.combine($$.TextField, {
             value : Ti.App.Properties.getString('username'),
-            top : '5%',
+            //top : '5%',
             hintText : 'user name'
         }));
         
         var textPassword = Ti.UI.createTextField(si.combine($$.TextField, {
             value : Ti.App.Properties.getString('password'),
             passwordMask : true,
-            top : '30%',
+            //top : '30%',
             hintText : 'password'
         }));
         
         var button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
             title : 'save',
+            top : 0
         }));
         button.addEventListener('click', function() {
             isDone = false;
@@ -55,11 +78,26 @@
             });
         });
 
-        win.add(textUsername);
-        win.add(textPassword);
-        win.add(button);
+        win.add(viewBase);
+        viewBase.add(viewHeader);
+        viewBase.add(viewBody);
+
+        viewHeader.add(textUsername);
+        viewHeader.add(textPassword);        
+        viewBody.add(button);
+
+
+        // win.add(textUsername);
+        // win.add(textPassword);
+        // win.add(button);
         win.add(activityIndicator);
         win.isDone = isDone; 
+
+        win.textUsername = textUsername;
+        win.textPassword = textPassword;
+        win.save_button = button;
+        win.activityIndicator = activityIndicator;
+
         return win;
     };
 })(); 

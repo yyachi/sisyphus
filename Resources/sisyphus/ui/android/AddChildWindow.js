@@ -16,6 +16,9 @@
     };
 
     si.ui.android.printLabel = function(_global_id, _name) {
+        if (!Ti.App.Properties.getInt('printLabel')){
+            return;
+        }
         Ti.API.info('printLabel in ');
         var client = Ti.Network.createHTTPClient({
             onload : function() {
@@ -390,6 +393,7 @@
         };
 
         function loadParent(_global_id) {
+            Ti.API.info('loadParent...');
             var username = Ti.App.Properties.getString('username');
             var password = Ti.App.Properties.getString('password');
             changeMode('loading');
@@ -402,29 +406,37 @@
                 username : username,
                 password : password,
                 onsuccess : function(_response) {
+                    Ti.API.info('success');
                     parent = _response;
                     viewParent.update(parent);
-
                     if (_global_id != Ti.App.Properties.getString('current_global_id')) {
                         Ti.App.Properties.setString('current_global_id', _global_id);
                     }
-                    if (viewHeaderLeft.children.contains(imageButtonViewScanParent)) {
-                        viewHeaderLeft.remove(imageButtonViewScanParent);
-                    }
-                    if (!viewHeaderLeft.children.contains(viewParent)) {
-                        viewHeaderLeft.add(viewParent);
-                    }
+                    viewHeaderLeft.removeAllChildren();
+                    viewHeaderLeft.add(viewParent);
+                    // if (viewHeaderLeft.children.contains(imageButtonViewScanParent)) {
+                    //     Ti.API.info('.....');
+                    //     viewHeaderLeft.remove(imageButtonViewScanParent);
+                    // }
+                    // Ti.API.info('bbbb');
+                    // if (!viewHeaderLeft.children.contains(viewParent)) {
+                    //     Ti.API.info('******');
+                    //     viewHeaderLeft.add(viewParent);
+                    // }
                     si.sound_newmail.play();
                     labelStatus.text = 'ready for scan';
                     changeMode('ready');
                 },
                 onerror : function(e) {
-                    if (!viewHeaderLeft.children.contains(imageButtonViewScanParent)) {
-                        viewHeaderLeft.add(imageButtonViewScanParent);
-                    }
-                    if (viewHeaderLeft.children.contains(viewParent)) {
-                        viewHeaderLeft.remove(viewParent);
-                    }
+                    Ti.API.info('error');
+                    viewHeaderLeft.removeAllChildren();
+                    viewHeaderLeft.add(imageButtonViewScanParent);                    
+                    // if (!viewHeaderLeft.children.contains(imageButtonViewScanParent)) {
+                    //     viewHeaderLeft.add(imageButtonViewScanParent);
+                    // }
+                    // if (viewHeaderLeft.children.contains(viewParent)) {
+                    //     viewHeaderLeft.remove(viewParent);
+                    // }
                     labelStatus.text = 'ERROR';
                 }
             });
@@ -525,6 +537,8 @@
         viewBody.add(labelStatus);
 
         win.addChild = addChild;
+        win.loadParent = loadParent;
+        win.labelStatus = labelStatus;
         return win;
     };
 })();

@@ -9,8 +9,8 @@ describe('PrintServer Setting Window', function() {
     var button;
 
     beforeEach(function() {
-        win = si.ui.createPrintServerSetttingWindow();
-        textServer = win.text_field;
+        win = si.ui.createPrintServerSettingWindow();
+        textServer = win.input;
         button = win.save_button;
     });
 
