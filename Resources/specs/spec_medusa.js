@@ -1,5 +1,13 @@
 require('/tijasmine/tijasmine').infect(this);
-describe('Medusa', function() {
+// describe('URL', function(){
+//     var url = 'http://example.com:3000/stone?q=hello';
+//     it('does something', function(){
+//         var parser = si.parseURL(url);
+//         //Ti.API.info(parser);
+//         expect(null).toBe(null);
+//     });
+// });
+xdescribe('Medusa', function() {
     var USERNAME = 'admin';
     var OK_PASSWORD = 'password';
     var NG_PASSWORD = 'xxxx';

@@ -133,6 +133,10 @@
 
 
     si.model.medusa.getRecordFromGlobalId = function(_args) {
+        if (!_args.global_id){
+            _args.onerror();
+            return
+        }
         var mr = _args.global_id.match(/.+=(.+)/);
         if (mr != null) {
             _args.global_id = mr[1];

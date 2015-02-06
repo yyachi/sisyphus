@@ -118,9 +118,9 @@
 
 
         var imageButtonViewHome = si.ui.createImageButtonView('/images/home.png', {
-            Top : '5%',
-            width : '30%',
-            height : '90%'
+            //top : '5%',
+            width : '50%',
+            height : '100%'
         });
         imageButtonViewHome.button.addEventListener('click', function(e) {
             default_global_id = Ti.App.Properties.getString('current_box_global_id');
@@ -282,28 +282,20 @@
         }
 
         var imageButtonViewMenu = si.ui.createImageButtonView('/images/19-gear.png', {
-            Top : '5%',
-            width : '30%',
-            height : '90%'
+            //top : '5%',
+            width : '50%',
+            height : '100%'
         });
         imageButtonViewMenu.button.addEventListener('click', function(e) {
             optionDialogForMenu.show();
         });
 
-        var imageButtonViewAdd = si.ui.createImageButtonView('/images/plus.png', {
-            Top : '5%',
-            width : '30%',
-            height : '90%'
-        });
-        imageButtonViewAdd.button.addEventListener('click', function(e) {
-            optionDialogForAdd.show();
-        });
 
 
         var imageButtonViewScanParent = si.ui.createImageButtonView('/images/01-refresh.png', {
-            Top : '5%',
+//            top : '5%',
             width : '100%',
-            height : '90%'
+            height : '100%'
         });
         imageButtonViewScanParent.button.addEventListener('click', function(e) {
             scanAndLoadParent();
@@ -347,16 +339,35 @@
             height : '63%',
         });
 
-        var buttonScanChild = Ti.UI.createButton(si.combine($$.NormalButton, {
-            title : '+',
-            width : '100%',
-            backgroundColor : 'white',
-            borderWidth : 1,
-            borderColor : 'black',
+        //var imageButtonViewAdd = si.ui.createImageButtonView('/images/plus.png', {
+        var buttonNewChild = Ti.UI.createButton(si.combine($$.NormalButton, {
+            // Top : '5%',
+            // width : '30%',
+            // height : '90%'
+            title : 'Add',
+            font : {fontSize:36},
+//            width : '100%',
             borderRadius : 10,
             top : '30%',
             width : '80%',
-            height : '63%',
+            height : '30%'
+        }));
+        buttonNewChild.addEventListener('click', function(e) {
+            optionDialogForAdd.show();
+        });
+
+
+        var buttonScanChild = Ti.UI.createButton(si.combine($$.NormalButton, {
+            title : 'Link',
+//            width : '100%',
+            //backgroundColor : 'white',
+            //borderWidth : 1,
+            //borderColor : 'black',
+            font : {fontSize:36},
+            borderRadius : 10,
+            top : '62%',
+            width : '80%',
+            height : '30%',
         }));
         buttonScanChild.addEventListener('click', function() {
             scanChild();
@@ -527,12 +538,13 @@
         viewHeader.add(viewHeaderLeft);
         viewHeaderLeft.add(imageButtonViewScanParent);
         viewHeader.add(viewHeaderRight);
-        viewHeaderRight.add(imageButtonViewAdd);
+        //viewHeaderRight.add(imageButtonViewAdd);
         viewHeaderRight.add(imageButtonViewHome);
         viewHeaderRight.add(imageButtonViewMenu);
         viewBase.add(viewBody);
         viewBody.add(scrollView);
         scrollView.add(labelInfo);
+        viewBody.add(buttonNewChild);        
         viewBody.add(buttonScanChild);
         viewBody.add(labelStatus);
 

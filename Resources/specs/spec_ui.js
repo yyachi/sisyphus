@@ -1,5 +1,44 @@
 require('/tijasmine/tijasmine').infect(this);
 describe('si.ui', function() {
+	describe('createViewParent', function(){
+		var view;
+		var record;
+		beforeEach(function(){
+			view = si.ui.createViewParent(null,{});
+		});
+		afterEach(function(){
+	        Ti.App.Properties.setString('server', si.config.Medusa.defaultServer);
+		});
+
+		describe('update with relative_url', function(){
+			beforeEach(function(){
+
+				Ti.App.Properties.setString('server', 'http://database.misasa.okayama-u.ac.jp/stone');
+				record = {image_path: '/stone/system/attachment_files/0004/4131/IMG_2537_thumb.JPG?1422933650'}
+				view = si.ui.createViewParent(null,{});
+			});
+
+			it('set image', function(){
+				view.update(record);
+				expect(view.imageView.image).toBe('http://database.misasa.okayama-u.ac.jp/stone/system/attachment_files/0004/4131/IMG_2537_thumb.JPG?1422933650');
+			});
+		});
+
+		describe('update with url', function(){
+			beforeEach(function(){
+				Ti.App.Properties.setString('server', 'http://localhost:3000/');
+				record = {image_path: "/system/attachment_files/0004/3514/tixhr954583099_thumb.png?1423048668"};
+				view = si.ui.createViewParent(null,{});
+			});
+
+			it('set image', function(){
+				view.update(record);
+				expect(view.imageView.image).toBe('http://localhost:3000/system/attachment_files/0004/3514/tixhr954583099_thumb.png?1423048668');
+			});
+		});
+
+	});
+
 	xdescribe('removeView', function(){
 		var from;
 		var view;
@@ -39,7 +78,7 @@ describe('si.ui', function() {
 		});
 
 	});
-	describe('InputOrScanWindow', function() {
+	xdescribe('InputOrScanWindow', function() {
 	    beforeEach(function() {
 	        win = si.ui.createInputOrScanWindow({
 	        	title: 'example',

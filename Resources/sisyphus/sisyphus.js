@@ -77,6 +77,44 @@ var si = {};
             }
         }
     };
+
+    si.serverURL = function(){
+        var _server = Ti.App.Properties.getString('server');
+        var url = _server;
+        if (_server.match(/^\w+:\/\//) == null) {
+            url = 'http://' + url;
+        }
+
+        if (_server.match(/\/$/) == null) {
+            url = url + '/';
+        }
+        return url;
+    }
+
+
+    si.imageURL = function(_path) {
+        var server_url = si.serverURL();
+        var url = si.parseURL(server_url);
+        var hostname_with_port = url.protocol + '//' + url.hostname;
+        if (url.port){
+            hostname_with_port += ':' + url.port;
+        }
+        return hostname_with_port + _path;
+    };
+
+    si.parseURL = function (href) {
+        var match = href.match(/^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)(\/[^?#]*)(\?[^#]*|)(#.*|)$/);
+        return match && {
+            protocol: match[1],
+            host: match[2],
+            hostname: match[3],
+            port: match[4],
+            pathname: match[5],
+            search: match[6],
+            hash: match[7]
+        }
+    };
+
 })();
 
 Ti.include(

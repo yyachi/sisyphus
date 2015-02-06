@@ -139,7 +139,7 @@
             color : '#000000',
             font : {
                 fontFamily : si.ui.theme.fontFamily,
-                fontSize : 14,
+                fontSize : 20,
                 fontWeight : 'bold'
             }
         },
@@ -147,7 +147,7 @@
             color : si.ui.theme.grayTextColor,
             font : {
                 fontFamily : si.ui.theme.fontFamily,
-                fontSize : 10
+                fontSize : 16
             },
             height : 'auto'
         },

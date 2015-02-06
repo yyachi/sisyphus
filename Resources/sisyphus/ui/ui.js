@@ -9,13 +9,13 @@
         
         var tabMain = Ti.UI.createTab({
             title : 'Main',
-            icon : '/images/plus.png',
+            //icon : '/images/plus.png',
             window : si.ui.createAddChildWindow()
         });
 
         var tabSettings = Ti.UI.createTab({
             title : 'Options',
-            icon : '/images/preferences.png',
+            //icon : '/images/preferences.png',
             window : si.ui.createSettingsWindow()
         });
 
@@ -208,7 +208,7 @@
         
         var button = Ti.UI.createButton({
             title : '',
-            backgroundColor : 'white',
+            //backgroundColor : 'white',
             width : '100%',
             height : '100%'
         });
@@ -359,7 +359,10 @@
             if (_record.image_path) {
                 //Ti.API.info("image_path");
                 //Ti.API.info(_record.image_path);
-                imageView.image = Ti.App.Properties.getString('server') + '/' + _record.image_path;
+                //var _path = Ti.App.Properties.getString('server') + '/' + _record.image_path;
+                var _url = si.imageURL(_record.image_path);
+                //Ti.API.info(_url);
+                imageView.image = _url;
             } else {
                 imageView.image = '';
             }

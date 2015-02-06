@@ -2,15 +2,15 @@
 
  	si.ui.createSettingsWindow = function(_args) {
 	    var win = Ti.UI.createWindow({title: 'Settings',backgroundColor:'#ffffff',barColor:'#336699'});
-
+	    var font = {fontSize: 16};
 		var data = [
-			{title:'----', hasChild:false, target:'Server', header:'Medusa server'},
-			{title:'----', hasChild:false, target:'LogIn', header:'account'},
-			{title:'----', hasChild:false, target:'PrintLabel', header:'print label'},			
-			{title:'----', hasChild:false, target:'PrintServer', header:'print server'},
-			{title:'----', hasChild:false, target:'PrintFormatUrl', header:'print format url'},
-			{title:'----', hasChild:false, target:'ScanToLoad', header:'home'},
-			{title:'----', hasChild:false, target:'ScanCamera', header: 'scan camera'}
+			{title:'----', hasChild:false, target:'Server', header:'Medusa server', font: font},
+			{title:'----', hasChild:false, target:'LogIn', header:'account', font: font},
+			{title:'----', hasChild:false, target:'PrintLabel', header:'print label', font: font},			
+			{title:'----', hasChild:false, target:'PrintServer', header:'print server', font: font},
+			{title:'----', hasChild:false, target:'PrintFormatUrl', header:'print format url', font: font},
+			{title:'----', hasChild:false, target:'ScanToLoad', header:'home', font: font},
+			{title:'----', hasChild:false, target:'ScanCamera', header: 'scan camera', font: font}
 		];
 		var index_medusa_server = findIndex('Server');
 		var index_account = findIndex('LogIn');
@@ -131,7 +131,7 @@
 		});
 
 		function findIndex(target) {
-			Ti.API.info('findIndex: ' + target);
+			//Ti.API.info('findIndex: ' + target);
 			var i, x;
 			for (i in data) {
 				x = data[i];
