@@ -48,7 +48,7 @@
 
 
         var optionDialogForScanCamera = Ti.UI.createOptionDialog({
-            options : ['backward', 'front', 'cancel'],
+            options : ['rear', 'front', 'cancel'],
             cancel : 2,
             title : 'Camera for scan'
         });
@@ -108,7 +108,11 @@
 					//scanAndLoadDefaultBox();
 					break;
 				case 'ScanCamera':
-				    optionDialogForScanCamera.show();
+					if (Ti.Media.availableCameras.length > 1){
+				    	optionDialogForScanCamera.show();
+				    } else {
+				    	alert('single camera');
+				    }
 					break;
 				case 'PrintLabel':
 				    optionDialogForPrintLabel.show();
@@ -169,7 +173,7 @@
 			if (facing == 1){
 				return 'front';
 			} else {
-				return 'backward';
+				return 'rear';
 			}
 		}
 

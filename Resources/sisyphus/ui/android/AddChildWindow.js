@@ -128,7 +128,7 @@
         });
 
         var optionDialogForMenu = Ti.UI.createOptionDialog({
-            options : ['add a snap shot', 'add a local file', 'print on SATO or TEPRA', 'cancel'],
+            options : ['add a snap shot', 'add a local file', 'print', 'cancel'],
             cancel : 3,
             title : ''
         });
@@ -161,9 +161,9 @@
         });
 
         var optionDialogForAdd = Ti.UI.createOptionDialog({
-            options : ['new stone', 'new box', 'cancel'],
+            options : ['stone', 'box', 'cancel'],
             cancel : 2,
-            title : ''
+            title : 'new'
         });
         optionDialogForAdd.addEventListener('click', function(e) {
             switch (e.index) {
@@ -344,7 +344,7 @@
             // Top : '5%',
             // width : '30%',
             // height : '90%'
-            title : 'Add',
+            title : 'new',
             font : {fontSize:36},
 //            width : '100%',
             borderRadius : 10,
@@ -358,7 +358,7 @@
 
 
         var buttonScanChild = Ti.UI.createButton(si.combine($$.NormalButton, {
-            title : 'Link',
+            title : 'scan',
 //            width : '100%',
             //backgroundColor : 'white',
             //borderWidth : 1,

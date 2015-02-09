@@ -43,6 +43,30 @@ Ti.API.info(Ti.Network.networkTypeName);
 if (Ti.Network.networkType == Ti.Network.NETWORK_NONE){
     alert('no network is available.');
 }
+
+var cameras = Ti.Media.availableCameras;
+// Ti.API.info('cameras');
+// Ti.API.info(cameras);
+// Ti.API.info(cameras.length);
+// Ti.API.info('CAMERA_REAR');
+// Ti.API.info(Ti.Media.CAMERA_REAR);
+// Ti.API.info(cameras.indexOf(Ti.Media.CAMERA_REAR));
+// Ti.API.info('CAMERA_FRONT');
+// Ti.API.info(Ti.Media.CAMERA_FRONT);
+// Ti.API.info('facing');
+// Ti.API.info(Ti.App.Properties.getInt('facing'));
+if (cameras.length == 1){
+    // Ti.API.info('single camera');
+    if(cameras.indexOf(Ti.Media.CAMERA_REAR) == -1){
+        // Ti.API.info('front camera');
+        Ti.App.Properties.setInt('facing', 1);
+    } else {
+        // Ti.API.info('rear camera');
+        Ti.App.Properties.setInt('facing', 0);
+    }
+}
+// Ti.API.info('facing');
+// Ti.API.info(Ti.App.Properties.getInt('facing'));
 // if (Ti.App.Properties.getString('username') == null || Ti.App.Properties.getString('username') == '') {
 //     setTimeout(function() {
 //         var w = si.ui.createLoginWindow();
