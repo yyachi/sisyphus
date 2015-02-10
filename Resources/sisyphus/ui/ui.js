@@ -201,10 +201,7 @@
             opts.imgDimensions = 45;
         }
 
-        var view = Ti.UI.createView({
-            width : opts.width,
-            height : opts.height
-        });
+        var view = Ti.UI.createView(opts);
         
         var button = Ti.UI.createButton({
             title : '',
@@ -216,6 +213,9 @@
 
         var imageView = Ti.UI.createImageView({
             image : _image,
+            //backgroundColor : 'blue',
+            width : opts.imgDimensions,
+            height : opts.imgDimensions            
         });
         imageView.addEventListener('click', function(e) {
             button.fireEvent('click', e);
@@ -340,7 +340,7 @@
 
         var labelName = Ti.UI.createLabel(si.combine($$.boldHeaderText, {
             text : '',
-            top : metaHeight + 3,
+            top : metaHeight + 10,
             left : avatarOffset,
             height : nameHeight
         }));

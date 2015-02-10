@@ -139,7 +139,7 @@
             color : '#000000',
             font : {
                 fontFamily : si.ui.theme.fontFamily,
-                fontSize : 20,
+                fontSize : 30,
                 fontWeight : 'bold'
             }
         },
@@ -147,13 +147,21 @@
             color : si.ui.theme.grayTextColor,
             font : {
                 fontFamily : si.ui.theme.fontFamily,
-                fontSize : 16
+                fontSize : 20
+            },
+            height : 'auto'
+        },
+        logText : {
+            color : si.ui.theme.grayTextColor,
+            font : {
+                fontFamily : si.ui.theme.fontFamily,
+                fontSize : 20
             },
             height : 'auto'
         },
         spacerRow : {
             backgroundImage : 'images/spacer_row.png',
-            height : 30,
+            height : 36,
             className : 'spacerRow'
         },
         small_label : {

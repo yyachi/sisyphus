@@ -79,7 +79,7 @@
         });
 
         var viewBase = Ti.UI.createView({
-            backgroundColor : 'blue',
+            backgroundColor : 'red',
             top : 0,
             width : '100%',
             height : '100%',
@@ -89,25 +89,36 @@
         var viewHeader = Ti.UI.createView({
             backgroundColor : 'red',
             top : 0,
-            height : '15%'
+            height : '20%'
         });
 
         var viewBody = Ti.UI.createView({
             backgroundColor : 'white',
             top : 0,
             top : 0,
-            height : '85%'
+            height : '70%',
+            layout : 'vertical'
+
+        });
+
+        var viewFooter = Ti.UI.createView({
+            backgroundColor : 'white',
+            bottom : 0,
+            height : '10%'
         });
 
         var viewHeaderLeft = Ti.UI.createView({
             height : '100%',
             width : '70%',
+            //width : Ti.UI.FILL,
             top : 0,
             left : 0,
             backgroundColor : 'white',
+            layout : 'horizontal'
         });
 
         var viewHeaderRight = Ti.UI.createView({
+            //height : '100%',
             height : '100%',
             width : '30%',
             top : 0,
@@ -117,14 +128,47 @@
         });
 
 
+        var imageButtonViewScanParent = si.ui.createImageButtonView('/images/01-refresh.png', {
+//            top : '5%',
+//            width : '100%',
+//            height : '100%'
+            left : '2%',
+            width : 90,
+            height : 90,
+            imgDimensions : 30,
+
+        });
+        imageButtonViewScanParent.button.addEventListener('click', function(e) {
+            scanAndLoadParent();
+        });
+
+
         var imageButtonViewHome = si.ui.createImageButtonView('/images/home.png', {
             //top : '5%',
-            width : '50%',
-            height : '100%'
+            //width : '50%',
+            //height : '100%'
+            //right : 0,
+            width : 90,
+            height : 90,
+            imgDimensions : 30,
         });
         imageButtonViewHome.button.addEventListener('click', function(e) {
             default_global_id = Ti.App.Properties.getString('current_box_global_id');
             loadParent(default_global_id);
+        });
+
+
+        var imageButtonViewMenu = si.ui.createImageButtonView('/images/19-gear.png', {
+            //top : '5%',
+            //width : '50%',
+            //height : '100%'
+            //right : 0,
+            width : 90,
+            height : 90,
+            imgDimensions : 30,
+        });
+        imageButtonViewMenu.button.addEventListener('click', function(e) {
+            optionDialogForMenu.show();
         });
 
         var optionDialogForMenu = Ti.UI.createOptionDialog({
@@ -163,7 +207,7 @@
         var optionDialogForAdd = Ti.UI.createOptionDialog({
             options : ['stone', 'box', 'cancel'],
             cancel : 2,
-            title : 'new'
+            title : ''
         });
         optionDialogForAdd.addEventListener('click', function(e) {
             switch (e.index) {
@@ -240,9 +284,9 @@
 
             labelStatus.text = 'Path:' + _image.getNativePath();
 
-            viewBody.remove(buttonScanChild);
-            imageView.setImage(_image);
-            viewBody.add(imageView);
+//            viewBody.remove(buttonScanChild);
+//            imageView.setImage(_image);
+//            viewBody.add(imageView);
 
             if (parent) {
                 handleImageEvent(_image);
@@ -264,16 +308,16 @@
                 onsuccess : function(_response) {
                     labelStatus.text += ' OK';
 
-                    viewBody.remove(imageView);
-                    viewBody.add(buttonScanChild);
+//                    viewBody.remove(imageView);
+//                    viewBody.add(buttonScanChild);
                     loadParent(parent.global_id);
                 },
                 onerror : function(e) {
                     labelStatus.text += 'ERROR\n';
                     labelInfo.text = labelStatus.text + labelInfo.text;
 
-                    viewBody.remove(imageView);
-                    viewBody.add(buttonScanChild);
+ //                   viewBody.remove(imageView);
+ //                   viewBody.add(buttonScanChild);
 
                     labelStatus.text = 'ready for scan';
                     changeMode('ready');
@@ -281,25 +325,9 @@
             });
         }
 
-        var imageButtonViewMenu = si.ui.createImageButtonView('/images/19-gear.png', {
-            //top : '5%',
-            width : '50%',
-            height : '100%'
-        });
-        imageButtonViewMenu.button.addEventListener('click', function(e) {
-            optionDialogForMenu.show();
-        });
 
 
 
-        var imageButtonViewScanParent = si.ui.createImageButtonView('/images/01-refresh.png', {
-//            top : '5%',
-            width : '100%',
-            height : '100%'
-        });
-        imageButtonViewScanParent.button.addEventListener('click', function(e) {
-            scanAndLoadParent();
-        });
 
         var viewParent = si.ui.createViewParent(null, {
             width : '100%',
@@ -310,27 +338,7 @@
             scanAndLoadParent();
         });
 
-        var scrollView = Ti.UI.createScrollView({
-            top : '2%',
-            contentHeight : 'auto',
-            contentWidth : 'auto',
-            backgroundColor : 'white',
-            width : '80%',
-            left : '10%',
-            height : '25%',
-            borderWidth : 1,
-            borderRadius : 0,
-            scrollType : 'vertical'
-        });
 
-        var labelInfo = Ti.UI.createLabel(si.combine($$.smallText, {
-            text : '',
-            top : 0,
-            left : 0,
-            width : '100%',
-            height : 'auto',
-            textAlign : 'left'
-        }));
 
         var imageView = Ti.UI.createImageView({
             backgroundColor : 'black',
@@ -339,18 +347,52 @@
             height : '63%',
         });
 
+
+        var scrollView = Ti.UI.createScrollView({
+            top : '2%',
+            contentHeight : 'auto',
+            contentWidth : 'auto',
+            backgroundColor : 'white',
+            width : '80%',
+            left : '10%',
+            height : '50%',
+            borderWidth : 1,
+            //borderColor : 'gray',
+            borderRadius : 10,
+            scrollType : 'vertical'
+        });
+
+        var labelInfo = Ti.UI.createLabel(si.combine($$.logText, {
+            text : '',
+            top : 0,
+            left : 0,
+            width : '100%',
+            height : 'auto',
+            textAlign : 'left'
+        }));
+
+        var labelStatus = Ti.UI.createLabel(si.combine($$.logText, {
+            text : '',
+            textAlign : 'left',
+            //top : '95%',
+            left : '3%',
+            width : '90%',
+            borderWidth : 1,
+        }));
+
+
         //var imageButtonViewAdd = si.ui.createImageButtonView('/images/plus.png', {
         var buttonNewChild = Ti.UI.createButton(si.combine($$.NormalButton, {
-            // Top : '5%',
+            top : '2%',
             // width : '30%',
             // height : '90%'
             title : 'new',
             font : {fontSize:36},
 //            width : '100%',
             borderRadius : 10,
-            top : '30%',
+            //top : '30%',
             width : '80%',
-            height : '30%'
+            height : '20%'
         }));
         buttonNewChild.addEventListener('click', function(e) {
             optionDialogForAdd.show();
@@ -365,22 +407,16 @@
             //borderColor : 'black',
             font : {fontSize:36},
             borderRadius : 10,
-            top : '62%',
+            top : '2%',
+            //bottom : 0,
             width : '80%',
-            height : '30%',
+            height : '20%',
         }));
         buttonScanChild.addEventListener('click', function() {
             scanChild();
         });
 
-        var labelStatus = Ti.UI.createLabel(si.combine($$.smallText, {
-            text : '',
-            textAlign : 'left',
-            top : '95%',
-            left : '3%',
-            width : '90%',
-            borderWidth : 1,
-        }));
+
 
         function scanAndLoadParent() {
             if (!si.config.Medusa.debug) {
@@ -546,7 +582,8 @@
         scrollView.add(labelInfo);
         viewBody.add(buttonNewChild);        
         viewBody.add(buttonScanChild);
-        viewBody.add(labelStatus);
+        viewBase.add(viewFooter);
+        viewFooter.add(labelStatus);
 
         win.addChild = addChild;
         win.loadParent = loadParent;
