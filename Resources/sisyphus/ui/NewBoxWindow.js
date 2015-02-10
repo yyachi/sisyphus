@@ -126,6 +126,15 @@
             });
         });
 
+        var cancel_button = Ti.UI.createButton(si.combine($$.LeftBottomButton, {
+            top : 0,
+            title : 'cancel',
+        }));
+
+        cancel_button.addEventListener('click', function() {
+            win.close();
+        });
+
         var scan_input = si.ui.createScanInput(si.combine($$.TextField, {
             value : '',
             keyboardType : Ti.UI.KEYBOARD_DEFAULT,
@@ -151,6 +160,8 @@
         //viewHeaderRight.add(button);
         viewBase.add(viewBody);
         viewBody.add(button);
+        viewBody.add(cancel_button);
+
         win.add(activityIndicator);
         win.name_field = text;
         win.save_button = button;

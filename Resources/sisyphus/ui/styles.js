@@ -91,6 +91,18 @@
             // borderRadius : 10
         },
 
+        LeftBottomButton : {
+            width : '40%',
+            height : 80,
+            left : '2%',
+            bottom : '2%',
+            // backgroundColor : 'white',
+            // borderColor : 'black',
+            // borderWidth : 1,
+            // borderRadius : 10
+        },
+
+
         animationDuration : 500,
         stretch : {
             top : 0,

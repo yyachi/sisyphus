@@ -89,7 +89,7 @@
         var viewHeader = Ti.UI.createView({
             backgroundColor : 'red',
             top : 0,
-            height : '20%'
+            height : '25%'
         });
 
         var viewBody = Ti.UI.createView({
@@ -104,7 +104,7 @@
         var viewFooter = Ti.UI.createView({
             backgroundColor : 'white',
             bottom : 0,
-            height : '10%'
+            height : '5%'
         });
 
         var viewHeaderLeft = Ti.UI.createView({
@@ -171,9 +171,31 @@
             optionDialogForMenu.show();
         });
 
+        var imageButtonViewPrint = si.ui.createImageButtonView('/images/glyphicons-16-print.png', {
+            width : 90,
+            height : 90,
+            imgDimensions : 30,
+        });
+        imageButtonViewPrint.button.addEventListener('click', function(e) {
+            if (parent) {
+                si.ui.android.printLabel(parent.global_id, parent.name);
+            } else {
+                alert('please load parent first');
+            }
+        });
+
+        var photoButtonView = si.ui.createImageButtonView('/images/167-upload-photo.png', {
+            width : 90,
+            height : 90,
+            imgDimensions : 30
+        });
+        photoButtonView.button.addEventListener('click', function(e) {
+            optionDialogForMenu.show();
+        });
+
         var optionDialogForMenu = Ti.UI.createOptionDialog({
-            options : ['add a snap shot', 'add a local file', 'print', 'cancel'],
-            cancel : 3,
+            options : ['add a snap shot', 'add a local file', 'cancel'],
+            cancel : 2,
             title : ''
         });
         optionDialogForMenu.addEventListener('click', function(e) {
@@ -192,13 +214,13 @@
                         alert('please load parent first');
                     }
                     break;
-                case 2:
-                    if (parent) {
-                        si.ui.android.printLabel(parent.global_id, parent.name);
-                    } else {
-                        alert('please load parent first');
-                    }
-                    break;
+                // case 2:
+                //     if (parent) {
+                //         si.ui.android.printLabel(parent.global_id, parent.name);
+                //     } else {
+                //         alert('please load parent first');
+                //     }
+                //     break;
                 default:
                     break;
             };
@@ -357,7 +379,7 @@
             left : '10%',
             height : '50%',
             borderWidth : 1,
-            //borderColor : 'gray',
+            borderColor : 'gray',
             borderRadius : 10,
             scrollType : 'vertical'
         });
@@ -565,7 +587,9 @@
             buttonScanChild.setEnabled(isEnabled);
 
             imageButtonViewHome.setEnabled(isEnabled);
-            imageButtonViewMenu.setEnabled(isEnabled);
+            imageButtonViewPrint.setEnabled(isEnabled);
+            photoButtonView.setEnabled(isEnabled);
+//            imageButtonViewMenu.setEnabled(isEnabled);
             viewParent.setEnabled(isEnabled);
         };
 
@@ -576,7 +600,11 @@
         viewHeader.add(viewHeaderRight);
         //viewHeaderRight.add(imageButtonViewAdd);
         viewHeaderRight.add(imageButtonViewHome);
-        viewHeaderRight.add(imageButtonViewMenu);
+        //viewHeaderRight.add(imageButtonViewMenu);
+        viewHeaderRight.add(photoButtonView);        
+        if (Ti.App.Properties.getInt('printLabel')){
+            viewHeaderRight.add(imageButtonViewPrint);
+        }
         viewBase.add(viewBody);
         viewBody.add(scrollView);
         scrollView.add(labelInfo);

@@ -69,24 +69,24 @@
 
         var view_left = Ti.UI.createView({
             height : Ti.UI.SIZE,
-            width : '90%',
+            width : '10%',
             left : 0,
             //backgroundColor : 'orange',
-            layout : 'vertical'
+            //layout : 'vertical'
         });
         var view_right = Ti.UI.createView({
             height : Ti.UI.SIZE,
-            width : '10%',
+            width : '90%',
             right : 0,
             //backgroundColor : 'yellow',
         });
 
         view.add(view_left);
         view.add(view_right);
-        view_left.add(text);
+        view_right.add(text);
 
-        view_right.add(button);
-        view_right.add(imageView);
+        view_left.add(button);
+        view_left.add(imageView);
 
         view.set_value = function(value){
             text.value = value;
@@ -156,7 +156,11 @@
         });
 
         if (!opts.image){
-            var photoButtonView = si.ui.createImageButtonView('/images/167-upload-photo.png', {});
+            var photoButtonView = si.ui.createImageButtonView('/images/167-upload-photo.png', {
+                width : 90,
+                height : 90,
+                imgDimensions : 30
+            });
             photoButtonView.button.addEventListener('click', function(e) {
                 optionDialog.show();
             });
@@ -269,6 +273,15 @@
             hintText : opts.hintText || ''
         }));
 
+        var cancel_button = Ti.UI.createButton(si.combine($$.LeftBottomButton, {
+            top : 0,
+            title : 'cancel',
+        }));
+
+        cancel_button.addEventListener('click', function() {
+            win.close();
+        });
+
 
         var save_button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
             top : 0,
@@ -278,6 +291,7 @@
         save_button.addEventListener('click', function() {
             opts.save(scan_input.input.value);
         });
+
         win.save_button = save_button;
 
         win.add(viewBase);
@@ -285,6 +299,7 @@
         viewBase.add(viewBody);
 
         viewHeader.add(scan_input);
+        viewBody.add(cancel_button);
         viewBody.add(save_button);
 
         win.set_value = function(value) {

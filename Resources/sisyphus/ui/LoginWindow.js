@@ -78,6 +78,15 @@
             });
         });
 
+        var cancel_button = Ti.UI.createButton(si.combine($$.LeftBottomButton, {
+            top : 0,
+            title : 'cancel',
+        }));
+
+        cancel_button.addEventListener('click', function() {
+            win.close();
+        });
+
         win.add(viewBase);
         viewBase.add(viewHeader);
         viewBase.add(viewBody);
@@ -85,6 +94,7 @@
         viewHeader.add(textUsername);
         viewHeader.add(textPassword);        
         viewBody.add(button);
+        viewBody.add(cancel_button);
 
 
         // win.add(textUsername);

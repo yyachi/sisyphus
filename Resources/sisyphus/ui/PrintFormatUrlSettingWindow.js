@@ -47,12 +47,23 @@
             win.close();
         });
 
+        var cancel_button = Ti.UI.createButton(si.combine($$.LeftBottomButton, {
+            top : 0,
+            title : 'cancel',
+        }));
+
+        cancel_button.addEventListener('click', function() {
+            win.close();
+        });
+
         win.add(viewBase);
         viewBase.add(viewHeader);
         viewBase.add(viewBody);
 
         viewHeader.add(text);
         viewBody.add(button);
+        viewBody.add(cancel_button);
+
         win.textPrintFormUrl = text;
         win.save_button = button;
         return win;
