@@ -379,7 +379,7 @@
             left : '10%',
             height : '50%',
             borderWidth : 1,
-            borderColor : 'gray',
+            //borderColor : 'gray',
             borderRadius : 10,
             scrollType : 'vertical'
         });
