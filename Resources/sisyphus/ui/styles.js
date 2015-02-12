@@ -75,6 +75,8 @@
                 }]
             }
         },
+
+
         NormalButton : {
             width : '90%',
             height : '15%'

@@ -72,7 +72,7 @@
         }));
 
         var button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
-            title : 'create',
+            title : 'OK',
             top : 0
         }));
 

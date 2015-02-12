@@ -285,7 +285,7 @@
 
         var save_button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
             top : 0,
-            title : 'save',
+            title : 'OK',
         }));
 
         save_button.addEventListener('click', function() {

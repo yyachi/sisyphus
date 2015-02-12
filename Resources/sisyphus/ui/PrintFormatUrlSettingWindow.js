@@ -34,7 +34,7 @@
         }));
 
         var button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
-            title : 'save',
+            title : 'OK',
             top : 0
         }));
 

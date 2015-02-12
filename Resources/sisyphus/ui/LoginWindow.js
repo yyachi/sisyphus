@@ -25,7 +25,7 @@
             backgroundColor : 'white',
             top : 0,
             top : 0,
-            height : '85%'
+            height : '85%',
         });
 
 
@@ -47,7 +47,8 @@
         }));
         
         var button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
-            title : 'save',
+            title : 'OK',
+            //width : '90%',
             top : 0
         }));
         button.addEventListener('click', function() {
@@ -79,8 +80,8 @@
         });
 
         var cancel_button = Ti.UI.createButton(si.combine($$.LeftBottomButton, {
-            top : 0,
             title : 'cancel',
+            top : 0
         }));
 
         cancel_button.addEventListener('click', function() {
