@@ -26,6 +26,13 @@ if (Ti.App.Properties.getString('current_global_id') == null) {
 if (Ti.App.Properties.getString('server') == null) {
     Ti.App.Properties.setString('server', si.config.Medusa.defaultServer);
 }
+if (Ti.App.Properties.getString('username') == null) {
+    Ti.App.Properties.setString('username', si.config.Medusa.defaultUsername);
+}
+if (Ti.App.Properties.getString('password') == null) {
+    Ti.App.Properties.setString('password', si.config.Medusa.defaultPassword);
+}
+
 if (Ti.App.Properties.getInt('printLabel') == null) {
     Ti.App.Properties.setInt('printLabel', si.config.Medusa.printLabel);
 }
