@@ -17,6 +17,7 @@
 
         var viewHeader = Ti.UI.createView({
             backgroundColor : 'white',
+            width : '100%',
             height : '25%',
             layout : 'vertical'
         });
@@ -40,6 +41,7 @@
         // }));
 
         var username = si.ui.createScanInput(si.combine($$.TextField, {
+//            width : '100%',
             value : Ti.App.Properties.getString('username'),
             keyboardType : Ti.UI.KEYBOARD_DEFAULT,
             hintText : 'user name'
@@ -54,6 +56,7 @@
         }));
 
         var password = si.ui.createScanInput(si.combine($$.TextField, {
+//            width : '100%',
             value : Ti.App.Properties.getString('password'),
             passwordMask : true,
             //top : '30%',

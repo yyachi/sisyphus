@@ -31,10 +31,27 @@
             layout : 'horizontal'
         });
 
+        var imgDimensions = 30;
         var text = Ti.UI.createTextField(opts);
 
+        // var imageButton = si.ui.createImageButtonView('/images/barcode.png', {
+        //     //top : '5%',
+        //     //width : '50%',
+        //     //height : '100%'
+        //     //right : 0,
+        //     width : 90,
+        //     height : 90,
+        //     imgDimensions : 30,
+        // });
+
+        var imageButtonView = Ti.UI.createView({
+            width : 60,
+            height : 60
+        });
         var imageView = Ti.UI.createImageView({
-            image : '/images/barcode.png'
+            image : '/images/barcode.png',
+            width : imgDimensions,
+            height : imgDimensions            
         });
 
 
@@ -43,7 +60,8 @@
             //borderColor : 'black',
             //borderRadius : 5,
             //backgroundColor : 'white',
-            width : '90%'
+            width : 60,
+            height : 60
         });
 
         button.addEventListener('click', function(e) {
@@ -69,24 +87,27 @@
 
         var view_left = Ti.UI.createView({
             height : Ti.UI.SIZE,
-            width : '10%',
+            width : '90%',
             left : 0,
             //backgroundColor : 'orange',
             //layout : 'vertical'
         });
         var view_right = Ti.UI.createView({
             height : Ti.UI.SIZE,
-            width : '90%',
-            right : 0,
+            width : '10%',
+            left : 0,
             //backgroundColor : 'yellow',
+            layout : 'horizontal'
         });
 
         view.add(view_left);
         view.add(view_right);
-        view_right.add(text);
-
-        view_left.add(button);
-        view_left.add(imageView);
+        view_left.add(text);
+        view_right.add(imageButtonView);
+        imageButtonView.add(button);
+        imageButtonView.add(imageView);
+        //view_right.add(button);
+        //view_right.add(imageView);
 
         view.set_value = function(value){
             text.value = value;
