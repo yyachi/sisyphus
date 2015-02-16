@@ -15,8 +15,8 @@ describe('Login Window', function() {
     beforeEach(function() {
         Ti.App.Properties.setString('server', si.config.Medusa.defaultServer);
         win = si.ui.createLoginWindow();
-        textUsername = win.textUsername;
-        textPassword = win.textPassword;
+        textUsername = win.username.input;
+        textPassword = win.password.input;
         button = win.save_button;
         activityIndicator = win.activityIndicator;
     });
@@ -44,7 +44,7 @@ describe('Login Window', function() {
     });
     describe('button', function() {
         it('title', function() {
-            expect(button.title).toBe('save');
+            expect(button.title).toBe('OK');
         });
         describe('click', function() {
             beforeEach(function() {

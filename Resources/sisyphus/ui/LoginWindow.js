@@ -33,11 +33,18 @@
             style : Ti.UI.ActivityIndicatorStyle.BIG,
         });
 
-        var textUsername = Ti.UI.createTextField(si.combine($$.TextField, {
+        // var textUsername = Ti.UI.createTextField(si.combine($$.TextField, {
+        //     value : Ti.App.Properties.getString('username'),
+        //     //top : '5%',
+        //     hintText : 'user name'
+        // }));
+
+        var username = si.ui.createScanInput(si.combine($$.TextField, {
             value : Ti.App.Properties.getString('username'),
-            //top : '5%',
+            keyboardType : Ti.UI.KEYBOARD_DEFAULT,
             hintText : 'user name'
         }));
+
         
         var textPassword = Ti.UI.createTextField(si.combine($$.TextField, {
             value : Ti.App.Properties.getString('password'),
@@ -45,6 +52,14 @@
             //top : '30%',
             hintText : 'password'
         }));
+
+        var password = si.ui.createScanInput(si.combine($$.TextField, {
+            value : Ti.App.Properties.getString('password'),
+            passwordMask : true,
+            //top : '30%',
+            hintText : 'password'
+        }));
+
         
         var button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
             title : 'OK',
@@ -55,18 +70,18 @@
             isDone = false;
             Ti.API.info('click');
             textPassword.blur();
-            if (textUsername.value == '' || textPassword.value == '') {
+            if (username.input.value == '' || password.input.value == '') {
                 alert('Please input username and password.');
                 return;
             }
 
             activityIndicator.show();
             si.model.medusa.getAccountInfo({
-                username : textUsername.value,
-                password : textPassword.value,
+                username : username.input.value,
+                password : password.input.value,
                 onsuccess : function(response) {
-                    Ti.App.Properties.setString('username', textUsername.value);
-                    Ti.App.Properties.setString('password', textPassword.value);
+                    Ti.App.Properties.setString('username', username.input.value);
+                    Ti.App.Properties.setString('password', password.input.value);
                     activityIndicator.hide();
                     win.close();
                     isDone = true;
@@ -92,8 +107,10 @@
         viewBase.add(viewHeader);
         viewBase.add(viewBody);
 
-        viewHeader.add(textUsername);
-        viewHeader.add(textPassword);        
+        //viewHeader.add(textUsername);
+        //viewHeader.add(textPassword);        
+        viewHeader.add(username);
+        viewHeader.add(password);        
         viewBody.add(button);
         viewBody.add(cancel_button);
 
@@ -104,8 +121,8 @@
         win.add(activityIndicator);
         win.isDone = isDone; 
 
-        win.textUsername = textUsername;
-        win.textPassword = textPassword;
+        win.username = username;
+        win.password = password;
         win.save_button = button;
         win.activityIndicator = activityIndicator;
 

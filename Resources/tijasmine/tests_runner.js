@@ -3,9 +3,9 @@ function run() {
         reporter = new (require('/tijasmine/tijasmine-console').ConsoleReporter);
 
     tijasmine.addSpecModules(
-       '/specs/spec_medusa',
-       '/specs/spec_ui'//,
-       // '/specs/spec_LoginWindow', 
+       //'/specs/spec_medusa',
+       //'/specs/spec_ui'//,
+       '/specs/spec_LoginWindow'//, 
        // '/specs/spec_NewStoneWindow', 
        // '/specs/spec_NewBoxWindow', 
        // '/specs/spec_PrintFormatUrlSettingWindow',
