@@ -4,7 +4,7 @@
 	    var win = Ti.UI.createWindow({title: 'Settings',backgroundColor:'#ffffff',barColor:'#336699'});
 	    var font = {fontSize: 16};
 		var data = [
-			{title:'----', hasChild:false, target:'Server', header:'Medusa server', font: font},
+//			{title:'----', hasChild:false, target:'Server', header:'Medusa server', font: font},
 			{title:'----', hasChild:false, target:'LogIn', header:'account', font: font},
 			{title:'----', hasChild:false, target:'PrintLabel', header:'print label', font: font},			
 			{title:'----', hasChild:false, target:'PrintServer', header:'print server', font: font},
@@ -121,12 +121,28 @@
 					break;
 			}
 		});
-
+		var view_account = Ti.UI.createView({
+			layout : 'vertical'
+		});
+		var label_server = Ti.UI.createLabel({
+			left : 10,
+			text : 'url;'
+		});
+		var label_account = Ti.UI.createLabel({
+			left : 10,
+			text : 'username;'
+		});
+		view_account.add(label_server);
+		view_account.add(label_account);
+		tableView.data[index_account].rows[0].add(view_account);
+		//tableView.data[index_account].rows[0].add(label2);		
 		win.add(tableView);
 
 	    win.addEventListener('focus', function (e) {
-	    	tableView.data[index_medusa_server].rows[0].title = serverInfo();
-		   	tableView.data[index_account].rows[0].title = accountInfo();
+	    	label_server.text = 'url; ' + serverInfo();
+	    	label_account.text = 'username; ' + accountInfo();
+	    	//tableView.data[index_medusa_server].rows[0].title = serverInfo();
+		   	//tableView.data[index_account].rows[0].title = accountInfo();
 		   	tableView.data[index_print_server].rows[0].title = printServerInfo();		   	
 		   	tableView.data[index_print_format_url].rows[0].title = printFormatUrlInfo();
 		   	updateHomeRow();

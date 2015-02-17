@@ -40,6 +40,15 @@
         //     hintText : 'user name'
         // }));
 
+        var server = si.ui.createScanInput(si.combine($$.TextField, {
+//            width : '100%',
+//            title: '',
+            value: Ti.App.Properties.getString('server'),
+            keyboardType : Ti.UI.KEYBOARD_URL,
+            hintText : 'URI',            
+        }));
+
+
         var username = si.ui.createScanInput(si.combine($$.TextField, {
 //            width : '100%',
             value : Ti.App.Properties.getString('username'),
@@ -73,10 +82,12 @@
             isDone = false;
             Ti.API.info('click');
             textPassword.blur();
-            if (username.input.value == '' || password.input.value == '') {
-                alert('Please input username and password.');
+            if (server.input.value == '' || username.input.value == '' || password.input.value == '') {
+                alert('Please input url, username, and password.');
                 return;
             }
+
+            Ti.App.Properties.setString('server',server.input.value);
 
             activityIndicator.show();
             si.model.medusa.getAccountInfo({
@@ -98,7 +109,7 @@
         });
 
         var cancel_button = Ti.UI.createButton(si.combine($$.LeftBottomButton, {
-            title : 'cancel',
+            title : 'Cancel',
             top : 0
         }));
 
@@ -111,8 +122,12 @@
         viewBase.add(viewBody);
 
         //viewHeader.add(textUsername);
-        //viewHeader.add(textPassword);        
+        //viewHeader.add(textPassword);
+        viewHeader.add(Ti.UI.createLabel({left: 5, text : 'url'}));
+        viewHeader.add(server);        
+        viewHeader.add(Ti.UI.createLabel({left: 5, text : 'username'}));
         viewHeader.add(username);
+        viewHeader.add(Ti.UI.createLabel({left: 5, text : 'password'}));        
         viewHeader.add(password);        
         viewBody.add(button);
         viewBody.add(cancel_button);
