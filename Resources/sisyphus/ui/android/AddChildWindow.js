@@ -242,6 +242,9 @@
                             si.ui.android.printLabel(_new.global_id, _new.name);
                         }
                     });
+                    if (parent && parent._className === 'Stone'){
+                        windowNewStone.name_field.value = parent.name;
+                    }
                     si.app.tabGroup.activeTab.open(windowNewStone, {
                         animated : true
                     });
