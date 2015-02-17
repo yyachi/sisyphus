@@ -77,7 +77,16 @@
 					si.app.tabGroup.activeTab.open(windowServerSetting,{animated:true});
 					break;
 				case 'LogIn':
-					var windowLogin = si.ui.createLoginWindow();
+					var windowLogin = si.ui.createLoginWindow({
+						onsuccess : function(){
+							var dialog = Ti.UI.createAlertDialog({
+								message: 'Login successful',
+								title: 'Account'
+							});
+							dialog.show();
+							//alert('Login successful.');
+						}
+					});
 					si.app.tabGroup.activeTab.open(windowLogin,{animated:true});
 					break;
 				case 'PrintServer':

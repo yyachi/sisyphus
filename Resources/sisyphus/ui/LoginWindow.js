@@ -97,8 +97,10 @@
                     Ti.App.Properties.setString('username', username.input.value);
                     Ti.App.Properties.setString('password', password.input.value);
                     activityIndicator.hide();
+                    //alert('Login successful.');
                     win.close();
                     isDone = true;
+                    _args.onsuccess();
                 },
                 onerror : function(e) {
                     activityIndicator.hide();
