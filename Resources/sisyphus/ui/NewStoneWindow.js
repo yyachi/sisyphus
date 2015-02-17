@@ -1,7 +1,7 @@
 (function() {
     si.ui.createNewStoneWindow = function(_args) {
         var win = Ti.UI.createWindow({
-            title : 'NEW',
+            title : 'new stone',
             backgroundColor : 'white'
         });
 
@@ -68,7 +68,7 @@
             value : '',
          //   top : '2%',
             keyboardType : Ti.UI.KEYBOARD_DEFAULT,
-            hintText : 'my great stone'
+            hintText : 'input name'
         }));
 
         var button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
@@ -128,7 +128,7 @@
 
         var cancel_button = Ti.UI.createButton(si.combine($$.LeftBottomButton, {
             top : 0,
-            title : 'cancel',
+            title : 'Cancel',
         }));
 
         cancel_button.addEventListener('click', function() {
@@ -139,7 +139,7 @@
         var scan_input = si.ui.createScanInput(si.combine($$.TextField, {
             value : '',
             keyboardType : Ti.UI.KEYBOARD_DEFAULT,
-            hintText : 'ID'
+            hintText : 'input ID'
         }));
 
         var myImageView = si.ui.createMyImageView();
