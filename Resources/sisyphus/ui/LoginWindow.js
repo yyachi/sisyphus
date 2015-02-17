@@ -18,7 +18,7 @@
         var viewHeader = Ti.UI.createView({
             backgroundColor : 'white',
             width : '100%',
-            height : '25%',
+            height : Ti.UI.SIZE,
             layout : 'vertical'
         });
 
@@ -26,7 +26,7 @@
             backgroundColor : 'white',
             top : 0,
             top : 0,
-            height : '85%',
+            //height : '70%',
         });
 
 
@@ -41,8 +41,6 @@
         // }));
 
         var server = si.ui.createScanInput(si.combine($$.TextField, {
-//            width : '100%',
-//            title: '',
             value: Ti.App.Properties.getString('server'),
             keyboardType : Ti.UI.KEYBOARD_URL,
             hintText : 'URI',            

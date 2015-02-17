@@ -33,11 +33,14 @@ if (Ti.App.Properties.getString('password') == null) {
     Ti.App.Properties.setString('password', si.config.Medusa.defaultPassword);
 }
 
-if (Ti.App.Properties.getInt('printLabel') == null) {
-    Ti.App.Properties.setInt('printLabel', si.config.Medusa.printLabel);
+if (Ti.App.Properties.getBool('printLabel') == null) {
+    Ti.App.Properties.setBool('printLabel', si.config.Medusa.printLabel);
 }
 if (Ti.App.Properties.getString('printServer') == null) {
     Ti.App.Properties.setString('printServer', si.config.Medusa.defaultPrintServer);
+}
+if (Ti.App.Properties.getString('printFormatUrl') == null) {
+    Ti.App.Properties.setString('printFormatUrl', si.config.Medusa.defaultPrintFormatUrl);
 }
 if (Ti.App.Properties.getInt('facing') == null) {
     Ti.App.Properties.setInt('facing', si.config.Medusa.facing);

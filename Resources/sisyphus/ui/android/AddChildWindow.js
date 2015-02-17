@@ -16,7 +16,7 @@
     };
 
     si.ui.android.printLabel = function(_global_id, _name) {
-        if (!Ti.App.Properties.getInt('printLabel')){
+        if (!Ti.App.Properties.getBool('printLabel')){
             return;
         }
         Ti.API.info('printLabel in ');
@@ -605,7 +605,7 @@
         viewHeaderRight.add(imageButtonViewHome);
         //viewHeaderRight.add(imageButtonViewMenu);
         viewHeaderRight.add(photoButtonView);        
-        if (Ti.App.Properties.getInt('printLabel')){
+        if (Ti.App.Properties.getBool('printLabel')){
             viewHeaderRight.add(imageButtonViewPrint);
         }
         viewBase.add(viewBody);

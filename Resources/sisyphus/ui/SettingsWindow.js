@@ -6,9 +6,9 @@
 		var data = [
 //			{title:'----', hasChild:false, target:'Server', header:'Medusa server', font: font},
 			{title:'----', hasChild:false, target:'LogIn', header:'account', font: font},
-			{title:'----', hasChild:false, target:'PrintLabel', header:'print label', font: font},			
-			{title:'----', hasChild:false, target:'PrintServer', header:'print server', font: font},
-			{title:'----', hasChild:false, target:'PrintFormatUrl', header:'print format url', font: font},
+			{title:'----', hasChild:false, target:'PrintLabel', header:'label print', font: font},			
+			//{title:'----', hasChild:false, target:'PrintServer', header:'print server', font: font},
+			//{title:'----', hasChild:false, target:'PrintFormatUrl', header:'print format url', font: font},
 			{title:'----', hasChild:false, target:'ScanToLoad', header:'home', font: font},
 			{title:'----', hasChild:false, target:'ScanCamera', header: 'scan camera', font: font}
 		];
@@ -124,8 +124,11 @@
 				    }
 					break;
 				case 'PrintLabel':
-				    optionDialogForPrintLabel.show();
+					var windowLabelPrint = si.ui.createLabelPrintSettingWindow();
+					si.app.tabGroup.activeTab.open(windowLabelPrint,{animated:true});
 					break;
+				 //    optionDialogForPrintLabel.show();
+					// break;
 				default:
 					break;
 			}
@@ -144,19 +147,44 @@
 		view_account.add(label_server);
 		view_account.add(label_account);
 		tableView.data[index_account].rows[0].add(view_account);
+
+		var view_label_print_base = Ti.UI.createView({
+			layout : 'vertical',
+			//backgroundColor: 'yellow'
+		});
+		var label_print_status = Ti.UI.createLabel({
+			left : 10,
+			text : 'status;'
+		});
+		var label_print_server = Ti.UI.createLabel({
+			left : 10,
+			text : 'server url;'
+		});
+		var label_template = Ti.UI.createLabel({
+			left : 10,
+			text : 'template url;'
+		});
+
+		view_label_print_base.add(label_print_status);
+		view_label_print_base.add(label_print_server);				
+		view_label_print_base.add(label_template);				
+		tableView.data[index_print_label].rows[0].add(view_label_print_base);
 		//tableView.data[index_account].rows[0].add(label2);		
 		win.add(tableView);
 
 	    win.addEventListener('focus', function (e) {
 	    	label_server.text = 'url; ' + serverInfo();
 	    	label_account.text = 'username; ' + accountInfo();
+	    	label_print_status.text = 'status; ' + LabelPrintStatus();
+	    	label_print_server.text = 'server url; ' + printServerInfo();
+	    	label_template.text = 'template url; ' + printFormatUrlInfo();
 	    	//tableView.data[index_medusa_server].rows[0].title = serverInfo();
 		   	//tableView.data[index_account].rows[0].title = accountInfo();
-		   	tableView.data[index_print_server].rows[0].title = printServerInfo();		   	
-		   	tableView.data[index_print_format_url].rows[0].title = printFormatUrlInfo();
+		   	//tableView.data[index_print_server].rows[0].title = printServerInfo();		   	
+		   	//tableView.data[index_print_format_url].rows[0].title = printFormatUrlInfo();
 		   	updateHomeRow();
 		   	updateScanCameraRow();
-		   	updatePrintLabelRow();
+		   	//updatePrintLabelRow();
 		});
 
 		function findIndex(target) {
@@ -202,9 +230,16 @@
 			}
 		}
 
+		function LabelPrintStatus(){
+			if (Ti.App.Properties.getBool('printLabel')){
+				return 'on';
+			} else {
+				return 'off';
+			}
+		}
+
 		function PrintLabelInfo(){
-			var flag = Ti.App.Properties.getInt('printLabel');
-			if (flag == 1){
+			if (Ti.App.Properties.getBool('printLabel')){
 				return 'enabled';
 			} else {
 				return 'disabled';

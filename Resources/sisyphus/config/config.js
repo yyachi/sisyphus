@@ -7,9 +7,9 @@
 		defaultPassword: 'admin',		
 		//defaultServer: 'http://192.168.56.102:3000/',
 		defaultPrintServer: 'http://localhost:8080/',
-		defaultpPrintFormatUrl : 'http://database.misasa.okayama-u.ac.jp/format_archive/dream-label.spfmtz',
+		defaultPrintFormatUrl : 'http://database.misasa.okayama-u.ac.jp/format_archive/dream-label.spfmtz',
 		facing: 0, //0 for backward (default) camera, 1 for front camera
-		printLabel: 0, //0 for does not print label, 1 for print label		
+		printLabel: false, //0 for does not print label, 1 for print label		
 		debug: false,
 		test: true
 	};
