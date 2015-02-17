@@ -377,7 +377,7 @@
 
         var cancel_button = Ti.UI.createButton(si.combine($$.LeftBottomButton, {
             top : 0,
-            title : 'cancel',
+            title : 'Cancel',
         }));
 
         cancel_button.addEventListener('click', function() {

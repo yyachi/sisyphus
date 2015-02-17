@@ -102,7 +102,7 @@
 					break;
 				case 'ScanToLoad':
 					var w = si.ui.createInputOrScanWindow({
-        				title: 'default box',
+        				title: 'home',
         				value: Ti.App.Properties.getString('current_box_global_id'),
             			save : function(value) {
             				var global_id = value;
