@@ -66,6 +66,8 @@
 
         var text = Ti.UI.createTextField(si.combine($$.TextField, {
             value : '',
+            width : '90%',
+            left : 0,
          //   top : '2%',
             keyboardType : Ti.UI.KEYBOARD_DEFAULT,
             hintText : 'input name'
@@ -137,6 +139,8 @@
 
         var scan_input = si.ui.createScanInput(si.combine($$.TextField, {
             value : '',
+            width : '100%',
+            left : 0,
             keyboardType : Ti.UI.KEYBOARD_DEFAULT,
             hintText : 'input ID'
         }));
