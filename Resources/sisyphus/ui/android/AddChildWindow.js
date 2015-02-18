@@ -435,6 +435,10 @@
             //optionDialogForAdd.show();
             var windowNewStone = si.ui.createNewStoneWindow({
                 onsuccess: function(_new){
+                    labelStatus.text = _new.global_id + '...' + _new.name + '...';
+                    si.sound_newmail.play();
+                    labelInfo.text = labelStatus.text + 'created\n' + labelInfo.text;
+
                     if (parent){
                         addChild(_new.global_id, false);
                     }
@@ -465,6 +469,9 @@
             //optionDialogForAdd.show();
             var windowNewBox = si.ui.createNewBoxWindow({
                 onsuccess: function(_new){
+                    labelStatus.text = _new.global_id + '...' + _new.name + '...';
+                    si.sound_newmail.play();
+                    labelInfo.text = labelStatus.text + 'created\n' + labelInfo.text;
                     if (parent){
                         addChild(_new.global_id, false);
                     }
@@ -610,7 +617,7 @@
                         username : username,
                         password : password,
                         onsuccess : function(_response2) {
-                            labelStatus.text += 'OK\n';
+                            labelStatus.text += 'stored\n';
                             si.sound_newmail.play();
                             labelInfo.text = labelStatus.text + labelInfo.text;
 
