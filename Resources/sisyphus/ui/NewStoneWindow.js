@@ -1,7 +1,7 @@
 (function() {
     si.ui.createNewStoneWindow = function(_args) {
         var win = Ti.UI.createWindow({
-            title : 'new stone',
+            title : 'New stone',
             backgroundColor : 'white'
         });
 

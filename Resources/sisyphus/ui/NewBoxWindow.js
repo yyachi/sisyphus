@@ -1,7 +1,7 @@
 (function() {
     si.ui.createNewBoxWindow = function(_args) {
         var win = Ti.UI.createWindow({
-            title : 'new box',
+            title : 'New box',
             backgroundColor : 'white'
         });
 
