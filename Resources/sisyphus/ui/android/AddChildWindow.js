@@ -230,46 +230,46 @@
             };
         });
 
-        var optionDialogForAdd = Ti.UI.createOptionDialog({
-            options : ['stone', 'box', 'cancel'],
-            cancel : 2,
-            title : ''
-        });
-        optionDialogForAdd.addEventListener('click', function(e) {
-            switch (e.index) {
-                case 0:
-                    var windowNewStone = si.ui.createNewStoneWindow({
-                        onsuccess: function(_new){
-                            if (parent){
-                                addChild(_new.global_id, false);
-                            }
-                            si.ui.android.printLabel(_new.global_id, _new.name);
-                        }
-                    });
-                    if (parent && parent._className === 'Stone'){
-                        windowNewStone.name_field.value = parent.name;
-                    }
-                    si.app.tabGroup.activeTab.open(windowNewStone, {
-                        animated : true
-                    });
-                    break;
-                case 1:
-                    var windowNewBox = si.ui.createNewBoxWindow({
-                        onsuccess: function(_new){
-                            if (parent){
-                                addChild(_new.global_id, false);
-                            }
-                            si.ui.android.printLabel(_new.global_id, _new.name);
-                        }
-                    });
-                    si.app.tabGroup.activeTab.open(windowNewBox, {
-                        animated : true
-                    });
-                    break;
-                default:
-                    break;
-            };
-        });
+        // var optionDialogForAdd = Ti.UI.createOptionDialog({
+        //     options : ['stone', 'box', 'cancel'],
+        //     cancel : 2,
+        //     title : ''
+        // });
+        // optionDialogForAdd.addEventListener('click', function(e) {
+        //     switch (e.index) {
+        //         case 0:
+        //             var windowNewStone = si.ui.createNewStoneWindow({
+        //                 onsuccess: function(_new){
+        //                     if (parent){
+        //                         addChild(_new.global_id, false);
+        //                     }
+        //                     si.ui.android.printLabel(_new.global_id, _new.name);
+        //                 }
+        //             });
+        //             if (parent && parent._className === 'Stone'){
+        //                 windowNewStone.name_field.value = parent.name;
+        //             }
+        //             si.app.tabGroup.activeTab.open(windowNewStone, {
+        //                 animated : true
+        //             });
+        //             break;
+        //         case 1:
+        //             var windowNewBox = si.ui.createNewBoxWindow({
+        //                 onsuccess: function(_new){
+        //                     if (parent){
+        //                         addChild(_new.global_id, false);
+        //                     }
+        //                     si.ui.android.printLabel(_new.global_id, _new.name);
+        //                 }
+        //             });
+        //             si.app.tabGroup.activeTab.open(windowNewBox, {
+        //                 animated : true
+        //             });
+        //             break;
+        //         default:
+        //             break;
+        //     };
+        // });
 
 
 
@@ -411,20 +411,61 @@
 
 
         //var imageButtonViewAdd = si.ui.createImageButtonView('/images/plus.png', {
-        var buttonNewChild = Ti.UI.createButton(si.combine($$.NormalButton, {
+        var buttonNewStone = Ti.UI.createButton(si.combine($$.NormalButton, {
             top : '2%',
             // width : '30%',
             // height : '90%'
-            title : 'new',
+            title : 'New stone',
             font : {fontSize:36},
 //            width : '100%',
             borderRadius : 10,
             //top : '30%',
             width : '80%',
-            height : '20%'
+            height : '10%'
         }));
-        buttonNewChild.addEventListener('click', function(e) {
-            optionDialogForAdd.show();
+        buttonNewStone.addEventListener('click', function(e) {
+            //optionDialogForAdd.show();
+            var windowNewStone = si.ui.createNewStoneWindow({
+                onsuccess: function(_new){
+                    if (parent){
+                        addChild(_new.global_id, false);
+                    }
+                    si.ui.android.printLabel(_new.global_id, _new.name);
+                }
+            });
+            if (parent && parent._className === 'Stone'){
+                windowNewStone.name_field.value = parent.name;
+            }
+            si.app.tabGroup.activeTab.open(windowNewStone, {
+                animated : true
+            });
+        });
+
+        var buttonNewBox = Ti.UI.createButton(si.combine($$.NormalButton, {
+            top : '2%',
+            // width : '30%',
+            // height : '90%'
+            title : 'New box',
+            font : {fontSize:36},
+//            width : '100%',
+            borderRadius : 10,
+            //top : '30%',
+            width : '80%',
+            height : '10%'
+        }));
+        buttonNewBox.addEventListener('click', function(e) {
+            //optionDialogForAdd.show();
+            var windowNewBox = si.ui.createNewBoxWindow({
+                onsuccess: function(_new){
+                    if (parent){
+                        addChild(_new.global_id, false);
+                    }
+                    si.ui.android.printLabel(_new.global_id, _new.name);
+                }
+            });
+            si.app.tabGroup.activeTab.open(windowNewBox, {
+                animated : true
+            });
         });
 
 
@@ -615,7 +656,8 @@
         viewBase.add(viewBody);
         viewBody.add(scrollView);
         scrollView.add(labelInfo);
-        viewBody.add(buttonNewChild);        
+        viewBody.add(buttonNewStone);
+        viewBody.add(buttonNewBox)        
         viewBody.add(buttonScanChild);
         viewBase.add(viewFooter);
         viewFooter.add(labelStatus);
