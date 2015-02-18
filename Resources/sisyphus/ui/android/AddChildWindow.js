@@ -194,7 +194,11 @@
             imgDimensions : 30
         });
         photoButtonView.button.addEventListener('click', function(e) {
-            optionDialogForMenu.show();
+            if (parent) {
+                optionDialogForMenu.show();
+            } else {
+                si.ui.myAlert({message:'Load parent first.', title:''});
+            }
         });
 
         var optionDialogForMenu = Ti.UI.createOptionDialog({
@@ -208,14 +212,16 @@
                     if (parent) {
                         uploadImageFromCamera();
                     } else {
-                        alert('Please load parent first');
+                        si.ui.myAlert({message:'Load parent first.', title:''});
+                        //alert('Please load parent first');
                     }
                     break;
                 case 1:
                     if (parent) {
                         uploadImageFromAlbum();
                     } else {
-                        alert('Please load parent first');
+                        si.ui.myAlert({message:'Load parent first.', title:''});
+                        //alert('Please load parent first');
                     }
                     break;
                 // case 2:
@@ -483,7 +489,11 @@
             height : Ti.UI.SIZE
         }));
         buttonScanChild.addEventListener('click', function() {
-            scanChild();
+            if (parent){
+                scanChild();
+            } else {
+                si.ui.myAlert({message:'Load parent first.', title:''});
+            }            
         });
 
 
