@@ -1,7 +1,7 @@
 (function() {
     si.ui.createLabelPrintSettingWindow = function(_args) {
         var win = Ti.UI.createWindow({
-            title : 'label print',
+            title : 'Label setting',
             backgroundColor : 'white'
         });
 
@@ -98,15 +98,15 @@
         win.add(viewBase);
         viewBase.add(viewHeader);
         viewBase.add(viewBody);
-        viewHeader.add(Ti.UI.createLabel({left: 5, text: 'server'}));
-        viewHeader.add(server);
-        viewHeader.add(Ti.UI.createLabel({left: 5, text: 'template'}));
-        viewHeader.add(template);
-        viewHeader.add(Ti.UI.createLabel({left: 5, text: 'label print on/off'}));
+        viewHeader.add(Ti.UI.createLabel({left: 5, text: 'ON/OFF'}));
         viewStatus.add(statusSwitch);
+        viewHeader.add(viewStatus);        
+        viewHeader.add(Ti.UI.createLabel({left: 5, text: 'URL'}));
+        viewHeader.add(server);
+        viewHeader.add(Ti.UI.createLabel({left: 5, text: 'Template'}));
+        viewHeader.add(template);
         //viewStatus.add(viewTestPrint);
         //viewTestPrint.add(printtext);
-        viewHeader.add(viewStatus);
         viewBody.add(button);
         viewBody.add(cancel_button);
 

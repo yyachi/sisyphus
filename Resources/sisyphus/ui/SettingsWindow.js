@@ -170,9 +170,9 @@
 	    win.addEventListener('focus', function (e) {
 	    	label_server.text = 'URL; ' + serverInfo();
 	    	label_account.text = 'Username; ' + accountInfo();
-	    	label_print_status.text = 'status; ' + LabelPrintStatus();
-	    	label_print_server.text = 'server url; ' + printServerInfo();
-	    	label_template.text = 'template url; ' + printFormatUrlInfo();
+	    	label_print_status.text = 'Status; ' + LabelPrintStatus();
+	    	label_print_server.text = 'URL; ' + printServerInfo();
+	    	label_template.text = 'Template; ' + printFormatUrlInfo();
 	    	//tableView.data[index_medusa_server].rows[0].title = serverInfo();
 		   	//tableView.data[index_account].rows[0].title = accountInfo();
 		   	//tableView.data[index_print_server].rows[0].title = printServerInfo();		   	
@@ -227,9 +227,9 @@
 
 		function LabelPrintStatus(){
 			if (Ti.App.Properties.getBool('printLabel')){
-				return 'on';
+				return 'ON';
 			} else {
-				return 'off';
+				return 'OFF';
 			}
 		}
 

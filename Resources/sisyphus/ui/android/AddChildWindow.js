@@ -181,10 +181,14 @@
             imgDimensions : 30,
         });
         imageButtonViewPrint.button.addEventListener('click', function(e) {
-            if (parent) {
-                si.ui.android.printLabel(parent.global_id, parent.name);
+            if (Ti.App.Properties.getBool('printLabel')){
+                if (parent) {
+                    si.ui.android.printLabel(parent.global_id, parent.name);
+                } else {
+                    si.ui.alert_no_parent();
+                }
             } else {
-                si.ui.alert_no_parent();
+                si.ui.myAlert({message: 'Switch on label'});
             }
         });
 
@@ -670,9 +674,7 @@
         viewHeaderRight.add(imageButtonViewHome);
         //viewHeaderRight.add(imageButtonViewMenu);
         viewHeaderRight.add(photoButtonView);        
-        if (Ti.App.Properties.getBool('printLabel')){
-            viewHeaderRight.add(imageButtonViewPrint);
-        }
+        viewHeaderRight.add(imageButtonViewPrint);
         viewBase.add(viewBody);
         viewBody.add(scrollView);
         scrollView.add(labelInfo);
