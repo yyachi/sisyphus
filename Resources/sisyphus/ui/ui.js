@@ -120,32 +120,18 @@
     si.ui.createScanInput = function(opts){
         var view = Ti.UI.createView({
             height : Ti.UI.SIZE,
-            //backgroundColor : 'red',
-            layout : 'horizontal'
+            width : Ti.UI.SIZE,
         });
 
-        var imgDimensions = 30;
         var text = Ti.UI.createTextField(opts);
 
 
-        var imageButtonView = Ti.UI.createView({
-            width : 60,
-            height : 60
+        var imageButton = si.ui.createImageButtonView('/images/barcode.png', {
+            width : 90,
+            height : 90,
+            imgDimensions : 30,
         });
-        var imageView = Ti.UI.createImageView({
-            image : '/images/barcode.png',
-            width : imgDimensions,
-            height : imgDimensions            
-        });
-
-
-        var button = Ti.UI.createButton({
-            title : '',
-            width : 60,
-            height : 60
-        });
-
-        button.addEventListener('click', function(e) {
+        imageButton.button.addEventListener('click', function(e) {
             if (!si.config.Medusa.debug) {
                 si.TiBar.scan({
                     configure : si.config.TiBar,
@@ -161,34 +147,23 @@
                 });
             }
         });
-        imageView.addEventListener('click', function(e) {
-            button.fireEvent('click', e);
-        });
 
 
         var view_left = Ti.UI.createView({
             height : Ti.UI.SIZE,
-            width : '90%',
-            left : 0,
-            //backgroundColor : 'orange',
-            //layout : 'vertical'
+            width : Ti.UI.SIZE,
+            right : imageButton.width,
         });
         var view_right = Ti.UI.createView({
             height : Ti.UI.SIZE,
-            width : '10%',
-            left : 0,
-            //backgroundColor : 'yellow',
-            layout : 'horizontal'
+            width : Ti.UI.SIZE,
+            right : 0,
         });
 
         view.add(view_left);
         view.add(view_right);
         view_left.add(text);
-        view_right.add(imageButtonView);
-        imageButtonView.add(button);
-        imageButtonView.add(imageView);
-        //view_right.add(button);
-        //view_right.add(imageView);
+        view_right.add(imageButton);
 
         view.set_value = function(value){
             text.value = value;
