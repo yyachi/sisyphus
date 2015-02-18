@@ -421,7 +421,7 @@
             borderRadius : 10,
             //top : '30%',
             width : '80%',
-            height : '10%'
+            height : Ti.UI.SIZE
         }));
         buttonNewStone.addEventListener('click', function(e) {
             //optionDialogForAdd.show();
@@ -451,7 +451,7 @@
             borderRadius : 10,
             //top : '30%',
             width : '80%',
-            height : '10%'
+            height : Ti.UI.SIZE
         }));
         buttonNewBox.addEventListener('click', function(e) {
             //optionDialogForAdd.show();
@@ -470,7 +470,7 @@
 
 
         var buttonScanChild = Ti.UI.createButton(si.combine($$.NormalButton, {
-            title : 'scan',
+            title : 'Scan',
 //            width : '100%',
             //backgroundColor : 'white',
             //borderWidth : 1,
@@ -480,7 +480,7 @@
             top : '2%',
             //bottom : 0,
             width : '80%',
-            height : '20%',
+            height : Ti.UI.SIZE
         }));
         buttonScanChild.addEventListener('click', function() {
             scanChild();
