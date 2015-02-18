@@ -2,7 +2,7 @@
 
  	si.ui.createSettingsWindow = function(_args) {
 	    var win = Ti.UI.createWindow({title: 'Settings',backgroundColor:'#ffffff',barColor:'#336699'});
-	    var font = {fontSize: 16};
+	    var font = {fontSize: 20};
 		var data = [
 //			{title:'----', hasChild:false, target:'Server', header:'Medusa server', font: font},
 			{title:'----', hasChild:false, target:'LogIn', header:'Account', font: font},
@@ -133,11 +133,13 @@
 		});
 		var label_server = Ti.UI.createLabel({
 			left : 10,
-			text : 'url;'
+			font : font,
+			text : 'URL;'
 		});
 		var label_account = Ti.UI.createLabel({
 			left : 10,
-			text : 'username;'
+			font : font,
+			text : 'Username;'
 		});
 		view_account.add(label_server);
 		view_account.add(label_account);
@@ -149,15 +151,18 @@
 		});
 		var label_print_status = Ti.UI.createLabel({
 			left : 10,
-			text : 'status;'
+			font : font,			
+			text : 'Status;'
 		});
 		var label_print_server = Ti.UI.createLabel({
 			left : 10,
-			text : 'server url;'
+			font : font,			
+			text : 'URL;'
 		});
 		var label_template = Ti.UI.createLabel({
 			left : 10,
-			text : 'template url;'
+			font : font,			
+			text : 'Template;'
 		});
 
 		view_label_print_base.add(label_print_status);
