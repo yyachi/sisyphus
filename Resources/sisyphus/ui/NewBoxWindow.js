@@ -14,7 +14,7 @@
         });
 
         var viewHeader = Ti.UI.createView({
-            backgroundColor : 'red',
+            backgroundColor : 'white',
             height : '25%'
         });
 
@@ -152,7 +152,7 @@
         viewHeaderLeft.add(myImageView);
 
         viewHeader.add(viewHeaderRight);
-        if (!Ti.App.Properties.getInt('printLabel')){
+        if (!Ti.App.Properties.getBool('printLabel')){
             viewHeaderRight.add(viewHeaderRight1);
             viewHeaderRight1.add(scan_input);
             viewHeaderRight.add(viewHeaderRight2);        
