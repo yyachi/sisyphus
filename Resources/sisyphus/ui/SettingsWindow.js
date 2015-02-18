@@ -5,12 +5,12 @@
 	    var font = {fontSize: 16};
 		var data = [
 //			{title:'----', hasChild:false, target:'Server', header:'Medusa server', font: font},
-			{title:'----', hasChild:false, target:'LogIn', header:'account', font: font},
-			{title:'----', hasChild:false, target:'PrintLabel', header:'label print', font: font},			
+			{title:'----', hasChild:false, target:'LogIn', header:'Account', font: font},
+			{title:'----', hasChild:false, target:'PrintLabel', header:'Label', font: font},			
 			//{title:'----', hasChild:false, target:'PrintServer', header:'print server', font: font},
 			//{title:'----', hasChild:false, target:'PrintFormatUrl', header:'print format url', font: font},
-			{title:'----', hasChild:false, target:'ScanToLoad', header:'home', font: font},
-			{title:'----', hasChild:false, target:'ScanCamera', header: 'scan camera', font: font}
+			{title:'----', hasChild:false, target:'ScanToLoad', header:'Home', font: font},
+			{title:'----', hasChild:false, target:'ScanCamera', header: 'Barcode reader', font: font}
 		];
 		var index_medusa_server = findIndex('Server');
 		var index_account = findIndex('LogIn');
@@ -48,9 +48,9 @@
 
 
         var optionDialogForScanCamera = Ti.UI.createOptionDialog({
-            options : ['rear', 'front', 'cancel'],
-            cancel : 2,
-            title : 'Camera for scan'
+            options : ['Rear camera', 'Front camera'],
+            //cancel : 2,
+            title : 'Barcode reader setting'
         });
         optionDialogForScanCamera.addEventListener('click', function(e) {
             switch (e.index) {
@@ -102,7 +102,7 @@
 					break;
 				case 'ScanToLoad':
 					var w = si.ui.createInputOrScanWindow({
-        				title: 'home',
+        				title: 'Home setting',
         				value: Ti.App.Properties.getString('current_box_global_id'),
             			save : function(value) {
             				var global_id = value;
@@ -120,7 +120,7 @@
 					if (Ti.Media.availableCameras.length > 1){
 				    	optionDialogForScanCamera.show();
 				    } else {
-				    	alert('single camera');
+				    	si.ui.myAlert({message:'single camera'});
 				    }
 					break;
 				case 'PrintLabel':
@@ -224,9 +224,9 @@
 		function ScanCameraInfo(){
 			var facing = Ti.App.Properties.getInt('facing');
 			if (facing == 1){
-				return 'front';
+				return 'Front camera';
 			} else {
-				return 'rear';
+				return 'Rear camera';
 			}
 		}
 
