@@ -198,8 +198,8 @@
         });
 
         var optionDialogForMenu = Ti.UI.createOptionDialog({
-            options : ['add a snap shot', 'add a local file', 'cancel'],
-            cancel : 2,
+            options : ['Add snap shot', 'Add local file'],
+            //cancel : 2,
             title : ''
         });
         optionDialogForMenu.addEventListener('click', function(e) {
@@ -208,14 +208,14 @@
                     if (parent) {
                         uploadImageFromCamera();
                     } else {
-                        alert('please load parent first');
+                        alert('Please load parent first');
                     }
                     break;
                 case 1:
                     if (parent) {
                         uploadImageFromAlbum();
                     } else {
-                        alert('please load parent first');
+                        alert('Please load parent first');
                     }
                     break;
                 // case 2:

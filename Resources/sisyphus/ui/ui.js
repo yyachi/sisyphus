@@ -215,8 +215,8 @@
         });
 
         var optionDialog = Ti.UI.createOptionDialog({
-            options : ['add a snap shot', 'add a local file', 'cancel'],
-            cancel : 2,
+            options : ['Add snap shot', 'Add local file'],
+            //cancel : 2,
             title : ''
         });
         optionDialog.addEventListener('click', function(e) {
