@@ -3,7 +3,7 @@
     si.ui.createLoginWindow = function(_args) {
         var isDone = null;
         var win = Ti.UI.createWindow({
-            title : 'account',
+            title : 'Account setting',
             backgroundColor : '#ffffff'
         });
 
@@ -81,7 +81,7 @@
             Ti.API.info('click');
             textPassword.blur();
             if (server.input.value == '' || username.input.value == '' || password.input.value == '') {
-                alert('Please input url, username, and password.');
+                si.ui.myAlert({message: 'Input URL, Username, and Password'});
                 return;
             }
 
@@ -103,7 +103,7 @@
                 onerror : function(e) {
                     activityIndicator.hide();
                     isDone = true;
-                    alert('Login failed!');
+                    si.ui.myAlert({message:'Login failed!'});
                 }
             });
         });
@@ -123,11 +123,11 @@
 
         //viewHeader.add(textUsername);
         //viewHeader.add(textPassword);
-        viewHeader.add(Ti.UI.createLabel({left: 5, text : 'url'}));
+        viewHeader.add(Ti.UI.createLabel({left: 5, text : 'URL'}));
         viewHeader.add(server);        
-        viewHeader.add(Ti.UI.createLabel({left: 5, text : 'username'}));
+        viewHeader.add(Ti.UI.createLabel({left: 5, text : 'Username'}));
         viewHeader.add(username);
-        viewHeader.add(Ti.UI.createLabel({left: 5, text : 'password'}));        
+        viewHeader.add(Ti.UI.createLabel({left: 5, text : 'Password'}));        
         viewHeader.add(password);        
         viewBody.add(button);
         viewBody.add(cancel_button);

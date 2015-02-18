@@ -79,12 +79,7 @@
 				case 'LogIn':
 					var windowLogin = si.ui.createLoginWindow({
 						onsuccess : function(){
-							var dialog = Ti.UI.createAlertDialog({
-								message: 'Login successful',
-								title: 'Account'
-							});
-							dialog.show();
-							//alert('Login successful.');
+							si.ui.myAlert({message: 'Login successfully'});
 						}
 					});
 					si.app.tabGroup.activeTab.open(windowLogin,{animated:true});
@@ -173,8 +168,8 @@
 		win.add(tableView);
 
 	    win.addEventListener('focus', function (e) {
-	    	label_server.text = 'url; ' + serverInfo();
-	    	label_account.text = 'username; ' + accountInfo();
+	    	label_server.text = 'URL; ' + serverInfo();
+	    	label_account.text = 'Username; ' + accountInfo();
 	    	label_print_status.text = 'status; ' + LabelPrintStatus();
 	    	label_print_server.text = 'server url; ' + printServerInfo();
 	    	label_template.text = 'template url; ' + printFormatUrlInfo();
