@@ -155,7 +155,7 @@
         imageButtonViewHome.button.addEventListener('click', function(e) {
             default_global_id = Ti.App.Properties.getString('current_box_global_id');
             if (default_global_id === null){
-                si.ui.myAlert({message:'Set your home first.', title:''});
+                si.ui.myAlert({message:'Set your home first', title:''});
             } else {
                 loadParent(default_global_id);
             }
@@ -184,7 +184,7 @@
             if (parent) {
                 si.ui.android.printLabel(parent.global_id, parent.name);
             } else {
-                alert('please load parent first');
+                si.ui.alert_no_parent();
             }
         });
 
@@ -197,7 +197,7 @@
             if (parent) {
                 optionDialogForMenu.show();
             } else {
-                si.ui.myAlert({message:'Load parent first.', title:''});
+                si.ui.alert_no_parent();
             }
         });
 
@@ -212,7 +212,8 @@
                     if (parent) {
                         uploadImageFromCamera();
                     } else {
-                        si.ui.myAlert({message:'Load parent first.', title:''});
+                        si.ui.alert_no_parent();
+                        //si.ui.myAlert({message:'Load parent first', title:''});
                         //alert('Please load parent first');
                     }
                     break;
@@ -220,7 +221,8 @@
                     if (parent) {
                         uploadImageFromAlbum();
                     } else {
-                        si.ui.myAlert({message:'Load parent first.', title:''});
+                        si.ui.alert_no_parent();
+                        //si.ui.myAlert({message:'Load parent first', title:''});
                         //alert('Please load parent first');
                     }
                     break;
@@ -492,7 +494,8 @@
             if (parent){
                 scanChild();
             } else {
-                si.ui.myAlert({message:'Load parent first.', title:''});
+                si.ui.alert_no_parent();                
+                //si.ui.myAlert({message:'Load parent first.', title:''});
             }            
         });
 

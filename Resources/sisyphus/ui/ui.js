@@ -11,6 +11,11 @@
         dialog.show();
     };
 
+
+    si.ui.alert_no_parent = function(){
+        si.ui.myAlert({message:'Load parent first', title:''});
+    };
+
     si.ui.createApplicationTabGroup = function(_args) {
         var tabGroup = Ti.UI.createTabGroup({
             height : 300
