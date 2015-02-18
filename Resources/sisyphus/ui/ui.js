@@ -1,6 +1,15 @@
 (function() {
     si.ui = {};
 
+    si.ui.myAlert = function(_args){
+        var dialog = Ti.UI.createAlertDialog({
+            message: _args.message,
+            title: _args.title || '',
+            //ok: 'OK'
+        });
+        si.sound_attention.play();        
+        dialog.show();
+    };
 
     si.ui.createApplicationTabGroup = function(_args) {
         var tabGroup = Ti.UI.createTabGroup({

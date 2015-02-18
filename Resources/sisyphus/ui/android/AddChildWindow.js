@@ -155,7 +155,7 @@
         imageButtonViewHome.button.addEventListener('click', function(e) {
             default_global_id = Ti.App.Properties.getString('current_box_global_id');
             if (default_global_id === null){
-                alert('please set home');
+                si.ui.myAlert({message:'Set your home first.', title:''});
             } else {
                 loadParent(default_global_id);
             }
