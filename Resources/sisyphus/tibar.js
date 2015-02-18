@@ -30,8 +30,8 @@
         });
 
         showCancelButton = function(_opts_button) {
-            var buttonCancel = Ti.UI.createButton(si.combine($$.NormalButton, {
-                title : 'cancel',
+            var buttonCancel = Ti.UI.createButton(si.combine($$.LeftButton, {
+                title : 'Cancel',
                 height : 'auto',
                 width : '100%',
                 bottom : '0%'
@@ -63,8 +63,8 @@
         picker.showToolBar(true);
         picker.startScanning();
 
-        var buttonScanStop = Ti.UI.createButton(si.combine($$.RightBottomButton, {
-            title : 'cancel',
+        var buttonScanStop = Ti.UI.createButton(si.combine($$.LeftBottomButton, {
+            title : 'Cancel',
             bottom : '5%'
         }));
 
@@ -75,7 +75,7 @@
         picker.add(buttonScanStop);
 
         var window = Ti.UI.createWindow({
-            title : 'scan barcode',
+            title : 'Scan barcode',
             backgroundColor : '#fff',
         });
         window.add(picker);
