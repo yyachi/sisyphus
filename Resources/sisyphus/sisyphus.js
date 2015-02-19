@@ -102,6 +102,18 @@ var si = {};
         return hostname_with_port + _path;
     };
 
+    si.authURL = function(_path) {
+        var server_url = si.serverURL();
+        var username = Ti.App.Properties.getString('username');
+        var password = Ti.App.Properties.getString('password');
+        var url = si.parseURL(server_url);
+        var hostname_with_port = url.protocol + '//' + username + ':' + password + '@' + url.hostname;
+        if (url.port){
+            hostname_with_port += ':' + url.port;
+        }
+        return hostname_with_port + _path;
+    };
+
     si.parseURL = function (href) {
         var match = href.match(/^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)(\/[^?#]*)(\?[^#]*|)(#.*|)$/);
         return match && {

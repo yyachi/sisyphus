@@ -93,6 +93,7 @@
                 buttonNewBox.setEnabled(isEnabled);                
                 imageButtonViewHome.setEnabled(isEnabled);
                 imageButtonViewPrint.setEnabled(isEnabled);
+                imageButtonViewMenu.setEnabled(isEnabled);
                 photoButtonView.setEnabled(isEnabled);
                 return
             } else if (_mode == 'ready') {
@@ -103,6 +104,7 @@
                 buttonNewBox.setEnabled(isEnabled);                
                 imageButtonViewHome.setEnabled(isEnabled);
                 imageButtonViewPrint.setEnabled(isEnabled);
+                imageButtonViewMenu.setEnabled(isEnabled);
                 photoButtonView.setEnabled(isEnabled);                
             } else {
                 Ti.API.warn('changeMode unkown mode : ' + _mode );
@@ -118,6 +120,7 @@
                 buttonScanChild.setEnabled(false);
                 photoButtonView.button.setEnabled(false);
                 imageButtonViewPrint.button.setEnabled(false);
+                imageButtonViewMenu.setEnabled(false);
             }
 
             if (!Ti.App.Properties.getBool('printLabel')){
@@ -221,7 +224,12 @@
             imgDimensions : 30,
         });
         imageButtonViewMenu.button.addEventListener('click', function(e) {
-            optionDialogForMenu.show();
+            if (parent) {
+                optionDialogForMenu.show();
+            } else {
+                si.ui.alert_no_parent();
+            }
+
         });
 
         var imageButtonViewPrint = si.ui.createImageButtonView('/images/glyphicons-16-print.png', {
@@ -256,30 +264,25 @@
         });
 
         var optionDialogForMenu = Ti.UI.createOptionDialog({
-            options : ['Add snap shot', 'Add local file'],
+            options : ['Open with browser'],
             //cancel : 2,
             title : ''
         });
         optionDialogForMenu.addEventListener('click', function(e) {
             switch (e.index) {
                 case 0:
-                    if (parent) {
-                        uploadImageFromCamera();
-                    } else {
-                        si.ui.alert_no_parent();
-                        //si.ui.myAlert({message:'Load parent first', title:''});
-                        //alert('Please load parent first');
-                    }
+                    var url = si.model.medusa.getResourceURLwithAuth(parent);
+                    Ti.Platform.openURL(url);
                     break;
-                case 1:
-                    if (parent) {
-                        uploadImageFromAlbum();
-                    } else {
-                        si.ui.alert_no_parent();
-                        //si.ui.myAlert({message:'Load parent first', title:''});
-                        //alert('Please load parent first');
-                    }
-                    break;
+                // case 1:
+                //     if (parent) {
+                //         uploadImageFromAlbum();
+                //     } else {
+                //         si.ui.alert_no_parent();
+                //         //si.ui.myAlert({message:'Load parent first', title:''});
+                //         //alert('Please load parent first');
+                //     }
+                //     break;
                 // case 2:
                 //     if (parent) {
                 //         si.ui.android.printLabel(parent.global_id, parent.name);
@@ -708,7 +711,7 @@
         //viewHeaderRight.add(imageButtonViewMenu);
         viewHeaderRight.add(photoButtonView);        
         viewHeaderRight.add(imageButtonViewPrint);
-        //viewHeaderRight.add(imageButtonViewMenu);        
+        viewHeaderRight.add(imageButtonViewMenu);        
         viewBase.add(viewBody);
         viewBody.add(scrollView);
         scrollView.add(labelInfo);

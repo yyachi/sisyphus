@@ -72,14 +72,9 @@
 
 
         var buttonHelp = Ti.UI.createButton(si.combine($$.NormalButton, {
-//            top : '2%',
-            // width : '30%',
-            // height : '90%'
             title : 'Help',
             font : {fontSize:36},
-//            width : '100%',
             borderRadius : 10,
-            //top : '30%',
             width : '80%',
             height : Ti.UI.SIZE
         }));
@@ -93,7 +88,7 @@
         win.add(buttonHelp);
         return win;
     }
-
+    
     si.ui.createInputPrint = function(opts){
         var view = Ti.UI.createView({
             height : Ti.UI.SIZE,

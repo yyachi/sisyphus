@@ -23,6 +23,22 @@
     var PATH_ACCOUNT = '/account';
     var PATH_ACCOUNT_JSON = PATH_ACCOUNT + PATH_JSON;
 
+    si.model.medusa.getResourceURLwithAuth = function(_record, _args) {
+        var _path = si.model.medusa.getResourcePath(_record);
+        var server_url = si.serverURL();
+        var username = Ti.App.Properties.getString('username');
+        var password = Ti.App.Properties.getString('password');
+        var url = si.parseURL(server_url);
+        var hostname_with_port = url.protocol + '//' + username + ':' + password + '@' + url.hostname;
+        if (url.port){
+            hostname_with_port += ':' + url.port;
+        }
+        if (url.pathname){
+            hostname_with_port += url.pathname.replace(/\/$/,'');            
+        }
+        return hostname_with_port + _path.replace(/\.json/,'');
+    }
+
     si.model.medusa.host = function() {
         var url = Ti.App.Properties.getString('server');
         var result = url.split('\/\/');
@@ -201,7 +217,8 @@
     si.model.medusa.getResourcePath = function(_record) {
         var class_path = si.model.medusa.getClassPath(_record);
         //var path = [class_path, _record.id + JSON_PATH].join('/')
-        return class_path + '/' + _record.id + PATH_JSON;
+        var path = class_path + '/' + _record.id + PATH_JSON;
+        return path;
     };
 
     si.model.medusa.className2Path = function(_className) {
