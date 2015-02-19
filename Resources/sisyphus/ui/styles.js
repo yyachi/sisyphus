@@ -205,7 +205,7 @@
             height : 'auto',
             font : {
                 fontWeight : 'bold',
-                fontSize : 24
+                fontSize : 36
             }
         },
         avatar_medium : {

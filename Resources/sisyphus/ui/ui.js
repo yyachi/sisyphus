@@ -34,10 +34,65 @@
             window : si.ui.createSettingsWindow()
         });
 
+        var tabHelp = Ti.UI.createTab({
+            title : 'Info',
+            //icon : '/images/preferences.png',
+            window : si.ui.createInfoWindow()
+        });
+
         tabGroup.addTab(tabMain);
         tabGroup.addTab(tabSettings);
+        tabGroup.addTab(tabHelp);
         return tabGroup;
     };
+
+    si.ui.createInfoWindow = function(){
+        var win = Ti.UI.createWindow({
+            title : 'Info',
+            backgroundColor : 'white',
+            barColor : '#336699',
+            orientationModes : [Ti.UI.PORTRAIT],
+            backButtonTitle : 'Back',
+            layout : 'vertical'
+        });
+        var info_view = Ti.UI.createView({
+            width : '90%',
+            height : '30%',
+            layout : 'vertical',
+            top : '10%',
+            //backgroundColor : 'blue'
+        });
+
+        var label_version = Ti.UI.createLabel(si.combine($$.NormalButton, {
+            //font : font,
+            top : '45%',
+            textAlign : 'center',
+            text : Ti.App.name + ' Version ' + Ti.App.version 
+        }));
+
+
+        var buttonHelp = Ti.UI.createButton(si.combine($$.NormalButton, {
+//            top : '2%',
+            // width : '30%',
+            // height : '90%'
+            title : 'Help',
+            font : {fontSize:36},
+//            width : '100%',
+            borderRadius : 10,
+            //top : '30%',
+            width : '80%',
+            height : Ti.UI.SIZE
+        }));
+        buttonHelp.addEventListener('click', function(e) {
+            Ti.Platform.openURL('http://dream.misasa.okayama-u.ac.jp/documentation/');
+        });
+        //var webview = Ti.UI.createWebView({url: 'http://dream.misasa.okayama-u.ac.jp/documentation/'});
+        info_view.add(label_version);
+        //info_view.add(label_publisher);
+        win.add(info_view);
+        win.add(buttonHelp);
+        return win;
+    }
 
     si.ui.createInputPrint = function(opts){
         var view = Ti.UI.createView({
