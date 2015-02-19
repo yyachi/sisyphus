@@ -188,7 +188,7 @@
                     si.ui.alert_no_parent();
                 }
             } else {
-                si.ui.myAlert({message: 'Switch on label'});
+                si.ui.myAlert({message: 'Turn label on'});
             }
         });
 
