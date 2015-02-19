@@ -105,5 +105,6 @@ if (si.config.Medusa.test){
         // w.open({
         //      modal : true
         // });
+    //si.sound_cricket.play();
     require('/tijasmine/tests_runner').run(); 
 }

@@ -7,7 +7,8 @@
             title: _args.title || '',
             //ok: 'OK'
         });
-        si.sound_attention.play();        
+        //si.sound_attention.play();
+        si.sound_reminder.play();      
         dialog.show();
     };
 

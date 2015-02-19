@@ -440,7 +440,7 @@
             var windowNewStone = si.ui.createNewStoneWindow({
                 onsuccess: function(_new){
                     labelStatus.text = _new.global_id + '...' + _new.name + '...';
-                    si.sound_newmail.play();
+                    si.sound_attention.play();
                     labelInfo.text = labelStatus.text + 'created\n' + labelInfo.text;
 
                     if (parent){
@@ -474,7 +474,7 @@
             var windowNewBox = si.ui.createNewBoxWindow({
                 onsuccess: function(_new){
                     labelStatus.text = _new.global_id + '...' + _new.name + '...';
-                    si.sound_newmail.play();
+                    si.sound_attention.play();
                     labelInfo.text = labelStatus.text + 'created\n' + labelInfo.text;
                     if (parent){
                         addChild(_new.global_id, false);
