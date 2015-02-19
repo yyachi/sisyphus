@@ -103,7 +103,7 @@
                 onerror : function(e) {
                     activityIndicator.hide();
                     isDone = true;
-                    si.ui.myAlert({message:'Login failed!'});
+                    si.ui.myAlert({message:'Login failed'});
                 }
             });
         });
