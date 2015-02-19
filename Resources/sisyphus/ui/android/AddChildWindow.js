@@ -64,8 +64,10 @@
             backButtonTitle : 'Back',
             layout : 'vertical'
         });
-        win.addEventListener('focus', function(e) {
 
+        win.addEventListener('focus', function(e) {
+            Ti.API.info('focused.');
+            changeMode('ready');
             current_global_id = Ti.App.Properties.getString('current_global_id');
             if (parent == null) {
                 if (current_global_id != null) {
@@ -75,8 +77,55 @@
                 if (parent.global_id != current_global_id) {
                     loadParent(current_global_id);
                 }
+
             }
+
         });
+
+        function changeMode(_mode) {
+            //Ti.API.info('changeMode...');
+            var isEnabled = true;
+            if (_mode == 'loading') {
+                isEnabled = false;
+                viewParent.setEnabled(isEnabled);
+                buttonScanChild.setEnabled(isEnabled);
+                buttonNewStone.setEnabled(isEnabled);
+                buttonNewBox.setEnabled(isEnabled);                
+                imageButtonViewHome.setEnabled(isEnabled);
+                imageButtonViewPrint.setEnabled(isEnabled);
+                photoButtonView.setEnabled(isEnabled);
+                return
+            } else if (_mode == 'ready') {
+                isEnabled = true;
+                viewParent.setEnabled(isEnabled);
+                buttonScanChild.setEnabled(isEnabled);
+                buttonNewStone.setEnabled(isEnabled);
+                buttonNewBox.setEnabled(isEnabled);                
+                imageButtonViewHome.setEnabled(isEnabled);
+                imageButtonViewPrint.setEnabled(isEnabled);
+                photoButtonView.setEnabled(isEnabled);                
+            } else {
+                Ti.API.warn('changeMode unkown mode : ' + _mode );
+            }
+
+
+            if (Ti.App.Properties.getString('current_box_global_id') == null){
+                imageButtonViewHome.button.setEnabled(false);
+            }
+
+            if (parent == null) {
+                //Ti.API.info('no parent mode....');
+                buttonScanChild.setEnabled(false);
+                photoButtonView.button.setEnabled(false);
+                imageButtonViewPrint.button.setEnabled(false);
+            }
+
+            if (!Ti.App.Properties.getBool('printLabel')){
+//                Ti.API.info('no print mode...');
+                imageButtonViewPrint.setEnabled(false);
+            }
+        };
+
 
         var viewBase = Ti.UI.createView({
             backgroundColor : 'red',
@@ -176,6 +225,7 @@
         });
 
         var imageButtonViewPrint = si.ui.createImageButtonView('/images/glyphicons-16-print.png', {
+//        var imageButtonViewPrint = si.ui.createImageButtonView('/images/home.png', {
             width : 90,
             height : 90,
             imgDimensions : 30,
@@ -490,7 +540,7 @@
 
 
         var buttonScanChild = Ti.UI.createButton(si.combine($$.NormalButton, {
-            title : 'Scan',
+            title : 'Scan barcode',
 //            width : '100%',
             //backgroundColor : 'white',
             //borderWidth : 1,
@@ -647,24 +697,6 @@
             });
         };
 
-        function changeMode(_mode) {
-            var isEnabled = true;
-            if (_mode == 'loading') {
-                isEnabled = false;
-            } else if (_mode == 'ready') {
-                isEnabled = true;
-            } else {
-                Ti.API.warn('changeMode unkown mode : ' + _mode );
-            }
-            viewParent.setEnabled(isEnabled);
-            buttonScanChild.setEnabled(isEnabled);
-
-            imageButtonViewHome.setEnabled(isEnabled);
-            imageButtonViewPrint.setEnabled(isEnabled);
-            photoButtonView.setEnabled(isEnabled);
-//            imageButtonViewMenu.setEnabled(isEnabled);
-            viewParent.setEnabled(isEnabled);
-        };
 
         win.add(viewBase);
         viewBase.add(viewHeader);
@@ -676,6 +708,7 @@
         //viewHeaderRight.add(imageButtonViewMenu);
         viewHeaderRight.add(photoButtonView);        
         viewHeaderRight.add(imageButtonViewPrint);
+        //viewHeaderRight.add(imageButtonViewMenu);        
         viewBase.add(viewBody);
         viewBody.add(scrollView);
         scrollView.add(labelInfo);

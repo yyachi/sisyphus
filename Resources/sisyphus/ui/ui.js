@@ -314,7 +314,10 @@
             height : opts.imgDimensions            
         });
         imageView.addEventListener('click', function(e) {
-            button.fireEvent('click', e);
+            Ti.API.info('image clicked');
+            if (button.enabled){
+                button.fireEvent('click', e);
+            }
         });
         view.add(imageView);
 
