@@ -338,7 +338,7 @@
             var username = Ti.App.Properties.getString('username');
             var password = Ti.App.Properties.getString('password');
 
-            labelStatus.text = 'uploading ' + _image.getNativePath() + ' ...';
+            labelStatus.text = 'Uploading ' + _image.getNativePath() + ' ...';
             changeMode('loading');
 
             si.model.medusa.uploadImage({
@@ -360,7 +360,7 @@
  //                   viewBody.remove(imageView);
  //                   viewBody.add(buttonScanChild);
 
-                    labelStatus.text = 'ready for scan';
+                    labelStatus.text = 'Ready for scan';
                     changeMode('ready');
                 }
             });
@@ -442,7 +442,7 @@
                     labelStatus.text = _new.global_id + '...' + _new.name + '...';
                     si.sound_attention.play();
                     labelInfo.text = labelStatus.text + 'created\n' + labelInfo.text;
-
+                    labelStatus.text = 'Ready for scan'
                     if (parent){
                         addChild(_new.global_id, false);
                     }
@@ -476,6 +476,7 @@
                     labelStatus.text = _new.global_id + '...' + _new.name + '...';
                     si.sound_attention.play();
                     labelInfo.text = labelStatus.text + 'created\n' + labelInfo.text;
+                    labelStatus.text = 'Ready for scan'
                     if (parent){
                         addChild(_new.global_id, false);
                     }
@@ -540,7 +541,7 @@
             changeMode('loading');
 
             labelInfo.text = '';
-            labelStatus.text = 'interacting with ' + Ti.App.Properties.getString('server');
+            labelStatus.text = 'Interacting with ' + Ti.App.Properties.getString('server');
 
             si.model.medusa.getRecordFromGlobalId({
                 global_id : _global_id,
@@ -565,7 +566,7 @@
                     //     viewHeaderLeft.add(viewParent);
                     // }
                     si.sound_newmail.play();
-                    labelStatus.text = 'ready for scan';
+                    labelStatus.text = 'Ready for scan';
                     changeMode('ready');
                 },
                 onerror : function(e) {
@@ -629,7 +630,7 @@
                                 buttonScanChild.setEnabled(true);
                                 buttonScanChild.fireEvent('click');
                             } else {
-                                labelStatus.text = 'ready for scan';
+                                labelStatus.text = 'Ready for scan';
                                 changeMode('ready');
                             }
                         },
