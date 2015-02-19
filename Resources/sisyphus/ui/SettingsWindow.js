@@ -134,12 +134,12 @@
 		var label_server = Ti.UI.createLabel({
 			left : 10,
 			font : font,
-			text : 'URL;'
+			text : 'URL'
 		});
 		var label_account = Ti.UI.createLabel({
 			left : 10,
 			font : font,
-			text : 'Username;'
+			text : 'Username'
 		});
 		view_account.add(label_server);
 		view_account.add(label_account);
@@ -152,17 +152,17 @@
 		var label_print_status = Ti.UI.createLabel({
 			left : 10,
 			font : font,			
-			text : 'Status;'
+			text : 'Status'
 		});
 		var label_print_server = Ti.UI.createLabel({
 			left : 10,
 			font : font,			
-			text : 'URL;'
+			text : 'URL'
 		});
 		var label_template = Ti.UI.createLabel({
 			left : 10,
 			font : font,			
-			text : 'Template;'
+			text : 'Template'
 		});
 
 		view_label_print_base.add(label_print_status);
@@ -173,11 +173,11 @@
 		win.add(tableView);
 
 	    win.addEventListener('focus', function (e) {
-	    	label_server.text = 'URL; ' + serverInfo();
-	    	label_account.text = 'Username; ' + accountInfo();
-	    	label_print_status.text = 'Status; ' + LabelPrintStatus();
-	    	label_print_server.text = 'URL; ' + printServerInfo();
-	    	label_template.text = 'Template; ' + printFormatUrlInfo();
+	    	label_server.text = serverInfo();
+	    	label_account.text = accountInfo();
+	    	label_print_status.text = LabelPrintStatus();
+	    	label_print_server.text = printServerInfo();
+	    	label_template.text = printFormatUrlInfo();
 	    	//tableView.data[index_medusa_server].rows[0].title = serverInfo();
 		   	//tableView.data[index_account].rows[0].title = accountInfo();
 		   	//tableView.data[index_print_server].rows[0].title = printServerInfo();		   	
