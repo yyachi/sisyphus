@@ -11,7 +11,7 @@
 		facing: 0, //0 for backward (default) camera, 1 for front camera
 		printLabel: false, //0 for does not print label, 1 for print label		
 		debug: false,
-		test: false
+		test: true
 	};
 	
 	si.config.debug = {
