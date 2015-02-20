@@ -4,11 +4,11 @@
         var isDone = null;
         var win = Ti.UI.createWindow({
             title : 'Account setting',
-            backgroundColor : '#ffffff'
+//            backgroundColor : '#ffffff'
         });
 
        var viewBase = Ti.UI.createView({
-            backgroundColor : 'white',
+//            backgroundColor : 'white',
             top : 0,
             width : '100%',
             height : '100%',
@@ -16,14 +16,14 @@
         });
 
         var viewHeader = Ti.UI.createView({
-            backgroundColor : 'white',
+//            backgroundColor : 'white',
             width : '100%',
             height : Ti.UI.SIZE,
             layout : 'vertical'
         });
 
         var viewBody = Ti.UI.createView({
-            backgroundColor : 'white',
+//            backgroundColor : 'white',
             top : 0,
             top : 0,
             //height : '70%',

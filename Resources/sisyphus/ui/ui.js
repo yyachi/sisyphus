@@ -60,7 +60,7 @@
     si.ui.createInfoWindow = function(){
         var win = Ti.UI.createWindow({
             title : 'Info',
-            backgroundColor : 'white',
+            //backgroundColor : 'white',
             barColor : '#336699',
             orientationModes : [Ti.UI.PORTRAIT],
             backButtonTitle : 'Back',
@@ -224,7 +224,7 @@
         var text = Ti.UI.createTextField(opts);
 
 
-        var imageButton = si.ui.createImageButtonView('/images/barcode.png', {
+        var imageButton = si.ui.createImageButtonView('/images/glyphicons-259-qrcode.png', {
             width : 90,
             height : 90,
             imgDimensions : 30,
@@ -428,11 +428,11 @@
 
         var win = Ti.UI.createWindow({
             title : opts.title || 'ScanInput',
-            backgroundColor : 'white'
+//            backgroundColor : 'white'
         });
 
        var viewBase = Ti.UI.createView({
-            backgroundColor : 'white',
+//            backgroundColor : 'white',
             top : 0,
             width : '100%',
             height : '100%',
@@ -440,12 +440,12 @@
         });
 
         var viewHeader = Ti.UI.createView({
-            backgroundColor : 'white',
+//            backgroundColor : 'white',
             height : '25%'
         });
 
         var viewBody = Ti.UI.createView({
-            backgroundColor : 'white',
+//            backgroundColor : 'white',
             top : 0,
             top : 0,
             height : '85%'

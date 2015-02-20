@@ -6,7 +6,7 @@
 
         var win = Ti.UI.createWindow({
             title : 'Main',
-            backgroundColor : 'orange',
+            //backgroundColor : 'orange',
             barColor : '#336699',
             orientationModes : [Ti.UI.PORTRAIT],
             backButtonTitle : 'Back',
@@ -79,7 +79,7 @@
 
 
         var viewBase = Ti.UI.createView({
-            backgroundColor : 'red',
+            //backgroundColor : 'red',
             top : 0,
             width : '100%',
             height : '100%',
@@ -87,24 +87,30 @@
         });
 
         var viewHeader = Ti.UI.createView({
-            backgroundColor : 'red',
-            top : 0,
+            //backgroundColor : 'red',
+            //top : 0,
             height : '25%'
         });
 
         var viewBody = Ti.UI.createView({
-            backgroundColor : 'white',
-            top : 0,
-            top : 0,
-            height : '70%',
+            //backgroundColor : 'white',
+            //top : 0,
+            height : '25%',
             layout : 'vertical'
+        });
 
+        var viewButton = Ti.UI.createView({
+            //backgroundColor : 'green',
+            //top : 0,
+            height : '45%',
+            layout : 'vertical'
         });
 
         var viewFooter = Ti.UI.createView({
-            backgroundColor : 'white',
-            bottom : 0,
-            height : '5%'
+            //backgroundColor : 'blue',
+            //bottom : 0,
+            height : '5%',
+            //layout : 'vertical'
         });
 
         var viewHeaderLeft = Ti.UI.createView({
@@ -113,7 +119,7 @@
             //width : Ti.UI.FILL,
             top : 0,
             left : 0,
-            backgroundColor : 'white',
+            //backgroundColor : 'white',
             layout : 'horizontal'
         });
 
@@ -123,12 +129,12 @@
             width : '30%',
             top : 0,
             right : 0,
-            backgroundColor : 'white',
+            //backgroundColor : 'white',
             layout : 'horizontal'
         });
 
 
-        var imageButtonViewScanParent = si.ui.createImageButtonView('/images/01-refresh.png', {
+        var imageButtonViewScanParent = si.ui.createImageButtonView('/images/glyphicons-86-repeat.png', {
 //            top : '5%',
 //            width : '100%',
 //            height : '100%'
@@ -143,7 +149,7 @@
         });
 
 
-        var imageButtonViewHome = si.ui.createImageButtonView('/images/home.png', {
+        var imageButtonViewHome = si.ui.createImageButtonView('/images/glyphicons-21-home.png', {
             //top : '5%',
             //width : '50%',
             //height : '100%'
@@ -162,7 +168,7 @@
         });
 
 
-        var imageButtonViewMenu = si.ui.createImageButtonView('/images/19-gear.png', {
+        var imageButtonViewMenu = si.ui.createImageButtonView('/images/glyphicons-137-cogwheel.png', {
             //top : '5%',
             //width : '50%',
             //height : '100%'
@@ -222,7 +228,8 @@
 
         win.printButton = printButton;
 
-        var photoButton = si.ui.createImageButtonView('/images/167-upload-photo.png', {
+        //var photoButton = si.ui.createImageButtonView('/images/glyphicons-12-camera.png', {
+        var photoButton = si.ui.createImageButtonView('/images/glyphicons-63-paperclip.png', {
             width : 90,
             height : 90,
             imgDimensions : 30,
@@ -440,13 +447,13 @@
 
 
         var scrollView = Ti.UI.createScrollView({
-            top : '2%',
+            //top : '2%',
             contentHeight : 'auto',
             contentWidth : 'auto',
-            backgroundColor : 'white',
+            //backgroundColor : 'white',
             width : '80%',
             left : '10%',
-            height : '50%',
+            height : Ti.UI.FILL,
             borderWidth : 1,
             //borderColor : 'gray',
             borderRadius : 10,
@@ -471,19 +478,19 @@
             borderWidth : 1,
         }));
 
-
+        var buttonfont = {fontSize: 36};
         //var imageButtonViewAdd = si.ui.createImageButtonView('/images/plus.png', {
         var buttonNewStone = Ti.UI.createButton(si.combine($$.NormalButton, {
             top : '2%',
             // width : '30%',
             // height : '90%'
             title : 'New stone',
-            font : {fontSize:36},
+            font : buttonfont,
 //            width : '100%',
             borderRadius : 10,
             //top : '30%',
             width : '80%',
-            height : Ti.UI.SIZE
+            height : '30%'
         }));
         buttonNewStone.addEventListener('click', function(e) {
             //optionDialogForAdd.show();
@@ -512,12 +519,13 @@
             // width : '30%',
             // height : '90%'
             title : 'New box',
-            font : {fontSize:36},
+            font : buttonfont,
+//            font : {fontSize:36},
 //            width : '100%',
             borderRadius : 10,
             //top : '30%',
             width : '80%',
-            height : Ti.UI.SIZE
+            height : '30%'
         }));
         buttonNewBox.addEventListener('click', function(e) {
             //optionDialogForAdd.show();
@@ -545,12 +553,13 @@
             //backgroundColor : 'white',
             //borderWidth : 1,
             //borderColor : 'black',
-            font : {fontSize:36},
+//            font : {fontSize:36},
+            font : buttonfont,
             borderRadius : 10,
             top : '2%',
             //bottom : 0,
             width : '80%',
-            height : Ti.UI.SIZE
+            height : '30%'
         }));
         buttonScanChild.addEventListener('click', function() {
             if (parent){
@@ -713,14 +722,15 @@
         viewHeaderRight.add(printButton);
         viewHeaderRight.add(imageButtonViewMenu);        
         viewBase.add(viewBody);
+        //viewBody.add(labelStatus);
         viewBody.add(scrollView);
         scrollView.add(labelInfo);
-        viewBody.add(buttonNewStone);
-        viewBody.add(buttonNewBox)        
-        viewBody.add(buttonScanChild);
-        viewBase.add(viewFooter);
+        viewButton.add(buttonNewStone);
+        viewButton.add(buttonNewBox)        
+        viewButton.add(buttonScanChild);
+        viewBase.add(viewButton);
         viewFooter.add(labelStatus);
-
+        viewBase.add(viewFooter);
         win.addChild = addChild;
         win.loadParent = loadParent;
         win.labelStatus = labelStatus;

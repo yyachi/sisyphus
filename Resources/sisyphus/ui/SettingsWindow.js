@@ -1,7 +1,10 @@
 (function() {
 
  	si.ui.createSettingsWindow = function(_args) {
-	    var win = Ti.UI.createWindow({title: 'Settings',backgroundColor:'#ffffff',barColor:'#336699'});
+	    var win = Ti.UI.createWindow({
+	    	title: 'Settings',
+	    	//backgroundColor:'#ffffff',
+	    	barColor:'#336699'});
 	    var font = {fontSize: 20};
 		var data = [
 //			{title:'----', hasChild:false, target:'Server', header:'Medusa server', font: font},

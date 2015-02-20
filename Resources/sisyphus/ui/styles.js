@@ -56,7 +56,7 @@
             borderStyle : Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
             paddingLeft : 5, // pad left by 20 pixels
             paddingRight : 5, // pad right by 20 pixels
-            color : '#000000'
+//            color : '#000000'
         },
         TextArea : {
             borderRadius : 10,

@@ -2,11 +2,11 @@
     si.ui.createLabelPrintSettingWindow = function(_args) {
         var win = Ti.UI.createWindow({
             title : 'Label setting',
-            backgroundColor : 'white'
+//            backgroundColor : 'white'
         });
 
        var viewBase = Ti.UI.createView({
-            backgroundColor : 'white',
+//            backgroundColor : 'white',
             top : 0,
             width : '100%',
             height : '100%',
@@ -14,13 +14,13 @@
         });
 
         var viewHeader = Ti.UI.createView({
-            backgroundColor : 'white',
+//            backgroundColor : 'white',
             height : Ti.UI.SIZE,
             layout : 'vertical'
         });
 
         var viewBody = Ti.UI.createView({
-            backgroundColor : 'white',
+//            backgroundColor : 'white',
             top : 0
         });
 

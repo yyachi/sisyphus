@@ -2,11 +2,11 @@
     si.ui.createNewBoxWindow = function(_args) {
         var win = Ti.UI.createWindow({
             title : 'New box',
-            backgroundColor : 'white'
+//            backgroundColor : 'white'
         });
 
         var viewBase = Ti.UI.createView({
-            backgroundColor : 'white',
+//            backgroundColor : 'white',
             top : 0,
             width : '100%',
             height : '100%',
@@ -14,12 +14,12 @@
         });
 
         var viewHeader = Ti.UI.createView({
-            backgroundColor : 'white',
+//            backgroundColor : 'white',
             height : '25%'
         });
 
         var viewBody = Ti.UI.createView({
-            backgroundColor : 'white',
+//            backgroundColor : 'white',
             top : 0,
             top : 0,
             height : '85%'
@@ -30,7 +30,7 @@
             width : '20%',
             top : 0,
             left : 0,
-            backgroundColor : 'white',
+//            backgroundColor : 'white',
         });
 
         var viewHeaderRight = Ti.UI.createView({
@@ -38,7 +38,7 @@
             width : '80%',
             top : 0,
             right : 0,
-            backgroundColor : 'white',
+//            backgroundColor : 'white',
             layout : 'vertical'
         });
 
@@ -47,7 +47,7 @@
             width : '100%',
             top : 0,
             right : 0,
-            backgroundColor : 'white',
+//            backgroundColor : 'white',
             //layout : 'horizontal'
         });
 
@@ -56,7 +56,7 @@
             width : '100%',
             top : 0,
             right : 0,
-            backgroundColor : 'white',
+//            backgroundColor : 'white',
             //layout : 'horizontal'
         });
 
