@@ -1,6 +1,15 @@
 Ti.include('/sisyphus/sisyphus.js');
 
 //Initialize Sound
+si.sound_created = Ti.Media.createSound({
+    url : '/etc/2.mp3'
+});
+si.sound_label = Ti.Media.createSound({
+    url : '/etc/5.mp3'
+});
+si.sound_error = Ti.Media.createSound({
+    url : '/etc/7.mp3'
+});
 si.sound_newmail = Ti.Media.createSound({
 //    url : '/etc/newmail.wav'
     url : '/etc/4.mp3'

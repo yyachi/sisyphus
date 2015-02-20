@@ -17,6 +17,17 @@
         si.ui.myAlert({message:'Load parent first', title:''});
     };
 
+    si.ui.error_print = function(e){
+//        si.ui.myAlert({message: e.message, title:''});
+        si.sound_error.play();
+        var dialog = Ti.UI.createAlertDialog({
+            message: e.error,
+            title: 'No label created',
+            //ok: 'OK'
+        });
+        dialog.show();
+    }
+
     si.ui.createApplicationTabGroup = function(_args) {
         var tabGroup = Ti.UI.createTabGroup({
             height : 300
@@ -564,6 +575,64 @@
         self.update = update;
         self.update(_record);
         return self;
+    };
+
+
+    si.ui.android = {};
+
+    si.ui.android.printServerURL = function(){
+        var printServer = Ti.App.Properties.getString('printServer');
+        var url = printServer;
+        if (printServer.match(/^\w+:\/\//) == null) {
+            url = 'http://' + url;
+        }
+
+        if (printServer.match(/\/$/) == null) {
+            url = url + '/';
+        }
+
+        return url;
+    };
+
+    si.ui.android.printLabel = function(_global_id, _name,_args) {
+        if (!Ti.App.Properties.getBool('printLabel')){
+            return;
+        }
+        Ti.API.info('printLabel in ');
+        var client = Ti.Network.createHTTPClient({
+            onload : function(e) {
+                Ti.API.info('print global_id : ' + _global_id + ' name : ' + _name);
+                Ti.API.info('onload'); 
+                _args.onsuccess(e);
+            },
+            onerror : function(e) {
+                Ti.API.info('onerror');
+                //alert('print error : ' + e.error);
+                _args.onerror(e);
+            },
+            timeout : 15000 // in milliseconds
+        });
+        //Ti.API.info(client);
+        //var printServer = Ti.App.Properties.getString('printServer');
+        var formatArchiveUrl = Ti.App.Properties.getString('printFormatUrl');
+        var myAppDir = Ti.Filesystem.getFile(Ti.Filesystem.externalStorageDirectory);
+        var sdcardDir = myAppDir.getParent();
+        //Ti.API.info('sdcardDir : ' + sdcardDir.nativePath);
+        //var url = 'http://localhost:8080/Format/Print?';
+        //var url = printServer;
+        var url = si.ui.android.printServerURL();
+        url += 'Format/Print?';
+        url += '__format_archive_url=' + formatArchiveUrl;
+        url += '&__format_id_number=1';
+        url += '&UID=' + _global_id;
+//        url += '&UID_QRCODE=' + _global_id;
+        url += '&NAME=' + _name;
+        url += '&SET=1';
+//        url += '&(発行枚数)=1';
+        Ti.API.info('url:' + url);
+
+        client.open('GET', url);
+        client.send();
     };
 
 })();

@@ -1,56 +1,4 @@
 (function() {
-    si.ui.android = {};
-
-    si.ui.android.printServerURL = function(){
-        var printServer = Ti.App.Properties.getString('printServer');
-        var url = printServer;
-        if (printServer.match(/^\w+:\/\//) == null) {
-            url = 'http://' + url;
-        }
-
-        if (printServer.match(/\/$/) == null) {
-            url = url + '/';
-        }
-
-        return url;
-    };
-
-    si.ui.android.printLabel = function(_global_id, _name) {
-        if (!Ti.App.Properties.getBool('printLabel')){
-            return;
-        }
-        Ti.API.info('printLabel in ');
-        var client = Ti.Network.createHTTPClient({
-            onload : function() {
-                Ti.API.info('print global_id : ' + _global_id + ' name : ' + _name);
-            },
-            onerror : function(e) {
-                alert('print error : ' + e.error);
-            },
-            timeout : 30000 // in milliseconds
-        });
-        Ti.API.info(client);
-		//var printServer = Ti.App.Properties.getString('printServer');
-        var formatArchiveUrl = Ti.App.Properties.getString('printFormatUrl');
-        var myAppDir = Ti.Filesystem.getFile(Ti.Filesystem.externalStorageDirectory);
-        var sdcardDir = myAppDir.getParent();
-        Ti.API.info('sdcardDir : ' + sdcardDir.nativePath);
-        //var url = 'http://localhost:8080/Format/Print?';
-        //var url = printServer;
-        var url = si.ui.android.printServerURL();
-        url += 'Format/Print?';
-        url += '__format_archive_url=' + formatArchiveUrl;
-        url += '&__format_id_number=1';
-        url += '&UID=' + _global_id;
-//        url += '&UID_QRCODE=' + _global_id;
-        url += '&NAME=' + _name;
-        url += '&SET=1';
-//        url += '&(発行枚数)=1';
-        Ti.API.info('url:' + url);
-
-        client.open('GET', url);
-        client.send();
-    };
 
     si.ui.createAddChildWindow = function() {
         var parent = null;
@@ -236,9 +184,9 @@
             width : 90,
             height : 90,
             imgDimensions : 30,
-            onclick : function(e) { win.printLabel(e) }
+            onclick : function(e) { win.printLabelforParent(e) }
         });
-        win.printLabel = function(e) {
+        win.printLabelforParent = function(e) {
             Ti.API.info('printLabel...');
             Ti.API.info(e);
             if (!Ti.App.Properties.getBool('printLabel')){
@@ -251,8 +199,27 @@
                 return;
             }
 
-            si.ui.android.printLabel(parent.global_id, parent.name);
+            win.printLabelfor(parent);
         }
+        win.printLabelfor = function(_record){
+            Ti.API.info('printLabelfor...');
+            si.ui.android.printLabel(_record.global_id, _record.name, {
+                onsuccess: function(e){
+                    si.sound_label.play();
+                    labelInfo.text = _record.global_id + '...' + _record.name + '...label created\n' + labelInfo.text;
+                },
+                onerror: function(e){
+                    var dialog = Ti.UI.createAlertDialog({
+                        message: e.error,
+                        title: 'No label created',
+                    });
+                    dialog.show();
+                    si.sound_error.play();
+                    labelInfo.text = _record.global_id + '...' + _record.name + '...no label created\n' + labelInfo.text;
+                }
+            });
+        };
+
         win.printButton = printButton;
 
         var photoButton = si.ui.createImageButtonView('/images/167-upload-photo.png', {
@@ -428,19 +395,21 @@
                 username : username,
                 password : password,
                 onsuccess : function(_response) {
-                    labelStatus.text += ' OK';
-
-//                    viewBody.remove(imageView);
-//                    viewBody.add(buttonScanChild);
+                    si.sound_created.play();
+                    labelStatus.text += ' OK\n';
+                    labelInfo.text = labelStatus.text + labelInfo.text;
                     loadParent(parent.global_id);
                 },
                 onerror : function(e) {
+                    var dialog = Ti.UI.createAlertDialog({
+                        message: e.error,
+                        title: 'No image uploaded',
+                    });
+                    dialog.show();
+                    si.sound_error.play();
+
                     labelStatus.text += 'ERROR\n';
                     labelInfo.text = labelStatus.text + labelInfo.text;
-
- //                   viewBody.remove(imageView);
- //                   viewBody.add(buttonScanChild);
-
                     labelStatus.text = 'Ready for scan';
                     changeMode('ready');
                 }
@@ -521,13 +490,13 @@
             var windowNewStone = si.ui.createNewStoneWindow({
                 onsuccess: function(_new){
                     labelStatus.text = _new.global_id + '...' + _new.name + '...';
-                    si.sound_attention.play();
+                    si.sound_created.play();
                     labelInfo.text = labelStatus.text + 'created\n' + labelInfo.text;
                     labelStatus.text = 'Ready for scan'
                     if (parent){
                         addChild(_new.global_id, false);
                     }
-                    si.ui.android.printLabel(_new.global_id, _new.name);
+                    win.printLabelfor(_new);
                 }
             });
             if (parent && parent._className === 'Stone'){
@@ -555,13 +524,13 @@
             var windowNewBox = si.ui.createNewBoxWindow({
                 onsuccess: function(_new){
                     labelStatus.text = _new.global_id + '...' + _new.name + '...';
-                    si.sound_attention.play();
+                    si.sound_created.play();
                     labelInfo.text = labelStatus.text + 'created\n' + labelInfo.text;
                     labelStatus.text = 'Ready for scan'
                     if (parent){
                         addChild(_new.global_id, false);
                     }
-                    si.ui.android.printLabel(_new.global_id, _new.name);
+                    win.printLabelfor(_new);
                 }
             });
             si.app.tabGroup.activeTab.open(windowNewBox, {
@@ -624,7 +593,7 @@
             var password = Ti.App.Properties.getString('password');
             changeMode('loading');
 
-            labelInfo.text = '';
+            //labelInfo.text = '';
             labelStatus.text = 'Interacting with ' + Ti.App.Properties.getString('server');
 
             si.model.medusa.getRecordFromGlobalId({
