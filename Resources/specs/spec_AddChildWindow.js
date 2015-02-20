@@ -17,11 +17,38 @@ describe('Add Child Windows', function() {
         Ti.App.Properties.setString('server', 'http://database.misasa.okayama-u.ac.jp/stone/');
         Ti.App.Properties.setString('username', 'admin');
         Ti.App.Properties.setString('password', 'password');
+    });
+
+    describe('clickphotoButton', function(){
+        beforeEach(function(){
+            win = si.ui.createAddChildWindow();
+            parent = {global_id:'0000-001'};
+            win.set_parent(parent);
+        });
+        it('should show optionDialog', function(){
+            win.clickphotoButton();
+        });
+        afterEach(function(){
+            win = null;
+            parent = null;
+        });
 
     });
 
+    xdescribe('photoButtonView', function(){
+        beforeEach(function(){
+            win = si.ui.createAddChildWindow();
+        });
+        it('should be able to click', function(){
+            win.photoButtonView.button.fireEvent('click');
+        });
+        afterEach(function(){
+            win = null;
+        });
+    });
+
     var parent_id;
-    describe('loadParent', function(){
+    xdescribe('loadParent', function(){
         beforeEach(function(){
             Ti.API.info('before...2');
             Ti.API.info('creating...');

@@ -92,9 +92,9 @@
                 buttonNewStone.setEnabled(isEnabled);
                 buttonNewBox.setEnabled(isEnabled);                
                 imageButtonViewHome.setEnabled(isEnabled);
-                imageButtonViewPrint.setEnabled(isEnabled);
+                printButton.setEnabled(isEnabled);
                 imageButtonViewMenu.setEnabled(isEnabled);
-                photoButtonView.setEnabled(isEnabled);
+                photoButton.setEnabled(isEnabled);
                 return
             } else if (_mode == 'ready') {
                 isEnabled = true;
@@ -103,9 +103,9 @@
                 buttonNewStone.setEnabled(isEnabled);
                 buttonNewBox.setEnabled(isEnabled);                
                 imageButtonViewHome.setEnabled(isEnabled);
-                imageButtonViewPrint.setEnabled(isEnabled);
+                printButton.setEnabled(isEnabled);
                 imageButtonViewMenu.setEnabled(isEnabled);
-                photoButtonView.setEnabled(isEnabled);                
+                photoButton.setEnabled(isEnabled);                
             } else {
                 Ti.API.warn('changeMode unkown mode : ' + _mode );
             }
@@ -118,14 +118,14 @@
             if (parent == null) {
                 //Ti.API.info('no parent mode....');
                 buttonScanChild.setEnabled(false);
-                photoButtonView.button.setEnabled(false);
-                imageButtonViewPrint.button.setEnabled(false);
+                photoButton.setEnabled(false);
+                printButton.setEnabled(false);
                 imageButtonViewMenu.setEnabled(false);
             }
 
             if (!Ti.App.Properties.getBool('printLabel')){
 //                Ti.API.info('no print mode...');
-                imageButtonViewPrint.setEnabled(false);
+                printButton.setEnabled(false);
             }
         };
 
@@ -232,36 +232,36 @@
 
         });
 
-        var imageButtonViewPrint = si.ui.createImageButtonView('/images/glyphicons-16-print.png', {
-//        var imageButtonViewPrint = si.ui.createImageButtonView('/images/home.png', {
+        var printButton = si.ui.createImageButtonView('/images/glyphicons-16-print.png', {
             width : 90,
             height : 90,
             imgDimensions : 30,
+            onclick : function(e) { win.printLabel(e) }
         });
-        imageButtonViewPrint.button.addEventListener('click', function(e) {
-            if (Ti.App.Properties.getBool('printLabel')){
-                if (parent) {
-                    si.ui.android.printLabel(parent.global_id, parent.name);
-                } else {
-                    si.ui.alert_no_parent();
-                }
-            } else {
+        win.printLabel = function(e) {
+            Ti.API.info('printLabel...');
+            Ti.API.info(e);
+            if (!Ti.App.Properties.getBool('printLabel')){
                 si.ui.myAlert({message: 'Turn label on'});
+                return;
             }
-        });
 
-        var photoButtonView = si.ui.createImageButtonView('/images/167-upload-photo.png', {
+            if (parent == null){
+                si.ui.alert_no_parent();
+                return;
+            }
+
+            si.ui.android.printLabel(parent.global_id, parent.name);
+        }
+        win.printButton = printButton;
+
+        var photoButton = si.ui.createImageButtonView('/images/167-upload-photo.png', {
             width : 90,
             height : 90,
-            imgDimensions : 30
+            imgDimensions : 30,
+            onclick : function(e) { win.clickphotoButton() }
         });
-        photoButtonView.button.addEventListener('click', function(e) {
-            if (parent) {
-                optionDialogForMenu.show();
-            } else {
-                si.ui.alert_no_parent();
-            }
-        });
+        win.photoButton = photoButton;
 
         var optionDialogForMenu = Ti.UI.createOptionDialog({
             options : ['Open with browser'],
@@ -294,6 +294,34 @@
                     break;
             };
         });
+
+
+        win.clickphotoButton = function(){
+            Ti.API.info('clickphotoButton...');
+            Ti.API.info(parent);
+            if (parent == null){
+                si.ui.alert_no_parent();
+                return;
+            }
+
+            var optionDialog = Ti.UI.createOptionDialog({
+                options : ['Add snapshot', 'Add local file'],
+                title : ''
+            });
+            optionDialog.addEventListener('click', function(e){
+                switch (e.index) {
+                    case 0:
+                        uploadImageFromCamera();
+                        break;
+                    case 1:
+                        uploadImageFromAlbum();
+                        break;
+                    default:
+                        break;
+                };
+            });
+            optionDialog.show();
+        };
 
         // var optionDialogForAdd = Ti.UI.createOptionDialog({
         //     options : ['stone', 'box', 'cancel'],
@@ -587,6 +615,9 @@
             }
         };
 
+        win.set_parent = function(_parent){
+            parent = _parent;
+        };
         function loadParent(_global_id) {
             Ti.API.info('loadParent...');
             var username = Ti.App.Properties.getString('username');
@@ -709,8 +740,8 @@
         //viewHeaderRight.add(imageButtonViewAdd);
         viewHeaderRight.add(imageButtonViewHome);
         //viewHeaderRight.add(imageButtonViewMenu);
-        viewHeaderRight.add(photoButtonView);        
-        viewHeaderRight.add(imageButtonViewPrint);
+        viewHeaderRight.add(photoButton);        
+        viewHeaderRight.add(printButton);
         viewHeaderRight.add(imageButtonViewMenu);        
         viewBase.add(viewBody);
         viewBody.add(scrollView);

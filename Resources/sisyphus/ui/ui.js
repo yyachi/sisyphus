@@ -88,7 +88,7 @@
         win.add(buttonHelp);
         return win;
     }
-    
+
     si.ui.createInputPrint = function(opts){
         var view = Ti.UI.createView({
             height : Ti.UI.SIZE,
@@ -347,6 +347,7 @@
             opts.imgDimensions = 45;
         }
 
+
         var view = Ti.UI.createView(opts);
         
         var button = Ti.UI.createButton({
@@ -355,6 +356,12 @@
             width : '100%',
             height : '100%'
         });
+        if ('onclick' in opts){
+            button.addEventListener('click', function(e){
+                opts.onclick();
+            });            
+        }
+
         view.add(button);
 
         var imageView = Ti.UI.createImageView({
