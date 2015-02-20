@@ -255,24 +255,30 @@
 		}
 
 		function updateHomeRow(){
+			Ti.API.info('updateHomeRow...');
 			var index = index_home;
 			var row = tableView.data[index].rows[0];
 		    var global_id = Ti.App.Properties.getString('current_box_global_id');
-		    if (global_id != null){
+		    if (global_id == '' || global_id !== null){
 				si.model.medusa.getRecordFromGlobalId({
 					global_id:global_id,
-                 username : Ti.App.Properties.getString('username'),
-                 password : Ti.App.Properties.getString('password'),
+                 	username : Ti.App.Properties.getString('username'),
+                 	password : Ti.App.Properties.getString('password'),
 					onsuccess:function(response){
+						Ti.API.info('success');
 						row.title = response.name;
 						row.target = 'ScanToLoad';
 					},
 					onerror:function(e){
+						Ti.API.info('error');
+						row.title = '';
+						row.target = 'ScanToLoad';						
 					}
 				});
 			} else {
+				Ti.API.info('global_id is null ');
 				var row = tableView.data[index].rows[0];
-				row.title = '----';
+				row.title = '';
 				row.target = 'ScanToLoad';
 			}
 		};
