@@ -53,7 +53,7 @@
             barColor : '#336699',
             orientationModes : [Ti.UI.PORTRAIT],
             backButtonTitle : 'Back',
-            layout : 'vertical'
+            //layout : 'vertical'
         });
         var info_view = Ti.UI.createView({
             width : '90%',
@@ -63,13 +63,33 @@
             //backgroundColor : 'blue'
         });
 
+        var footer = Ti.UI.createView({
+            width : '90%',
+            height : Ti.UI.SIZE,
+            layout : 'vertical',
+            bottom : '2%',
+            //backgroundColor : 'orange',
+            layout : 'vertical'
+        });
         var label_version = Ti.UI.createLabel(si.combine($$.NormalButton, {
             //font : font,
+            height : Ti.UI.SIZE,
             top : '45%',
+            font : {fontWeight : 'bold',fontSize : 48},
             textAlign : 'center',
             text : Ti.App.name + ' Version ' + Ti.App.version 
         }));
 
+        var buttonUpdate = Ti.UI.createButton(si.combine($$.NormalButton, {
+            title : 'Update',
+            font : {fontSize:36},
+            borderRadius : 10,
+            width : '80%',
+            height : Ti.UI.SIZE
+        }));
+        buttonUpdate.addEventListener('click', function(e) {
+            Ti.Platform.openURL('http://dream.misasa.okayama-u.ac.jp/documentation/Archives/client-Android.apk');
+        });
 
         var buttonHelp = Ti.UI.createButton(si.combine($$.NormalButton, {
             title : 'Help',
@@ -83,9 +103,11 @@
         });
         //var webview = Ti.UI.createWebView({url: 'http://dream.misasa.okayama-u.ac.jp/documentation/'});
         info_view.add(label_version);
+        footer.add(buttonUpdate);
+        footer.add(buttonHelp);
         //info_view.add(label_publisher);
         win.add(info_view);
-        win.add(buttonHelp);
+        win.add(footer);
         return win;
     }
 
