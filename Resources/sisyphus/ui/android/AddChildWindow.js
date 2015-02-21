@@ -119,7 +119,7 @@
             //width : Ti.UI.FILL,
             top : 0,
             left : 0,
-            //backgroundColor : 'white',
+        //    backgroundColor : 'white',
             layout : 'horizontal'
         });
 

@@ -108,12 +108,15 @@ if (cameras.length == 1){
 if (si.config.Medusa.test){
         // var w = si.ui.createNewBoxWindow();
         // var file = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, "specs", "files", "homeros.jpeg");
-        // // //var file = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, "specs", "files", "homeros-2.jpg");
+        // var image = file.read();
+        // var file = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, "specs", "files", "homeros-2.jpg");
         // var image = file.read();
         // w.set_image(image);
+        // //var w = si.ui.createImageWindow(image);
         // w.open({
-        //      modal : true
+        //       modal : true
         // });
+
     //si.sound_cricket.play();
     require('/tijasmine/tests_runner').run(); 
 }

@@ -284,7 +284,9 @@
 
         var view = Ti.UI.createView({
             width : opts.width,
-            height : opts.height            
+            height : Ti.UI.SIZE,
+            layout : 'horizontal',
+            //backgroundColor : 'yellow'        
         });
 
         var optionDialog = Ti.UI.createOptionDialog({
@@ -331,7 +333,8 @@
         });
 
         if (!opts.image){
-            var photoButtonView = si.ui.createImageButtonView('/images/167-upload-photo.png', {
+            var photoButtonView = si.ui.createImageButtonView('/images/glyphicons-63-paperclip.png', {
+            //var photoButtonView = si.ui.createImageButtonView('/images/167-upload-photo.png', {
                 width : 90,
                 height : 90,
                 imgDimensions : 30
@@ -346,24 +349,48 @@
 
         view.set_image = function(_image){
             view.removeAllChildren();
-            var flame = Ti.UI.createView({
-                height : '95%',
-                width : '95%',
-                backgroundColor : 'black'
-            });
+            // var flame = Ti.UI.createView({
+            //     height : '95%',
+            //     width : '95%',
+            //     backgroundColor : 'black'
+            // });
             var imageView = Ti.UI.createImageView({
-                center : { x: '50%', y : '50%'},
+                height : 90,
+                //center : { x: '50%', y : '50%'},
                 image : _image
             });
             imageView.addEventListener('click', function(e) {
-                optionDialog.show();
+                //optionDialog.show();
+                var w = si.ui.createImageWindow(_image);
+                w.open({
+                      modal : true
+                });                
             });
-            view.add(flame);
-            flame.add(imageView);
+            //view.add(flame);
+            //flame.add(imageView);
+            view.add(imageView);
+            view.add(photoButtonView);
             view.image = _image;
         }
 
         return view;
+    };
+
+    si.ui.createImageWindow = function(_image, opts){
+        var win = Ti.UI.createWindow({
+            title : 'Image',
+            backgroundColor : 'black',
+            barColor : '#336699',
+            orientationModes : [Ti.UI.PORTRAIT],
+            backButtonTitle : 'Back',
+            //layout : 'vertical'
+        });
+        Ti.API.info(_image);
+        var imageView = Ti.UI.createImageView({
+            image : _image
+        });
+        win.add(imageView);
+        return win;
     };
 
     si.ui.createImageButtonView = function(_image, opts) {
@@ -381,13 +408,17 @@
         }
 
 
-        var view = Ti.UI.createView(opts);
-        
+        var view = Ti.UI.createView({
+            width: opts.width,
+            height: opts.height,
+//            backgroundColor : 'red'
+        });
+        //return view;
         var button = Ti.UI.createButton({
             title : '',
             //backgroundColor : 'white',
-            width : '100%',
-            height : '100%'
+            width : opts.width,
+            height : opts.height,
         });
         if ('onclick' in opts){
             button.addEventListener('click', function(e){

@@ -1,63 +1,26 @@
 (function() {
     si.ui.createNewBoxWindow = function(_args) {
+
         var win = Ti.UI.createWindow({
             title : 'New box',
-//            backgroundColor : 'white'
+//            backgroundColor : 'black'
         });
 
         var viewBase = Ti.UI.createView({
-//            backgroundColor : 'white',
-            top : 0,
             width : '100%',
             height : '100%',
             layout : 'vertical'
-        });
-
-        var viewHeader = Ti.UI.createView({
-//            backgroundColor : 'white',
-            height : '25%'
         });
 
         var viewBody = Ti.UI.createView({
-//            backgroundColor : 'white',
-            top : 0,
-            top : 0,
-            height : '85%'
-        });
-
-        var viewHeaderLeft = Ti.UI.createView({
             height : '100%',
-            width : '20%',
-            top : 0,
-            left : 0,
-//            backgroundColor : 'white',
-        });
-
-        var viewHeaderRight = Ti.UI.createView({
-            height : '100%',
-            width : '80%',
-            top : 0,
-            right : 0,
-//            backgroundColor : 'white',
             layout : 'vertical'
         });
 
-        var viewHeaderRight1 = Ti.UI.createView({
-            height : '50%',
+        var viewButton = Ti.UI.createView({
+            backgroundColor : 'black',
+            height : Ti.UI.SIZE,
             width : '100%',
-            top : 0,
-            right : 0,
-//            backgroundColor : 'white',
-            //layout : 'horizontal'
-        });
-
-        var viewHeaderRight2 = Ti.UI.createView({
-            height : '50%',
-            width : '100%',
-            top : 0,
-            right : 0,
-//            backgroundColor : 'white',
-            //layout : 'horizontal'
         });
 
         var activityIndicator = Ti.UI.createActivityIndicator({
@@ -66,9 +29,7 @@
 
         var text = Ti.UI.createTextField(si.combine($$.TextField, {
             value : '',
-            width : '90%',
-            left : 0,
-         //   top : '2%',
+            width : '100%',
             keyboardType : Ti.UI.KEYBOARD_DEFAULT,
             hintText : 'input name'
         }));
@@ -79,6 +40,53 @@
         }));
 
         button.addEventListener('click', function() {
+            win.save();
+        });
+
+        var cancel_button = Ti.UI.createButton(si.combine($$.LeftBottomButton, {
+            top : 0,
+            title : 'Cancel',
+        }));
+
+        cancel_button.addEventListener('click', function() {
+            win.close();
+        });
+
+        var scan_input = si.ui.createScanInput(si.combine($$.TextField, {
+            value : '',
+            width : '100%',
+            keyboardType : Ti.UI.KEYBOARD_DEFAULT,
+            hintText : 'input ID'
+        }));
+
+        var myImageView = si.ui.createMyImageView();
+        viewBase.add(viewBody);
+        viewBody.add(Ti.UI.createLabel({left: 5, text : 'Name'}));
+        viewBody.add(text);
+        if (!Ti.App.Properties.getBool('printLabel')){
+            viewBody.add(Ti.UI.createLabel({left: 5, text : 'ID'}));
+            viewBody.add(scan_input);
+        }
+        viewBody.add(viewButton);
+        viewButton.add(button);
+        viewButton.add(cancel_button);
+        viewBody.add(Ti.UI.createLabel({left: 5, text : 'Attachment file'}));        
+        viewBody.add(myImageView);
+
+        win.add(viewBase);
+        win.add(activityIndicator);
+        win.name_field = text;
+        win.save_button = button;
+        win.global_id = scan_input.input;
+
+        win.set_image = function(_image) {
+            myImageView.set_image(_image);
+        };
+        win.set_global_id = function(gid) {
+            scan_input.set_value(gid);
+        }
+
+        win.save = function(){
             if (text.value == '') {
                 alert('Please input name of new box');
                 return;
@@ -125,57 +133,9 @@
                     activityIndicator.hide();
                     alert('error : ' + e.error);
                },
-            });
-        });
-
-        var cancel_button = Ti.UI.createButton(si.combine($$.LeftBottomButton, {
-            top : 0,
-            title : 'Cancel',
-        }));
-
-        cancel_button.addEventListener('click', function() {
-            win.close();
-        });
-
-        var scan_input = si.ui.createScanInput(si.combine($$.TextField, {
-            value : '',
-            width : '100%',
-            left : 0,
-            keyboardType : Ti.UI.KEYBOARD_DEFAULT,
-            hintText : 'input ID'
-        }));
-
-        var myImageView = si.ui.createMyImageView();
-        win.add(viewBase);
-        viewBase.add(viewHeader);
-        viewHeader.add(viewHeaderLeft);
-        viewHeaderLeft.add(myImageView);
-
-        viewHeader.add(viewHeaderRight);
-        if (!Ti.App.Properties.getBool('printLabel')){
-            viewHeaderRight.add(viewHeaderRight1);
-            viewHeaderRight1.add(scan_input);
-            viewHeaderRight.add(viewHeaderRight2);        
-            viewHeaderRight2.add(text);
-        } else {
-            viewHeaderRight.add(viewHeaderRight1);
-            viewHeaderRight1.add(text);
-        }
-        //viewHeaderRight.add(button);
-        viewBase.add(viewBody);
-        viewBody.add(button);
-        viewBody.add(cancel_button);
-
-        win.add(activityIndicator);
-        win.name_field = text;
-        win.save_button = button;
-        win.set_image = function(_image) {
-            myImageView.set_image(_image);
+            });            
         };
-        win.set_global_id = function(gid) {
-            scan_input.set_value(gid);
-        }
-        win.global_id = scan_input.input;
+
         return win;
 
 

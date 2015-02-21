@@ -52,7 +52,7 @@ describe('New Stone Window', function() {
         win.close();
     });
     it('title', function() {
-        expect(win.title).toBe('NEW');
+        expect(win.title).toBe('New stone');
     });
     describe('textName', function() {
         it('init value', function() {
@@ -61,7 +61,7 @@ describe('New Stone Window', function() {
     });
     describe('button', function() {
         it('title', function() {
-            expect(button.title).toBe('create');
+            expect(button.title).toBe('OK');
         });
        describe('click', function() {
             var file = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, "KS_nav_ui.png");
@@ -81,24 +81,24 @@ describe('New Stone Window', function() {
                 textName.value = '';
                 button.fireEvent('click');
             });
-            it('textName != nothing and image', function() {
-                win.set_image(image);    
-                textName.value = 'new name';
-                button.fireEvent('click');
-            });
-            it('textName != nothing and global_id', function() {
-                win.set_global_id('0101001-234101');    
-                textName.value = 'new name';
-                button.fireEvent('click');
-            });
+            // it('textName != nothing and image', function() {
+            //     win.set_image(image);    
+            //     textName.value = 'new name';
+            //     button.fireEvent('click');
+            // });
+            // it('textName != nothing and global_id', function() {
+            //     win.set_global_id('0101001-234101');    
+            //     textName.value = 'new name';
+            //     button.fireEvent('click');
+            // });
 
-            waitsFor(function() {
-                return isSuccess != null;
-            }, '', 60000);
-            runs(function() {
-                expect(isSuccess).toBe(true);
-                expect(newstone.name).toBe('new name');  
-            });
+            // waitsFor(function() {
+            //     return isSuccess != null;
+            // }, '', 6000);
+            // runs(function() {
+            //     expect(isSuccess).toBe(true);
+            //     expect(newstone.name).toBe('new name');  
+            // });
         });
     });
 });
