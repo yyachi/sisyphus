@@ -541,21 +541,49 @@
         }
 
         spacing = 5;
-        nameHeight = '50%';
+        nameHeight = 90;
         metaHeight = 14;
         var view = Ti.UI.createView({
             width : opts.width,
-            height : opts.height
+            height : opts.height,
+            layout : 'horizontal',
+//            backgroundColor: 'white'
         });
+        var left = Ti.UI.createView({
+            width : '70%',
+            height : Ti.UI.FILL,
+            //layout : 'vertical',
+            //backgroundColor: 'yellow'
+        });
+
+        var right = Ti.UI.createView({
+            width : '30%',
+            height : Ti.UI.FILL,
+            //backgroundColor: 'blue'
+        });
+        view.add(left);
+        view.add(right);
         var imageView = Ti.UI.createImageView({
-            top : spacing,
-            left : spacing,
-            height : opts.imgDimensions,
-            width : opts.imgDimensions,
-            backgroundColor : '#000000',
+//            top : spacing,
+//            left : spacing,
+//            height : opts.imgDimensions,
+//            width : opts.imgDimensions,
+            //backgroundColor : '#000000',
             image : null
         });
-        view.add(imageView);
+        imageView.addEventListener('click', function(e) {
+            //optionDialog.show();
+
+            if (imageView.image){
+                var w = si.ui.createImageWindow(imageView.image);
+                w.open({
+                      modal : true
+                });
+            }
+        });
+
+
+        right.add(imageView);
 
         var avatarOffset = spacing * 2 + opts.imgDimensions;
 
@@ -567,7 +595,7 @@
             height : 'auto',
             textAlign : 'left'
         }));
-        view.add(labelMeta);
+        left.add(labelMeta);
 
         var labelName = Ti.UI.createLabel(si.combine($$.boldHeaderText, {
             text : '',
@@ -575,7 +603,7 @@
             left : avatarOffset,
             height : nameHeight
         }));
-        view.add(labelName);
+        left.add(labelName);
 
         update = function(_record) {
             if (_record == null) {
@@ -588,8 +616,9 @@
             labelName.text = _record.name;
             //!!!!!!!!!画像のパスの取得は要検討!!!!!!!!!!!!!!!!!!!!!!
             if (_record.image_path) {
-                //Ti.API.info("image_path");
-                //Ti.API.info(_record.image_path);
+                Ti.API.info("image_path");
+                Ti.API.info(_record);
+                Ti.API.info(_record.image_path);
                 //var _path = Ti.App.Properties.getString('server') + '/' + _record.image_path;
                 var _url = si.imageURL(_record.image_path);
                 //Ti.API.info(_url);

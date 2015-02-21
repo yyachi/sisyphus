@@ -150,7 +150,7 @@
         },
         boldHeaderText : {
             height : 'auto',
-            color : '#000000',
+            //color : '#000000',
             font : {
                 fontFamily : si.ui.theme.fontFamily,
                 fontSize : 30,
