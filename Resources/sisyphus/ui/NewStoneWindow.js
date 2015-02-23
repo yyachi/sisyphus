@@ -87,7 +87,7 @@
 
         win.save = function(){
             if (text.value == '') {
-                alert('Please input name of new stone');
+                si.ui.alert_simple('Please input name of new stone');
                 return;
             }
             var params = {};
@@ -119,7 +119,7 @@
                             }),
                             onerror : (function(e) {
                                 activityIndicator.hide();
-                                alert('error : ' + e.error);
+                                si.ui.alert_simple('error : ' + e.error);
                             }),
                         });            
                     } else {
@@ -130,7 +130,7 @@
                 },
                 onerror : function(e) {
                     activityIndicator.hide();
-                    alert('error : ' + e.error);
+                    si.ui.alert_simple('error : ' + e.error);
                },
             });
         };

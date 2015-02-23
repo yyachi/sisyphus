@@ -95,7 +95,7 @@
                     Ti.App.Properties.setString('username', username.input.value);
                     Ti.App.Properties.setString('password', password.input.value);
                     activityIndicator.hide();
-                    //alert('Login successful.');
+                    //si.ui.alert_simple('Login successful.');
                     win.close();
                     isDone = true;
                     _args.onsuccess();

@@ -88,7 +88,7 @@
 
         win.save = function(){
             if (text.value == '') {
-                alert('Please input name of new box');
+                si.ui.alert_simple('Please input name of new box');
                 return;
             }
             var params = {};
@@ -120,7 +120,7 @@
                             }),
                             onerror : (function(e) {
                                 activityIndicator.hide();
-                                alert('error : ' + e.error);
+                                si.ui.alert_simple('error : ' + e.error);
                             }),
                         });            
                     } else {
@@ -131,7 +131,7 @@
                 },
                 onerror : function(e) {
                     activityIndicator.hide();
-                    alert('error : ' + e.error);
+                    si.ui.alert_simple('error : ' + e.error);
                },
             });            
         };
@@ -201,7 +201,7 @@
 
         // button.addEventListener('click', function() {
         //     if (text.value == '') {
-        //         alert('Please input name of new stone');
+        //         si.ui.alert_simple('Please input name of new stone');
         //         return;
         //     }
         //     activityIndicator.show();
@@ -225,7 +225,7 @@
         //                     }),
         //                     onerror : (function(e) {
         //                         activityIndicator.hide();
-        //                         alert('error : ' + e.error);
+        //                         si.ui.alert_simple('error : ' + e.error);
         //                     }),
         //                 });            
         //             } else {
@@ -236,7 +236,7 @@
         //         },
         //         onerror : function(e) {
         //             activityIndicator.hide();
-        //             alert('error : ' + e.error);
+        //             si.ui.alert_simple('error : ' + e.error);
         //        },
         //     });
         // });

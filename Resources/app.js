@@ -60,7 +60,7 @@ si.app.tabGroup.open();
 
 Ti.API.info(Ti.Network.networkTypeName);
 if (Ti.Network.networkType == Ti.Network.NETWORK_NONE){
-    alert('no network is available.');
+    si.ui.alert_simple('no network is available.');
 }
 
 var cameras = Ti.Media.availableCameras;

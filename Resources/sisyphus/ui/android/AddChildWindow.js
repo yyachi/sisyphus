@@ -260,14 +260,14 @@
                 //     } else {
                 //         si.ui.alert_no_parent();
                 //         //si.ui.myAlert({message:'Load parent first', title:''});
-                //         //alert('Please load parent first');
+                //         //si.ui.alert_simple('Please load parent first');
                 //     }
                 //     break;
                 // case 2:
                 //     if (parent) {
                 //         si.ui.android.printLabel(parent.global_id, parent.name);
                 //     } else {
-                //         alert('please load parent first');
+                //         si.ui.alert_simple('please load parent first');
                 //     }
                 //     break;
                 default:

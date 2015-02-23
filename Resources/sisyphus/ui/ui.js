@@ -12,6 +12,17 @@
         dialog.show();
     };
 
+    si.ui.alert_simple = function(message){
+        var dialog = Ti.UI.createAlertDialog({
+            message: message,
+            title: '',
+            //ok: 'OK'
+        });
+        //si.sound_attention.play();
+        si.sound_reminder.play();      
+        dialog.show();
+    };
+
 
     si.ui.alert_no_parent = function(){
         si.ui.myAlert({message:'Load parent first', title:''});
@@ -152,7 +163,7 @@
 
         button.addEventListener('click', function(e) {
             if (!Ti.App.Properties.getBool('printLabel')){
-                alert('Please switch on');
+                si.ui.alert_simple('Please switch on');
                 return;
             }
  
@@ -667,7 +678,7 @@
             },
             onerror : function(e) {
                 Ti.API.info('onerror');
-                //alert('print error : ' + e.error);
+                //si.ui.alert_simple('print error : ' + e.error);
                 _args.onerror(e);
             },
             timeout : 15000 // in milliseconds

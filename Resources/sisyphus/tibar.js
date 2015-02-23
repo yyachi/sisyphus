@@ -24,7 +24,7 @@
         picker.setQrEnabled(true);
 
         picker.setCancelCallback(function(e) {
-            alert('canceled');
+            si.ui.alert_simple('canceled');
 
             args.cancel();
         });

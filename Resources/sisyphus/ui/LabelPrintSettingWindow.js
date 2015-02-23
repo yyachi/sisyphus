@@ -78,7 +78,7 @@
 
         button.addEventListener('click', function() {
             // if (text.value == '') {
-            //     alert('Please input url of print format');
+            //     si.ui.alert_simple('Please input url of print format');
             //     return;
             // }
             Ti.App.Properties.setString('printServer',server.input.value);
