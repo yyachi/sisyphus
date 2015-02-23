@@ -562,14 +562,14 @@
         });
         var left = Ti.UI.createView({
             width : '70%',
-            height : Ti.UI.FILL,
+            height : Ti.UI.SIZE,
             //layout : 'vertical',
             //backgroundColor: 'yellow'
         });
 
         var right = Ti.UI.createView({
             width : '30%',
-            height : Ti.UI.FILL,
+            height : Ti.UI.SIZE,
             //backgroundColor: 'blue'
         });
         view.add(left);

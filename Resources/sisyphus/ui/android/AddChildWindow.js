@@ -86,16 +86,40 @@
             layout : 'vertical'
         });
 
+        var viewUpper = Ti.UI.createView({
+            //backgroundColor : 'red',
+            //top : 0,
+            layout : 'vertical',
+            //height : '15%'
+            height : '35%'
+        });
+
         var viewToolBar = Ti.UI.createView({
             //backgroundColor : 'red',
             //top : 0,
+            //layout : 'horizontal',
+            //height : '15%'
+            height : Ti.UI.SIZE
+        });
+        var viewToolLeft = Ti.UI.createView({
+            //backgroundColor : 'yellow',
+            left : 0,
             layout : 'horizontal',
-            height : '15%'
+            height : Ti.UI.SIZE,
+            width : Ti.UI.SIZE
+        });        
+        var viewToolRight = Ti.UI.createView({
+            //backgroundColor : 'white',
+            right : 0,
+            layout : 'horizontal',
+            height : Ti.UI.SIZE,
+            width : Ti.UI.SIZE
         });
         var viewHeader = Ti.UI.createView({
             //backgroundColor : 'red',
             //top : 0,
-            height : '20%'
+            //height : '20%'
+            height : Ti.UI.SIZE
         });
 
         var viewBody = Ti.UI.createView({
@@ -120,7 +144,7 @@
         });
 
         var viewHeaderLeft = Ti.UI.createView({
-            height : '100%',
+            height : Ti.UI.SIZE,
             width : '100%',
             //width : Ti.UI.FILL,
             top : 0,
@@ -131,7 +155,7 @@
 
         var viewHeaderRight = Ti.UI.createView({
             //height : '100%',
-            height : '100%',
+            height : Ti.UI.SIZE,
             width : '0%',
             top : 0,
             right : 0,
@@ -435,7 +459,7 @@
 
         var viewParent = si.ui.createViewParent(null, {
             width : '100%',
-            height : '100%',
+            height : Ti.UI.SIZE,
             imgDimensions : 80,
         });
         // viewParent.addEventListener('click', function(e) {
@@ -717,14 +741,20 @@
 
 
         win.add(viewBase);
-        viewBase.add(viewToolBar);
-        viewToolBar.add(imageButtonViewScanParent);
-        viewToolBar.add(imageButtonViewHome);
-        viewToolBar.add(photoButton);        
-        viewToolBar.add(printButton);
-        viewToolBar.add(imageButtonViewMenu);        
+        viewBase.add(viewUpper);
+        viewUpper.add(viewToolBar);
 
-        viewBase.add(viewHeader);
+        viewBase.add(viewToolBar);
+        viewToolBar.add(viewToolLeft);
+        viewToolBar.add(viewToolRight);        
+
+        viewToolLeft.add(imageButtonViewHome);
+        viewToolLeft.add(imageButtonViewScanParent);
+        viewToolRight.add(photoButton);        
+        viewToolRight.add(printButton);
+        viewToolRight.add(imageButtonViewMenu);        
+
+        viewUpper.add(viewHeader);
         viewHeader.add(viewHeaderLeft);
         viewHeader.add(viewHeaderRight);
         viewBase.add(viewBody);
