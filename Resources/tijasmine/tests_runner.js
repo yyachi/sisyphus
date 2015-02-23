@@ -12,7 +12,7 @@ function run() {
        // '/specs/spec_ServerSettingWindow',
        // '/specs/spec_PrintServerSettingWindow',        
        // '/specs/spec_PrintLabel',
-       '/specs/spec_AddChildWindow'
+       //'/specs/spec_AddChildWindow'
         );
     tijasmine.addReporter(reporter);
     tijasmine.execute();

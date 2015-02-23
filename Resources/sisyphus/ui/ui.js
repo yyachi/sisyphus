@@ -40,7 +40,7 @@
         });
 
         var tabSettings = Ti.UI.createTab({
-            title : 'Options',
+            title : 'Settings',
             //icon : '/images/preferences.png',
             window : si.ui.createSettingsWindow()
         });
