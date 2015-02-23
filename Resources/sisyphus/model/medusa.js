@@ -131,7 +131,8 @@
             //onsuccess : _args.onsuccess,
             onsuccess : function(_record){
                 Ti.API.debug(JSON.stringify(_record));
-                _args.onsuccess();
+                Ti.API.debug(_record);
+                _args.onsuccess(_record);
             },
             onerror : function(e) {
                 Ti.API.info(e.status);

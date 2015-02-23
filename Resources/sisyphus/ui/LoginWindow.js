@@ -94,6 +94,9 @@
                 onsuccess : function(response) {
                     Ti.App.Properties.setString('username', username.input.value);
                     Ti.App.Properties.setString('password', password.input.value);
+                    if (response.box_global_id){
+                        Ti.App.Properties.setString('current_box_global_id', response.box_global_id);
+                    }
                     activityIndicator.hide();
                     //si.ui.alert_simple('Login successful.');
                     win.close();
