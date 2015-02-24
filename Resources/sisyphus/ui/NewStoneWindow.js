@@ -16,8 +16,22 @@
             layout : 'vertical'
         });
 
+        var viewHeader = Ti.UI.createView({
+            height : Ti.UI.SIZE,
+            width : Ti.UI.FILL,
+            //layout : 'vertical'
+        });
+
+        var viewHeaderRight = Ti.UI.createView({
+            width : Ti.UI.SIZE,
+            height : Ti.UI.SIZE,
+            right : 0,
+            //backgroundColor : 'yellow',
+            layout : 'horizontal'
+        });
+
         var viewButton = Ti.UI.createView({
-            backgroundColor : 'black',
+//            backgroundColor : 'black',
             height : Ti.UI.SIZE,
             width : '100%',
         });
@@ -58,8 +72,13 @@
             hintText : 'input ID'
         }));
 
-        var myImageView = si.ui.createMyImageView();
+        var myImageView = si.ui.createMyImageView({
+            width : Ti.UI.SIZE
+        });
         viewBase.add(viewBody);
+        viewBody.add(viewHeader);
+        viewHeader.add(viewHeaderRight);
+        viewHeaderRight.add(myImageView);
         viewBody.add(Ti.UI.createLabel({left: 5, text : 'Name'}));
         viewBody.add(text);
         if (!Ti.App.Properties.getBool('printLabel')){
@@ -69,8 +88,8 @@
         viewBody.add(viewButton);
         viewButton.add(button);
         viewButton.add(cancel_button);
-        viewBody.add(Ti.UI.createLabel({left: 5, text : 'Attachment file'}));        
-        viewBody.add(myImageView);
+        //viewBody.add(Ti.UI.createLabel({left: 5, text : 'Attachment file'}));        
+        //viewBody.add(myImageView);
 
         win.add(viewBase);
         win.add(activityIndicator);

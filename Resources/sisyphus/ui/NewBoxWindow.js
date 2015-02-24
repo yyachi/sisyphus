@@ -17,8 +17,23 @@
             layout : 'vertical'
         });
 
+
+        var viewHeader = Ti.UI.createView({
+            height : Ti.UI.SIZE,
+            width : Ti.UI.FILL,
+            //layout : 'vertical'
+        });
+
+        var viewHeaderRight = Ti.UI.createView({
+            width : Ti.UI.SIZE,
+            height : Ti.UI.SIZE,
+            right : 0,
+            //backgroundColor : 'yellow',
+            layout : 'horizontal'
+        });
+
         var viewButton = Ti.UI.createView({
-            backgroundColor : 'black',
+        //    backgroundColor : 'black',
             height : Ti.UI.SIZE,
             width : '100%',
         });
@@ -59,8 +74,14 @@
             hintText : 'input ID'
         }));
 
-        var myImageView = si.ui.createMyImageView();
+
+        var myImageView = si.ui.createMyImageView({
+            width : Ti.UI.SIZE
+        });
         viewBase.add(viewBody);
+        viewBody.add(viewHeader);
+        viewHeader.add(viewHeaderRight);
+        viewHeaderRight.add(myImageView);
         viewBody.add(Ti.UI.createLabel({left: 5, text : 'Name'}));
         viewBody.add(text);
         if (!Ti.App.Properties.getBool('printLabel')){
@@ -70,8 +91,7 @@
         viewBody.add(viewButton);
         viewButton.add(button);
         viewButton.add(cancel_button);
-        viewBody.add(Ti.UI.createLabel({left: 5, text : 'Attachment file'}));        
-        viewBody.add(myImageView);
+
 
         win.add(viewBase);
         win.add(activityIndicator);
@@ -140,125 +160,5 @@
 
 
 
-        // var win = Ti.UI.createWindow({
-        //     title : 'NEW',
-        //     backgroundColor : 'white'
-        // });
-
-
-        // var viewBase = Ti.UI.createView({
-        //     backgroundColor : 'blue',
-        //     top : 0,
-        //     width : '100%',
-        //     height : '100%',
-        //     layout : 'vertical'
-        // });
-
-        // var viewHeader = Ti.UI.createView({
-        //     backgroundColor : 'red',
-        //     height : '25%'
-        // });
-
-        // var viewBody = Ti.UI.createView({
-        //     backgroundColor : 'white',
-        //     top : 0,
-        //     top : 0,
-        //     height : '85%'
-        // });
-
-        // var viewHeaderLeft = Ti.UI.createView({
-        //     height : '100%',
-        //     width : '20%',
-        //     top : 0,
-        //     left : 0,
-        //     backgroundColor : 'white',
-        // });
-
-        // var viewHeaderRight = Ti.UI.createView({
-        //     height : '100%',
-        //     width : '80%',
-        //     top : 0,
-        //     right : 0,
-        //     backgroundColor : 'white',
-        //     //layout : 'horizontal'
-        // });
-
-
-        // var activityIndicator = Ti.UI.createActivityIndicator({
-        //     style : Ti.UI.ActivityIndicatorStyle.BIG,
-        // });
-
-        // var text = Ti.UI.createTextField(si.combine($$.TextField, {
-        //     value : '',
-        //     top : '2%',
-        //     keyboardType : Ti.UI.KEYBOARD_DEFAULT,
-        //     hintText : 'my great box'
-        // }));
-
-        // var button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
-        //     title : 'create',
-        // }));
-
-        // button.addEventListener('click', function() {
-        //     if (text.value == '') {
-        //         si.ui.alert_simple('Please input name of new stone');
-        //         return;
-        //     }
-        //     activityIndicator.show();
-        //     si.model.medusa.createNewBox({
-        //         name : text.value,
-        //         username : Ti.App.Properties.getString('username'),
-        //         password : Ti.App.Properties.getString('password'),
-        //         onsuccess : function(_record) {
-        //             activityIndicator.hide();
-        //             //si.ui.android.printLabel(_record.global_id, _record.name);
-        //             if (myImageView.image){
-        //                 si.model.medusa.uploadImage({
-        //                     record : _record,
-        //                     data : myImageView.image,
-        //                     username : Ti.App.Properties.getString('username'),
-        //                     password : Ti.App.Properties.getString('password'),
-        //                     onsuccess : (function(_image) {
-        //                         activityIndicator.hide();
-        //                         _record.image = _image
-        //                         _args.onsuccess(_record);
-        //                     }),
-        //                     onerror : (function(e) {
-        //                         activityIndicator.hide();
-        //                         si.ui.alert_simple('error : ' + e.error);
-        //                     }),
-        //                 });            
-        //             } else {
-        //                 activityIndicator.hide();
-        //                 _args.onsuccess(_record);
-        //             }
-        //             win.close();
-        //         },
-        //         onerror : function(e) {
-        //             activityIndicator.hide();
-        //             si.ui.alert_simple('error : ' + e.error);
-        //        },
-        //     });
-        // });
-
-        // var myImageView = si.ui.createMyImageView();
-
-        // win.add(viewBase);
-        // viewBase.add(viewHeader);
-        // viewHeader.add(viewHeaderLeft);
-        // viewHeaderLeft.add(myImageView);
-        // viewHeader.add(viewHeaderRight);
-        // viewHeaderRight.add(text);
-        // viewHeaderRight.add(button);
-        // viewBase.add(viewBody);
-        // //viewBody.add(button);
-        // win.add(activityIndicator);
-        // win.name_field = text;
-        // win.save_button = button;
-        // win.set_image = function(_image) {
-        //     myImageView.set_image(_image);
-        // };
-
-        // return win;
     };
 })();
