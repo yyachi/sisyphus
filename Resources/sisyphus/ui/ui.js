@@ -579,36 +579,37 @@
             opts.height = '100%';
         }
         if (!('imgDimensions' in opts)) {
-            opts.imgDimensions = 45;
+            opts.imgDimensions = 100;
         }
 
-        spacing = 5;
+        spacing = 0;
         nameHeight = 90;
         metaHeight = 14;
         var view = Ti.UI.createView({
             width : opts.width,
             height : opts.height,
-            layout : 'horizontal',
+            //layout : 'horizontal',
 //            backgroundColor: 'white'
         });
-        var left = Ti.UI.createView({
-            width : '70%',
-            height : Ti.UI.SIZE,
-            //layout : 'vertical',
-            //backgroundColor: 'yellow'
-        });
+        // var left = Ti.UI.createView({
+        //     width : '70%',
+        //     height : Ti.UI.SIZE,
+        //     //layout : 'vertical',
+        //     backgroundColor: 'yellow'
+        // });
 
-        var right = Ti.UI.createView({
-            width : '30%',
-            height : Ti.UI.SIZE,
-            //backgroundColor: 'blue'
-        });
-        view.add(left);
-        view.add(right);
+        // var right = Ti.UI.createView({
+        //     width : '30%',
+        //     height : Ti.UI.SIZE,
+        //     backgroundColor: 'blue'
+        // });
+        //view.add(left);
+        //view.add(right);
         var imageView = Ti.UI.createImageView({
 //            top : spacing,
 //            left : spacing,
-//            height : opts.imgDimensions,
+            right : 0,
+            height : opts.imgDimensions,
 //            width : opts.imgDimensions,
             //backgroundColor : '#000000',
             image : null
@@ -624,28 +625,30 @@
             }
         });
 
-
-        right.add(imageView);
+        view.add(imageView);
+        //right.add(imageView);
 
         var avatarOffset = spacing * 2 + opts.imgDimensions;
 
         var labelMeta = Ti.UI.createLabel(si.combine($$.smallText, {
             text : '',
             top : spacing,
-            left : avatarOffset,
+            //left : avatarOffset,
+            left : spacing,
             right : spacing,
             height : 'auto',
             textAlign : 'left'
         }));
-        left.add(labelMeta);
-
+        //left.add(labelMeta);
+        view.add(labelMeta);
         var labelName = Ti.UI.createLabel(si.combine($$.boldHeaderText, {
             text : '',
             top : metaHeight + 10,
-            left : avatarOffset,
+            left : spacing,
             height : nameHeight
         }));
-        left.add(labelName);
+        //left.add(labelName);
+        view.add(labelName);
 
         update = function(_record) {
             if (_record == null) {

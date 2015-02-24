@@ -81,7 +81,7 @@
         var viewBase = Ti.UI.createView({
             //backgroundColor : 'red',
             top : 0,
-            width : '100%',
+            width : '99%',
             height : '100%',
             layout : 'vertical'
         });
@@ -91,7 +91,7 @@
             //top : 0,
             layout : 'vertical',
             //height : '15%'
-            height : '35%'
+            height : '55%'
         });
 
         var viewToolBar = Ti.UI.createView({
@@ -101,6 +101,7 @@
             //height : '15%'
             height : Ti.UI.SIZE
         });
+
         var viewToolLeft = Ti.UI.createView({
             //backgroundColor : 'yellow',
             left : 0,
@@ -122,12 +123,12 @@
             height : Ti.UI.SIZE
         });
 
-        var viewBody = Ti.UI.createView({
-            //backgroundColor : 'white',
-            //top : 0,
-            height : '15%',
-            layout : 'vertical'
-        });
+        // var viewBody = Ti.UI.createView({
+        //     //backgroundColor : 'white',
+        //     //top : 0,
+        //     height : '15%',
+        //     layout : 'vertical'
+        // });
 
         var viewButton = Ti.UI.createView({
             //backgroundColor : 'green',
@@ -136,12 +137,12 @@
             layout : 'vertical'
         });
 
-        var viewFooter = Ti.UI.createView({
-            //backgroundColor : 'blue',
-            //bottom : 0,
-            height : '5%',
-            //layout : 'vertical'
-        });
+        // var viewFooter = Ti.UI.createView({
+        //     //backgroundColor : 'blue',
+        //     //bottom : 0,
+        //     height : '5%',
+        //     //layout : 'vertical'
+        // });
 
         var viewHeaderLeft = Ti.UI.createView({
             height : Ti.UI.SIZE,
@@ -459,8 +460,9 @@
 
         var viewParent = si.ui.createViewParent(null, {
             width : '100%',
+            //backgroundColor : 'yellow',
             height : Ti.UI.SIZE,
-            imgDimensions : 80,
+            imgDimensions : 120,
         });
         // viewParent.addEventListener('click', function(e) {
         //     scanAndLoadParent();
@@ -469,7 +471,7 @@
 
 
         var imageView = Ti.UI.createImageView({
-            backgroundColor : 'black',
+            //backgroundColor : 'black',
             top : '30%',
             width : '80%',
             height : '63%',
@@ -477,16 +479,16 @@
 
 
         var scrollView = Ti.UI.createScrollView({
-            //top : '2%',
+            top : 2,
             contentHeight : 'auto',
             contentWidth : 'auto',
             //backgroundColor : 'white',
-            width : '80%',
-            left : '10%',
-            height : Ti.UI.FILL,
-            borderWidth : 1,
+            //width : '80%',
+            //left : '10%',
+            //height : Ti.UI.FILL,
+            //borderWidth : 1,
             //borderColor : 'gray',
-            borderRadius : 10,
+            //borderRadius : 10,
             scrollType : 'vertical'
         });
 
@@ -503,8 +505,8 @@
             text : '',
             textAlign : 'left',
             //top : '95%',
-            left : '3%',
-            width : '90%',
+            left : 0,
+            //width : '90%',
             borderWidth : 1,
         }));
 
@@ -516,10 +518,10 @@
             // height : '90%'
             title : 'New stone',
             font : buttonfont,
-//            width : '100%',
+            width : '100%',
             borderRadius : 10,
             //top : '30%',
-            width : '80%',
+            //width : '80%',
             height : '30%'
         }));
         buttonNewStone.addEventListener('click', function(e) {
@@ -554,7 +556,7 @@
 //            width : '100%',
             borderRadius : 10,
             //top : '30%',
-            width : '80%',
+            width : '100%',
             height : '30%'
         }));
         buttonNewBox.addEventListener('click', function(e) {
@@ -588,7 +590,7 @@
             borderRadius : 10,
             top : '2%',
             //bottom : 0,
-            width : '80%',
+            width : '100%',
             height : '30%'
         }));
         buttonScanChild.addEventListener('click', function() {
@@ -646,8 +648,8 @@
                     if (_global_id != Ti.App.Properties.getString('current_global_id')) {
                         Ti.App.Properties.setString('current_global_id', _global_id);
                     }
-                    viewHeaderLeft.removeAllChildren();
-                    viewHeaderLeft.add(viewParent);
+                    //viewHeaderLeft.removeAllChildren();
+                    //viewHeaderLeft.add(viewParent);
                     // if (viewHeaderLeft.children.contains(imageButtonViewScanParent)) {
                     //     Ti.API.info('.....');
                     //     viewHeaderLeft.remove(imageButtonViewScanParent);
@@ -664,7 +666,7 @@
                 },
                 onerror : function(e) {
                     Ti.API.info('error');
-                    viewHeaderLeft.removeAllChildren();
+//                    viewHeaderLeft.removeAllChildren();
 //                    viewHeaderLeft.add(imageButtonViewScanParent);                    
                     // if (!viewHeaderLeft.children.contains(imageButtonViewScanParent)) {
                     //     viewHeaderLeft.add(imageButtonViewScanParent);
@@ -751,23 +753,25 @@
 
         viewToolLeft.add(imageButtonViewHome);
         viewToolLeft.add(imageButtonViewScanParent);
-        viewToolRight.add(photoButton);        
         viewToolRight.add(printButton);
-        viewToolRight.add(imageButtonViewMenu);        
+        viewToolRight.add(imageButtonViewMenu);
+        viewToolRight.add(photoButton);             
 
         viewUpper.add(viewHeader);
-        viewHeader.add(viewHeaderLeft);
-        viewHeader.add(viewHeaderRight);
-        viewBase.add(viewBody);
+        viewHeader.add(viewParent);
+        //viewHeader.add(viewHeaderLeft);
+        //viewHeader.add(viewHeaderRight);
+        //viewBase.add(viewBody);
         //viewBody.add(labelStatus);
-        viewBody.add(scrollView);
+        viewUpper.add(labelStatus);
+        viewUpper.add(scrollView);
         scrollView.add(labelInfo);
         viewButton.add(buttonNewStone);
         viewButton.add(buttonNewBox)        
         viewButton.add(buttonScanChild);
         viewBase.add(viewButton);
-        viewFooter.add(labelStatus);
-        viewBase.add(viewFooter);
+        //viewFooter.add(labelStatus);
+        //viewBase.add(viewFooter);
         win.addChild = addChild;
         win.loadParent = loadParent;
         win.labelStatus = labelStatus;
