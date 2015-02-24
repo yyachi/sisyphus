@@ -657,7 +657,8 @@
                     //     Ti.API.info('******');
                     //     viewHeaderLeft.add(viewParent);
                     // }
-                    si.sound_newmail.play();
+                    //si.sound_newmail.play();
+                    si.sound_reminder.play();
                     labelStatus.text = 'Ready for scan';
                     changeMode('ready');
                 },
