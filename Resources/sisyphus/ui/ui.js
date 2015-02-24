@@ -77,12 +77,29 @@
             backButtonTitle : 'Back',
             //layout : 'vertical'
         });
+
+        var image_view = Ti.UI.createImageView({
+            width : '30%',
+            //top: 0,
+            //height : '30%',
+            backgroundColor : 'white',
+            image : '/images/kiriko-1-transparent.png'
+        });
+
         var info_view = Ti.UI.createView({
-            width : '90%',
-            height : '30%',
+            width : '70%',
+            height : Ti.UI.SIZE,
             layout : 'vertical',
-            top : '10%',
+            //top : '10%',
             //backgroundColor : 'blue'
+        });
+
+        var image_and_info = Ti.UI.createView({
+            top : '10%',
+            width : '98%',
+            height : Ti.UI.SIZE,
+            layout : 'horizontal',
+            //backgroundColor : 'yellow'
         });
 
         var footer = Ti.UI.createView({
@@ -93,12 +110,21 @@
             //backgroundColor : 'orange',
             layout : 'vertical'
         });
+        var label_copyright = Ti.UI.createLabel(si.combine($$.NormalButton, {
+            //font : font,
+            height : Ti.UI.SIZE,
+            //top : '45%',
+            font : {fontWeight : 'bold',fontSize : 36},
+            textAlign : 'left',
+            text : "Copyright (C) 2015\nInstitute for Study of the Earth's Interior, Okayama University. All right reserved." 
+        }));
+
         var label_version = Ti.UI.createLabel(si.combine($$.NormalButton, {
             //font : font,
             height : Ti.UI.SIZE,
-            top : '45%',
-            font : {fontWeight : 'bold',fontSize : 48},
-            textAlign : 'center',
+            //top : '45%',
+            font : {fontWeight : 'bold',fontSize : 36},
+            textAlign : 'left',
             text : 'Sisyphus for Android' + ' ' + Ti.App.version 
         }));
 
@@ -124,11 +150,16 @@
             Ti.Platform.openURL('http://dream.misasa.okayama-u.ac.jp/documentation/');
         });
         //var webview = Ti.UI.createWebView({url: 'http://dream.misasa.okayama-u.ac.jp/documentation/'});
+        image_and_info.add(image_view);
+        image_and_info.add(info_view);        
         info_view.add(label_version);
+        info_view.add(label_copyright);        
         footer.add(buttonUpdate);
         footer.add(buttonHelp);
         //info_view.add(label_publisher);
-        win.add(info_view);
+        //win.add(info_view);
+        //win.add(image_view);
+        win.add(image_and_info);
         win.add(footer);
         return win;
     }
