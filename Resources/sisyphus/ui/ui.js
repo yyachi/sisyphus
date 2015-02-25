@@ -194,7 +194,7 @@
 
         button.addEventListener('click', function(e) {
             if (!Ti.App.Properties.getBool('printLabel')){
-                si.ui.alert_simple('Please switch on');
+                si.ui.alert_simple('Turn label on');
                 return;
             }
  

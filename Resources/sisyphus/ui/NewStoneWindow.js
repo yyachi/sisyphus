@@ -106,7 +106,7 @@
 
         win.save = function(){
             if (text.value == '') {
-                si.ui.alert_simple('Please input name of new stone');
+                si.ui.alert_simple('input name of new stone');
                 return;
             }
             var params = {};
