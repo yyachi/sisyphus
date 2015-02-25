@@ -41,6 +41,9 @@
         win.addEventListener('focus', function(e) {
             Ti.API.info('focused.');
             //changeMode('ready');
+            if (mode !== 'loading') {
+                changeMode('refresh');
+            } 
             current_global_id = Ti.App.Properties.getString('current_global_id');
             if (parent == null) {
                 if (current_global_id != null) {
@@ -51,6 +54,7 @@
                     loadParent(current_global_id);
                 }
             }
+
         });
 
         var activityIndicator = Ti.UI.createActivityIndicator({
@@ -238,9 +242,11 @@
         win.add(viewBase);
         win.add(activityIndicator);
 
+        var mode;
         function changeMode(_mode, _message) {
             Ti.API.info('changeMode...');
             //Ti.API.info(activityIndicator);
+            mode = _mode;
             var isEnabled = true;
             if (_mode == 'loading') {
                 activityIndicator.show();
@@ -250,16 +256,15 @@
                     win.buttons[prop].setEnabled(false);
                 }
                 return;
-            }
-
-            activityIndicator.hide();
-            labelStatus.text = 'Ready for scan';
-            if (_mode == 'error'){
+            } else if (_mode == 'error'){
                 si.sound_mailerror.play();                
                 si.app.log.error(_message + 'error');
-            } else {
+            } else if (_mode == 'ok'){
                 si.app.log.info(_message + 'ok')
             }
+            
+            activityIndicator.hide();
+            labelStatus.text = 'Ready for scan';
             for(var prop in win.buttons){
                 win.buttons[prop].setEnabled(true);
             }
