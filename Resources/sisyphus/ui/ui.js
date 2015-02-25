@@ -83,7 +83,7 @@
             //top: 0,
             //height : '30%',
             backgroundColor : 'white',
-            image : '/images/kiriko-1-transparent.png'
+            image : '/images/kiriko-0-transparent.png'
         });
 
         var info_view = Ti.UI.createView({
@@ -103,7 +103,7 @@
         });
 
         var footer = Ti.UI.createView({
-            width : '90%',
+            width : '98%',
             height : Ti.UI.SIZE,
             layout : 'vertical',
             bottom : '2%',
@@ -116,7 +116,7 @@
             //top : '45%',
             font : {fontWeight : 'bold',fontSize : 36},
             textAlign : 'left',
-            text : "Copyright (C) 2015\nInstitute for Study of the Earth's Interior, Okayama University. All right reserved." 
+            text : "\u00A9 2015 Institute for Study of the Earth's Interior, Okayama University" 
         }));
 
         var label_version = Ti.UI.createLabel(si.combine($$.NormalButton, {
@@ -132,7 +132,7 @@
             title : 'Update',
             font : {fontSize:36},
             borderRadius : 10,
-            width : '80%',
+            width : '100%',
             height : Ti.UI.SIZE
         }));
         buttonUpdate.addEventListener('click', function(e) {
@@ -143,7 +143,7 @@
             title : 'Help',
             font : {fontSize:36},
             borderRadius : 10,
-            width : '80%',
+            width : '100%',
             height : Ti.UI.SIZE
         }));
         buttonHelp.addEventListener('click', function(e) {
