@@ -1,6 +1,7 @@
 require('/tijasmine/tijasmine').infect(this);
 describe('si.ui', function() {
-	describe('createViewParent', function(){
+
+	xdescribe('createViewParent', function(){
 		var view;
 		var record;
 		beforeEach(function(){

@@ -435,6 +435,16 @@
         return win;
     };
 
+    si.ui.createButton = function(_opts){
+        var _button = Ti.UI.createButton(_opts);
+        if ('onclick' in _opts){
+            _button.addEventListener('click', function(e){
+                _opts.onclick();
+            });            
+        }
+        return _button;
+    }
+
     si.ui.createImageButtonView = function(_image, opts) {
         if ( typeof opts == 'undefined') {
             opts = {};
@@ -681,7 +691,6 @@
         self.update(_record);
         return self;
     };
-
 
     si.ui.android = {};
 

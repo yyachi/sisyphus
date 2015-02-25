@@ -158,7 +158,7 @@
             }
         },
         smallText : {
-            color : si.ui.theme.grayTextColor,
+            //color : si.ui.theme.grayTextColor,
             font : {
                 fontFamily : si.ui.theme.fontFamily,
                 fontSize : 20

@@ -14,12 +14,24 @@ describe('Add Child Windows', function() {
     beforeEach(function() {
         Ti.API.info('before...')
         //Ti.App.Properties.setString('server', si.config.Medusa.defaultServer);
-        Ti.App.Properties.setString('server', 'http://database.misasa.okayama-u.ac.jp/stone/');
-        Ti.App.Properties.setString('username', 'admin');
-        Ti.App.Properties.setString('password', 'password');
+        // Ti.App.Properties.setString('server', 'http://database.misasa.okayama-u.ac.jp/stone/');
+        // Ti.App.Properties.setString('username', 'admin');
+        // Ti.App.Properties.setString('password', 'password');
     });
 
-    describe('clickphotoButton', function(){
+    describe('log', function(){
+        beforeEach(function(){
+            //si.app.log.info('logging test...');
+        });
+        it('should show log message', function(){
+            for(var count = 0; count < 50 ; count++){
+                si.app.log.info('logging test...' + count.toString());
+            }      
+            //expect(null).
+        })
+    });
+
+    xdescribe('clickphotoButton', function(){
         beforeEach(function(){
             win = si.ui.createAddChildWindow();
             parent = {global_id:'0000-001'};

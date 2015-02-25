@@ -2,6 +2,39 @@ var si = {};
 (function() {
     si.app = {};
 
+    si.app.log = {};
+    si.app.log.list = [];
+    si.app.log.clear = function(){
+        si.app.log.list = [];
+    }
+    si.app.log.newObj = function(_level, _message){
+        var _date = new Date();        
+        var _obj = {level: _level, message: _message, data: _date };
+        return _obj;
+    };
+    si.app.log.append = function(_log){
+        si.app.log.list.push(_log);
+        Ti.App.fireEvent('app:logged', _log);
+    };
+    si.app.log.info = function(_message){
+        var _log = si.app.log.newObj('info', _message);
+        si.app.log.append(_log);
+        //var _date = new Date();
+        //var _log = {level: 'info', message: _message, date: _date }
+        // si.app.log.list.push(_log);
+        // Ti.App.fireEvent('app:logged', _log);        
+    };
+    si.app.log.error = function(_message){
+        var _log = si.app.log.newObj('error', _message);
+        si.app.log.append(_log);
+        // var _date = new Date();
+        // var _log = {level: 'info', message: _message, date: _date }
+        // si.app.log.list.push(_log);
+        // Ti.App.fireEvent('app:logged', _log);        
+    };
+
+
+
     var empty = {};
     function mixin(/*Object*/target, /*Object*/source) {
         var name, s, i;
