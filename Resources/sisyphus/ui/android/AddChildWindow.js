@@ -310,6 +310,7 @@
                         break;
                 };
             });
+            optionDialogForMenu.show();
         };
 
         win.functions.clickPrintButton = function(e) {
