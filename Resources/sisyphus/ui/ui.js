@@ -82,8 +82,10 @@
             width : '30%',
             //top: 0,
             //height : '30%',
-            backgroundColor : 'white',
-            image : '/images/kiriko-0-transparent.png'
+            //backgroundColor : 'blue',
+            //image : '/images/kiriko-0-transparent.png'
+            //image : '/images/kiriko-0-inverse.png'
+            image : '/images/kiriko-0-transparent-gray-2.png'
         });
 
         var info_view = Ti.UI.createView({
@@ -116,7 +118,7 @@
             //top : '45%',
             font : {fontWeight : 'bold',fontSize : 36},
             textAlign : 'left',
-            text : "\u00A9 2015 Institute for Study of the Earth's Interior, Okayama University" 
+            text : "\u00A9 2012 Institute for Study of the Earth's Interior, Okayama University" 
         }));
 
         var label_version = Ti.UI.createLabel(si.combine($$.NormalButton, {
