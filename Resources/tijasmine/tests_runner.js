@@ -3,6 +3,7 @@ function run() {
         reporter = new (require('/tijasmine/tijasmine-console').ConsoleReporter);
 
     tijasmine.addSpecModules(
+       '/specs/spec_BarcodeReader'//,
        //'/specs/spec_medusa',
        //'/specs/spec_app',
        //'/specs/spec_ui'//,

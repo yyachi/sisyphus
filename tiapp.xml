@@ -53,6 +53,6 @@
     </mobileweb>
     <modules>
         <module platform="iphone" version="1.0.0">com.mirasense.scanditsdk</module>
-        <module platform="android" version="1.0.0">com.mirasense.scanditsdk</module>
+        <module platform="android" version="4.3.0">com.mirasense.scanditsdk</module>
     </modules>
 </ti:app>

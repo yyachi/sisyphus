@@ -205,20 +205,6 @@
                 string = text.value;
             }
             si.ui.android.printLabel(string, string);
-            // if (!si.config.Medusa.debug) {
-            //     si.TiBar.scan({
-            //         configure : si.config.TiBar,
-            //         success : function(_data) {
-            //             if (_data && _data.barcode) {
-            //                 text.value = _data.barcode;
-            //             }
-            //         },
-            //         cancel : function() {
-            //         },
-            //         error : function() {
-            //         }
-            //     });
-            // }
         });
         imageView.addEventListener('click', function(e) {
             button.fireEvent('click', e);
@@ -273,18 +259,24 @@
         });
         imageButton.button.addEventListener('click', function(e) {
             if (!si.config.Medusa.debug) {
-                si.TiBar.scan({
-                    configure : si.config.TiBar,
+                var _win = si.BarcodeReader.createScanWindow({
                     success : function(_data) {
                         if (_data && _data.barcode) {
                             text.value = _data.barcode;
                         }
+                        _win.close();
                     },
                     cancel : function() {
+                        _win.close();
                     },
                     error : function() {
+                        _win.close();                        
                     }
                 });
+                _win.open();
+                // si.app.tabGroup.activeTab.open(
+                //     _win,{animated:true}
+                // );                
             }
         });
 
@@ -760,7 +752,6 @@ Ti.include('/sisyphus/ui/LabelPrintSettingWindow.js');
 //Ti.include('/sisyphus/ui/ServerSettingWindow.js');
 Ti.include('/sisyphus/ui/NewStoneWindow.js');
 Ti.include('/sisyphus/ui/NewBoxWindow.js');
-
 //if (Ti.Platform.name == 'iPhone OS') {
 //        Ti.include('/sisyphus/ui/AddChildWindow.js');
 //}

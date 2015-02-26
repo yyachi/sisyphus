@@ -164,6 +164,7 @@ var si = {};
 
 Ti.include(
     '/sisyphus/tibar.js', 
+    '/sisyphus/BarcodeReader.js',    
     '/sisyphus/ui/ui.js', 
     '/sisyphus/model/medusa.js',
     '/sisyphus/config/config.js'

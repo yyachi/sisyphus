@@ -13,7 +13,11 @@
 		debug: false,
 		test: true
 	};
-	
+
+	si.config.BarcodeReader = {
+		scanditsdk_app_key: 'MtDcnln4EeKdK4dJ4UJ0lnzQS/qlc6/HiAw6LDNYB+4'
+	};
+
 	si.config.debug = {
         	parent_global_id: '20090305173716694.admin',
         	child_global_id: '20140327113913-987802',

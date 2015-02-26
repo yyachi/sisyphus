@@ -13,7 +13,8 @@
 			//{title:'----', hasChild:false, target:'PrintServer', header:'print server', font: font},
 			//{title:'----', hasChild:false, target:'PrintFormatUrl', header:'print format url', font: font},
 			{title:'----', hasChild:false, target:'ScanToLoad', header:'Home', font: font},
-			{title:'----', hasChild:false, target:'ScanCamera', header: 'Barcode reader', font: font}
+			{title:'----', hasChild:false, target:'BarcodeReader', header: 'Barcode reader', font: font}
+			//{title:'----', hasChild:false, target:'ScanCamera', header: 'Barcode reader', font: font}
 		];
 		var index_medusa_server = findIndex('Server');
 		var index_account = findIndex('LogIn');
@@ -22,6 +23,7 @@
 		var index_home = findIndex('ScanToLoad');
 		var index_print_label = findIndex('PrintLabel');
 		var index_scan_camera = findIndex('ScanCamera');
+		var index_barcode_reader = findIndex('BarcodeReader');		
 
 		var tableViewOptions = {
 				data:data,
@@ -49,13 +51,18 @@
 			//tableView.data[4].rows[0].title = ScanCameraInfo();
         });
 
-
-        var optionDialogForScanCamera = Ti.UI.createOptionDialog({
+        var optionDialogForBarcodeReader = Ti.UI.createOptionDialog({
             options : ['Rear camera', 'Front camera'],
             //cancel : 2,
             title : 'Barcode reader setting'
         });
-        optionDialogForScanCamera.addEventListener('click', function(e) {
+
+        // var optionDialogForScanCamera = Ti.UI.createOptionDialog({
+        //     options : ['Rear camera', 'Front camera'],
+        //     //cancel : 2,
+        //     title : 'Barcode reader setting'
+        // });
+        optionDialogForBarcodeReader.addEventListener('click', function(e) {
             switch (e.index) {
                 case 0:
 					Ti.App.Properties.setInt('facing',e.index);        
@@ -66,8 +73,9 @@
                 default:
                     break;
             };
-            updateScanCameraRow();
+            //updateScanCameraRow();
 			//tableView.data[4].rows[0].title = ScanCameraInfo();
+			label_barcode_reader.text = ScanCameraInfo();
         });
 
 
@@ -99,20 +107,20 @@
 					si.app.tabGroup.activeTab.open(windowsPrintFormatUrlSetting,{animated:true});
 					break;
 				case 'ScanToLoad':
-					var w = si.ui.createInputOrScanWindow({
-        				title: 'Home setting',
-        				value: Ti.App.Properties.getString('current_box_global_id'),
-            			save : function(value) {
-            				var global_id = value;
-                        	Ti.App.Properties.setString('current_box_global_id',global_id);
-                        	w.close();
-                    		updateHomeRow();
-            			}
-        			});
-					si.app.tabGroup.activeTab.open(
-						w,{animated:true}
-					);
-					//scanAndLoadDefaultBox();
+					// var w = si.ui.createInputOrScanWindow({
+     //    				title: 'Home setting',
+     //    				value: Ti.App.Properties.getString('current_box_global_id'),
+     //        			save : function(value) {
+     //        				var global_id = value;
+     //                    	Ti.App.Properties.setString('current_box_global_id',global_id);
+     //                    	w.close();
+     //                		updateHomeRow();
+     //        			}
+     //    			});
+					// si.app.tabGroup.activeTab.open(
+					// 	w,{animated:true}
+					// );
+					scanAndLoadDefaultBox();
 					break;
 				case 'ScanCamera':
 					if (Ti.Media.availableCameras.length > 1){
@@ -121,6 +129,9 @@
 				    	si.ui.myAlert({message:'single camera'});
 				    }
 					break;
+				case 'BarcodeReader':
+					optionDialogForBarcodeReader.show();
+					break;	
 				case 'PrintLabel':
 					var windowLabelPrint = si.ui.createLabelPrintSettingWindow();
 					si.app.tabGroup.activeTab.open(windowLabelPrint,{animated:true});
@@ -172,6 +183,19 @@
 		view_label_print_base.add(label_print_server);				
 		view_label_print_base.add(label_template);				
 		tableView.data[index_print_label].rows[0].add(view_label_print_base);
+
+
+		var view_barcode_reader_base = Ti.UI.createView({
+			layout : 'vertical',
+			//backgroundColor: 'yellow'
+		});
+		var label_barcode_reader = Ti.UI.createLabel({
+			left : 10,
+			font : font,			
+			text : 'BarcodeReader'
+		});
+		view_barcode_reader_base.add(label_barcode_reader);
+		tableView.data[index_barcode_reader].rows[0].add(view_barcode_reader_base);
 		//tableView.data[index_account].rows[0].add(label2);		
 		win.add(tableView);
 
@@ -181,12 +205,13 @@
 	    	label_print_status.text = LabelPrintStatus();
 	    	label_print_server.text = printServerInfo();
 	    	label_template.text = printFormatUrlInfo();
+	    	label_barcode_reader.text = ScanCameraInfo();
 	    	//tableView.data[index_medusa_server].rows[0].title = serverInfo();
 		   	//tableView.data[index_account].rows[0].title = accountInfo();
 		   	//tableView.data[index_print_server].rows[0].title = printServerInfo();		   	
 		   	//tableView.data[index_print_format_url].rows[0].title = printFormatUrlInfo();
 		   	updateHomeRow();
-		   	updateScanCameraRow();
+		   	//updateScanCameraRow();
 		   	//updatePrintLabelRow();
 		});
 
@@ -288,20 +313,25 @@
 
 		function scanAndLoadDefaultBox(){
             if (!si.config.Medusa.debug){
-                si.TiBar.scan({
-                configure: si.config.TiBar,
+                var _win = si.BarcodeReader.createScanWindow({                
                 	success:function(data){
-                    if(data && data.barcode){
-                        var global_id = data.barcode;
-                        Ti.App.Properties.setString('current_box_global_id',global_id);
-                        updateHomeRow();
+                    	if(data && data.barcode){
+                        	var global_id = data.barcode;
+                        	Ti.App.Properties.setString('current_box_global_id',global_id);
+	                        updateHomeRow();
                         }
+                        _win.close();
                 	},
                 	cancel:function(){
+                        _win.close();
                 	},
                 	error:function(){
+                        _win.close();
                 	}
                 });
+                si.app.tabGroup.activeTab.open(
+                    _win,{animated:true}
+                );                                
             } else {
                 var global_id = si.config.debug.box_global_id;
                 Ti.App.Properties.setString('current_box_global_id',global_id);

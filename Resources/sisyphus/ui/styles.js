@@ -81,7 +81,10 @@
             width : '90%',
             height : '15%'
         },
-
+        ToolBarButton : {
+            height : 90,
+            width : Ti.UI.SIZE
+        },
         RightBottomButton : {
             width : '40%',
             height : 80,

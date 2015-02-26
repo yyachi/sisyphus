@@ -409,18 +409,23 @@
 
         win.functions.clickScanParentButton = function () {
             if (!si.config.Medusa.debug) {
-                si.TiBar.scan({
-                    configure : si.config.TiBar,
+                var _win = si.BarcodeReader.createScanWindow({                
                     success : function(_data) {
                         if (_data && _data.barcode) {
                             loadParent(_data.barcode);
                         }
+                        _win.close();
                     },
                     cancel : function() {
+                        _win.close();
                     },
                     error : function() {
+                        _win.close();                        
                     }
                 });
+                si.app.tabGroup.activeTab.open(
+                    _win,{animated:true}
+                );                
             } else {
                 setTimeout(function() {
                     loadParent(si.config.debug.parent_global_id);
@@ -575,8 +580,7 @@
 
         function scanChild() {
             if (!si.config.Medusa.debug) {
-                si.TiBar.scan({
-                    configure : si.config.TiBar,
+                var _win = si.BarcodeReader.createScanWindow({
                     success : function(_data) {
                         if (_data && _data.barcode) {
                             addChild(_data.barcode, true);
@@ -587,6 +591,9 @@
                     error : function() {
                     }
                 });
+                si.app.tabGroup.activeTab.open(
+                    _win,{animated:true}
+                );                
             } else {
                 setTimeout(function() {
                     addChild(si.config.debug.child_global_id, false);
@@ -616,10 +623,10 @@
                             //si.app.log.info(labelStatus.text + 'ok');
                             //labelInfo.text = labelStatus.text + labelInfo.text;
 
-                            if (isMultiScan) {
+//                            if (isMultiScan) {
 //                                win.buttons.ScanChild.setEnabled(true);
-                                win.buttons.ScanChild.fireEvent('click');
-                            }
+//                                win.buttons.ScanChild.fireEvent('click');
+//                            }
                             // else {
                             //     labelStatus.text = 'Ready for scan';
                             //     changeMode('ready');

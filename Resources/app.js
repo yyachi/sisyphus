@@ -54,7 +54,15 @@ if (Ti.App.Properties.getString('printFormatUrl') == null) {
 if (Ti.App.Properties.getInt('facing') == null) {
     Ti.App.Properties.setInt('facing', si.config.Medusa.facing);
 }
+if (Ti.App.Properties.getString('scanditsdk_app_key') == null) {
+    Ti.App.Properties.setString('scanditsdk_app_key', si.config.BarcodeReader.scanditsdk_app_key);
+}
 
+if (Ti.App.Properties.getString('scanditsdk_app_key')){
+    Ti.API.info('scanditsdk_app_key:' + Ti.App.Properties.getString('scanditsdk_app_key'));
+    //si.scanditsdk = {};
+    si.scanditsdk = require('com.mirasense.scanditsdk');
+}
 si.app.tabGroup = si.ui.createApplicationTabGroup();
 si.app.tabGroup.open();
 
