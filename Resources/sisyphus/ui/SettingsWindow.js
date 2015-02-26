@@ -54,7 +54,9 @@
         var optionDialogForBarcodeReader = Ti.UI.createOptionDialog({
             options : ['Rear camera', 'Front camera'],
             //cancel : 2,
+            selectedIndex: Ti.App.Properties.getInt('facing'),
             title : 'Barcode reader setting'
+
         });
 
         // var optionDialogForScanCamera = Ti.UI.createOptionDialog({
