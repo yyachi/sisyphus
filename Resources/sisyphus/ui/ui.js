@@ -125,7 +125,7 @@
             //top : '45%',
             font : {fontWeight : 'bold',fontSize : 36},
             textAlign : 'left',
-            text : 'Sisyphus for Android' + ' ' + Ti.App.version 
+            text : 'Sisyphus for Medusa' + ' ' + Ti.App.version 
         }));
 
         var buttonUpdate = Ti.UI.createButton(si.combine($$.NormalButton, {
