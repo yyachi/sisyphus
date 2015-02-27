@@ -31,6 +31,7 @@
                 textAlign : 'left'
             }));
             if (e.level === 'error'){
+                si.sound_mailerror.play();
                 _label.color = 'red';
             }
             _row.add(_label);
@@ -38,21 +39,36 @@
             logTable.scrollToIndex(0);
         });
 
+        win.addEventListener('open', function(e) {
+            Ti.API.info('opened');
+        });
+
         win.addEventListener('focus', function(e) {
             Ti.API.info('focused.');
-            //changeMode('ready');
-            if (mode !== 'loading') {
-                changeMode('refresh');
-            } 
-            current_global_id = Ti.App.Properties.getString('current_global_id');
-            if (parent == null) {
-                if (current_global_id != null) {
-                    loadParent(current_global_id);
-                }
+            if (si.app.is_network_available()){
+                si.app.getAccountInfo({
+                    onsuccess : function(account){
+                        Ti.API.info(account);
+                        win.functions.refresh();
+                    },
+                    onerror : function(e){
+                        //var _message = 'Login failed';
+                        changeMode('error','logging into ' + si.app.getUserName() + ' on ' + si.app.getSiteName() + '...' );
+                        //si.ui.showErrorDialog(_message);
+                        //si.ui.alert_simple('print error : ' + e.error);
+                        var windowLogin = si.ui.createLoginWindow({
+                            onsuccess : function(){
+                                si.ui.myAlert({message: 'Login successfully'});
+                            }
+                        });
+                        si.app.tabGroup.activeTab.open(windowLogin,{animated:true});
+                    }
+                });
             } else {
-                if (parent.global_id != current_global_id) {
-                    loadParent(current_global_id);
-                }
+                var _message = 'No network is available'
+                changeMode('error','network checking...');
+                si.ui.showErrorDialog(_message);
+                changeMode('unavailable');
             }
 
         });
@@ -256,6 +272,11 @@
                     win.buttons[prop].setEnabled(false);
                 }
                 return;
+            } else if (_mode == 'unavailable'){
+                for(var prop in win.buttons){
+                    win.buttons[prop].setEnabled(false);
+                }
+                return;
             } else if (_mode == 'error'){
                 si.sound_mailerror.play();                
                 si.app.log.error(_message + 'error');
@@ -282,6 +303,23 @@
 
             if (!Ti.App.Properties.getBool('printLabel')){
                 win.buttons.Print.setEnabled(false);
+            }
+        };
+
+        win.functions.refresh = function(){
+            //changeMode('ready');
+            if (mode !== 'loading') {
+                changeMode('refresh');
+            } 
+            current_global_id = Ti.App.Properties.getString('current_global_id');
+            if (parent == null) {
+                if (current_global_id != null) {
+                    loadParent(current_global_id);
+                }
+            } else {
+                if (parent.global_id != current_global_id) {
+                    loadParent(current_global_id);
+                }
             }
         };
 
@@ -442,18 +480,10 @@
                 onsuccess: function(e){
                     si.sound_label.play();
                     si.app.log.info(_message + 'ok');
-                    //labelInfo.text = _record.global_id + '...' + _record.name + '...label created\n' + labelInfo.text;
                 },
                 onerror: function(e){
-                    //si.ui.myAlert({message: 'No label created'});
-                    var dialog = Ti.UI.createAlertDialog({
-                        message: e.error,
-                        title: 'No label created',
-                    });
-                    dialog.show();
-                    si.sound_error.play();
-                    si.app.log.error(_message + 'error');                    
-                    //labelInfo.text = _record.global_id + '...' + _record.name + '...no label created\n' + labelInfo.text;
+                    changeMode('error',_message);
+                    //si.ui.showErrorDialog('No label created');
                 }
             });
         };

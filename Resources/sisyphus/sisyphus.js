@@ -19,21 +19,55 @@ var si = {};
     si.app.log.info = function(_message){
         var _log = si.app.log.newObj('info', _message);
         si.app.log.append(_log);
-        //var _date = new Date();
-        //var _log = {level: 'info', message: _message, date: _date }
-        // si.app.log.list.push(_log);
-        // Ti.App.fireEvent('app:logged', _log);        
     };
     si.app.log.error = function(_message){
         var _log = si.app.log.newObj('error', _message);
         si.app.log.append(_log);
-        // var _date = new Date();
-        // var _log = {level: 'info', message: _message, date: _date }
-        // si.app.log.list.push(_log);
-        // Ti.App.fireEvent('app:logged', _log);        
+    };
+    si.app.log.warn = function(_message){
+        var _log = si.app.log.newObj('warn', _message);
+        si.app.log.append(_log);
+    };
+    si.app.log.fatal = function(_message){
+        var _log = si.app.log.newObj('fatal', _message);
+        si.app.log.append(_log);
+    };
+
+    si.app.is_network_available = function(){
+        //Ti.API.info(Ti.Network.networkTypeName);
+        if (Ti.Network.networkType == Ti.Network.NETWORK_NONE){
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+    si.app.getUserName = function(){
+        return Ti.App.Properties.getString('username');
+    };
+
+    si.app.getSiteName = function(){
+        return Ti.App.Properties.getString('server');
     };
 
 
+    si.app.getAccountInfo = function(_args){
+        Ti.API.info('si.app.getAccountInfo');
+        var _message = 'account info getting...';
+        si.model.medusa.getAccountInfo({
+            username : Ti.App.Properties.getString('username'),
+            password : Ti.App.Properties.getString('password'),
+            onsuccess : function(response) {
+                //si.app.log.info(_message + 'ok');
+                _args.onsuccess(response);
+            },
+            onerror : function(e) {
+                //si.app.log.error(_message + 'error ' + "[" + e.message + "]");
+                _args.onerror(e);
+            }
+        });
+
+    };
 
     var empty = {};
     function mixin(/*Object*/target, /*Object*/source) {

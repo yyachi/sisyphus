@@ -138,7 +138,7 @@
                             }),
                             onerror : (function(e) {
                                 activityIndicator.hide();
-                                si.ui.alert_simple('error : ' + e.error);
+                                si.ui.alert_simple('Upload image failed');
                             }),
                         });            
                     } else {
@@ -149,7 +149,9 @@
                 },
                 onerror : function(e) {
                     activityIndicator.hide();
-                    si.ui.alert_simple('error : ' + e.error);
+                    var _message = 'No stone created'
+                    si.ui.showErrorDialog(_message);
+                    //si.ui.alert_simple('error : ' + e.error);
                },
             });
         };

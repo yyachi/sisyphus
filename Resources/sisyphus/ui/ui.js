@@ -23,6 +23,16 @@
         dialog.show();
     };
 
+    si.ui.showErrorDialog = function(message){
+        var dialog = Ti.UI.createAlertDialog({
+            message: message,
+            title: '',
+            //ok: 'OK'
+        });
+        si.sound_mailerror.play();
+        dialog.show();
+    };
+
 
     si.ui.alert_no_parent = function(){
         si.ui.myAlert({message:'Load parent first', title:''});

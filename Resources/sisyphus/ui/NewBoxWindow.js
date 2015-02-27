@@ -140,7 +140,8 @@
                             }),
                             onerror : (function(e) {
                                 activityIndicator.hide();
-                                si.ui.alert_simple('error : ' + e.error);
+                                si.ui.alert_simple('Upload image failed');
+                                //si.ui.alert_simple('error : ' + e.error);
                             }),
                         });            
                     } else {
@@ -151,7 +152,9 @@
                 },
                 onerror : function(e) {
                     activityIndicator.hide();
-                    si.ui.alert_simple('error : ' + e.error);
+                    var _message = 'No box created'
+                    si.ui.showErrorDialog(_message);                    
+                    //si.ui.alert_simple('error : ' + e.error);
                },
             });            
         };

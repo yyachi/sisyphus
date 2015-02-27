@@ -66,10 +66,11 @@ if (Ti.App.Properties.getString('scanditsdk_app_key')){
 si.app.tabGroup = si.ui.createApplicationTabGroup();
 si.app.tabGroup.open();
 
-Ti.API.info(Ti.Network.networkTypeName);
-if (Ti.Network.networkType == Ti.Network.NETWORK_NONE){
-    si.ui.alert_simple('no network is available.');
-}
+//Ti.API.info(Ti.Network.networkTypeName);
+//if (Ti.Network.networkType == Ti.Network.NETWORK_NONE){
+//    si.log.error('No network is available')
+//    si.ui.alert_simple('no network is available.');
+//}
 
 var cameras = Ti.Media.availableCameras;
 // Ti.API.info('cameras');
