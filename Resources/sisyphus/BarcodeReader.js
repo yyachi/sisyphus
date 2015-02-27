@@ -16,14 +16,15 @@
         });
 
         var toolBar = Ti.UI.createView({
-            top : 50,
+            top : 0,
             //layout : 'horizontal',
             height : Ti.UI.SIZE
         });
 
         var logTable = Ti.UI.createTableView({
-            top : 150,
+            top : "20%",
             data: [],
+            //borderColor : 'blue',
             separatorColor : null
         });
 
@@ -74,8 +75,10 @@
 
             //picker.showSearchBar(true);
             // add a tool bar at the bottom of the scan view with a cancel button (iphone/ipad only)
-            picker.showToolBar(true);
+            //picker.showToolBar(true);
             picker.setCameraSwitchVisibility(2);
+            picker.setCameraSwitchButtonRelativePositionAndSize(0.05, 0.14, 67, 33);
+            picker.setTorchButtonRelativePositionAndSize(0.05, 0.14, 67, 33);
             picker.restrictActiveScanningArea(true);
             picker.setScanningHotSpotHeight(HotSpotHeight);
             //picker.setScanningHotSpotHeight();
