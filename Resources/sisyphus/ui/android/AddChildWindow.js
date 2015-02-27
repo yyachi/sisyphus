@@ -285,7 +285,7 @@
             }
             
             activityIndicator.hide();
-            labelStatus.text = 'Ready for scan';
+            labelStatus.text = 'Ready for another stone';
             for(var prop in win.buttons){
                 win.buttons[prop].setEnabled(true);
             }
