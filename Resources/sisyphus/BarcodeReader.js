@@ -5,108 +5,6 @@
         return si.BarcodeReader.Camera.createScanWindow(_args);
     };
 
-    si.BarcodeReader.Camera._createScanWindow = function(_args) {
-        var win = Ti.UI.createWindow({
-            title : 'Scan barcode with camera',
-        });        
-
-        win.buttons = {};
-        win.functions = {};
-        var viewBase = Ti.UI.createView({
-            //backgroundColor : 'red',
-            top : 0,
-            width : '99%',
-            height : '100%',
-            layout : 'vertical'
-        });
-
-        var viewUpper = Ti.UI.createView({
-            //backgroundColor : 'red',
-            //top : 0,
-            layout : 'vertical',
-            //height : '15%'
-            height : '55%'
-        });
-
-        var viewToolBar = Ti.UI.createView({
-            //backgroundColor : 'red',
-            //top : 0,
-            //layout : 'horizontal',
-            //height : '15%'
-            height : Ti.UI.SIZE
-        });
-
-        var viewToolLeft = Ti.UI.createView({
-            //backgroundColor : 'yellow',
-            left : 0,
-            layout : 'horizontal',
-            height : Ti.UI.SIZE,
-            width : Ti.UI.SIZE
-        });        
-        var viewToolRight = Ti.UI.createView({
-            //backgroundColor : 'white',
-            right : 0,
-            layout : 'horizontal',
-            height : Ti.UI.SIZE,
-            width : Ti.UI.SIZE
-        });
-
-        win.buttons.Close = si.ui.createImageButtonView('/images/glyphicons-208-remove-2.png', {
-            width : 90,
-            height : 90,
-            imgDimensions : 30,
-            onclick : function(e) { win.functions.clickCloseButton() }
-        });
-
-
-        var picker = si.scanditsdk.createView({
-//            top: 100,
-//            bottom : 100
-        });
-
-
-        picker.init(Ti.App.Properties.getString('scanditsdk_app_key'), Ti.App.Properties.getInt('facing'));
-        picker.setSuccessCallback(function(e) {
-            //win.close();
-            _args.success(e);
-
-        });
-        picker.setCancelCallback(function(e) {
-            win.close();
-            _args.cancel();
-        });
-
-        picker.setQrEnabled(true);
-        //picker.setTorchEnabled(true);
-        picker.showSearchBar(true);
-        picker.setCameraSwitchVisibility(2);
-        picker.startScanning();
-
-        var buttonScanStop = Ti.UI.createButton(si.combine($$.ToolBarButton, {
-            title : 'Cancel',
-            left : 0,
-        }));
-
-        win.functions.clickCloseButton = function(){
-            win.close();
-            _args.cancel();
-        };
-
-        buttonScanStop.addEventListener('click', function(e) {
-            win.close();
-            _args.cancel();
-        });
-
-        viewToolLeft.add(win.buttons.Close);
-        viewToolBar.add(viewToolLeft);
-        viewBase.add(viewToolBar);
-        viewBase.add(picker);
-        win.add(viewBase);
-        return win;
-    };
-
-
-
     si.BarcodeReader.Camera.createScanWindow = function(_args){
 
 
@@ -118,17 +16,27 @@
         });
 
         var toolBar = Ti.UI.createView({
-            bottom : 0,
-            layout : 'horizontal',
+            top : 50,
+            //layout : 'horizontal',
             height : Ti.UI.SIZE
         });
 
         var logTable = Ti.UI.createTableView({
-            top : 100,
+            top : 150,
             data: [],
             separatorColor : null
         });
 
+        var searchBox = Ti.UI.createTextField({
+            left : 90,
+            right : 90,
+            value : '',
+            keyboardType : Ti.UI.KEYBOARD_NUMBER_PAD,
+            //width : '50%',
+            hintText : 'Scan barcode or enter it here'
+        });
+
+        var HotSpotHeight = 0.25;
         win.buttons = {};
         win.buttons.Close = si.ui.createImageButtonView('/images/glyphicons-208-remove-2.png', {
             width : 90,
@@ -136,24 +44,41 @@
             imgDimensions : 30,
             onclick : function(e) { closeWindow() }
         });
-
+        win.buttons.Close.left = 0;
+        win.buttons.Search = si.ui.createImageButtonView('/images/glyphicons-28-search.png', {
+            right : 0,
+            width : 90,
+            height : 90,
+            imgDimensions : 30,
+            onclick : function(e) { _args.success({barcode: searchBox.value}) }
+        });
+        win.buttons.Search.right = 0;
         toolBar.add(win.buttons.Close);
+        toolBar.add(searchBox);
+        toolBar.add(win.buttons.Search);
+        //win.add(toolBar);
+        //win.add(base);
+
         // Sets up the scanner and starts it in a new window.
         var openScanner = function() {
             // Instantiate the Scandit SDK Barcode Picker view
             picker = si.scanditsdk.createView({
+                height : "100%",
                 width:"100%",
-                height:"100%"
+                //zIndex: 1,
+                //height:"100%"
             });
             // Initialize the barcode picker, remember to paste your own app key here.
             //picker.init("enter Scandit SDK APP KEY here" - sign up at www.scandit.com, 0);
             picker.init(Ti.App.Properties.getString('scanditsdk_app_key'), Ti.App.Properties.getInt('facing'));
 
-            picker.showSearchBar(true);
+            //picker.showSearchBar(true);
             // add a tool bar at the bottom of the scan view with a cancel button (iphone/ipad only)
             picker.showToolBar(true);
             picker.setCameraSwitchVisibility(2);
-
+            picker.restrictActiveScanningArea(true);
+            picker.setScanningHotSpotHeight(HotSpotHeight);
+            //picker.setScanningHotSpotHeight();
             // Set callback functions for when scanning succeedes and for when the
             // scanning is canceled.
             picker.setSuccessCallback(function(e) {
@@ -161,8 +86,12 @@
                 //si.app.log.info(e.barcode);
                 //picker.stopScanning();
                 _args.success(e);
+                //si.app.log.info('sleeping...');
                 picker.stopScanning();
+                //picker.setScanningHotSpotHeight(0.0);
                 setTimeout(function() {
+                    //si.app.log.info('wake up');
+                    //picker.setScanningHotSpotHeight(HotSpotHeight);
                     picker.startScanning();
                     //addChild(si.config.debug.child_global_id, false);
                 }, 500);
@@ -191,8 +120,8 @@
             Ti.API.info('window open...')
             openScanner();
             win.add(picker);
-            win.add(logTable);            
             win.add(toolBar);
+            win.add(logTable);            
             // Adjust to the current orientation.
             // since window.orientation returns 'undefined' on ios devices
             // we are using Ti.UI.orientation (which is deprecated and no longer

@@ -166,7 +166,7 @@
             textAlign : 'left',
             //top : '95%',
             left : 0,
-            //width : '90%',
+            width : '100%',
             borderWidth : 1,
         }));
 
