@@ -34,7 +34,7 @@
             value : '',
             keyboardType : Ti.UI.KEYBOARD_NUMBER_PAD,
             //width : '50%',
-            hintText : 'Scan barcode or enter it here'
+            hintText : 'or input barcode'
         });
 
         var HotSpotHeight = 0.25;
