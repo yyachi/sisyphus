@@ -522,6 +522,7 @@
         // });
         //view.add(left);
         //view.add(right);
+        var image_path;
         var imageView = Ti.UI.createImageView({
 //            top : spacing,
 //            left : spacing,
@@ -533,9 +534,8 @@
         });
         imageView.addEventListener('click', function(e) {
             //optionDialog.show();
-
-            if (imageView.image){
-                var w = si.ui.createImageWindow(imageView.image);
+            if (image_path){
+                var w = si.ui.createImageWindow(image_path);
                 w.open({
                       modal : true
                 });
@@ -584,9 +584,11 @@
                 //var _path = Ti.App.Properties.getString('server') + '/' + _record.image_path;
                 var _url = si.imageURL(_record.image_path);
                 //Ti.API.info(_url);
-                imageView.image = _url;
+                imageView.image = si.imageURL(_record.thumbnail_path);
+                image_path = si.imageURL(_record.original_path);
             } else {
                 imageView.image = '';
+                image_path = null;
             }
         };
 

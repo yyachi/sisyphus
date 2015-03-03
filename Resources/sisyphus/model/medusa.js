@@ -189,6 +189,9 @@
                                 if (__response.length > 0) {
                                     attachmentFile = __response[0];
                                     record.image_path = attachmentFile.thumbnail_path;
+                                    record.original_path = attachmentFile.original_path;
+                                    record.thumbnail_path = attachmentFile.thumbnail_path;
+                                    record.tiny_path = attachmentFile.tiny_path;
                                 }
                                 _args.onsuccess(record);
                             }
