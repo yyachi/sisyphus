@@ -46,7 +46,7 @@
             onclick : function(e) { closeWindow() }
         });
         win.buttons.Close.left = 0;
-        win.buttons.Search = si.ui.createImageButtonView('/images/glyphicons-28-search.png', {
+        win.buttons.Search = si.ui.createImageButtonView('/images/glyphicons-415-disk-save.png', {
             right : 0,
             width : 90,
             height : 90,
