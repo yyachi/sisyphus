@@ -475,7 +475,9 @@
 
         win.functions.printLabelfor = function(_record){
             Ti.API.info('printLabelfor...');
-            var _message = _record.global_id + '...' + _record.name + '...label...creating...'
+            var _message = _record.global_id + '...' + _record.name + '...label...';
+            si.app.log.info(_message + 'sending...ok');
+            _message += 'creating...';
             si.ui.android.printLabel(_record.global_id, _record.name, {
                 onsuccess: function(e){
                     si.sound_label.play();
