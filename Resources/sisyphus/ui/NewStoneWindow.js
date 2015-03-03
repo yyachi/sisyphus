@@ -5,6 +5,59 @@
 //            backgroundColor : 'black'
         });
 
+        win.buttons = {};
+        win.buttons.Close = si.ui.createImageButtonView('/images/glyphicons-208-remove-2.png', {
+            width : 90,
+            height : 90,
+            imgDimensions : 30,
+            onclick : function(e) { win.close() }
+        });
+        win.buttons.Close.left = 0;
+
+        win.buttons.Save = si.ui.createImageButtonView('/images/glyphicons-415-disk-save.png', {
+            right : 0,
+            width : 90,
+            height : 90,
+            imgDimensions : 30,
+            onclick : function(e) { win.save() }
+        });
+        win.buttons.Save.right = 0;
+
+        win.fields = {};
+        win.fields.name = Ti.UI.createTextField(si.combine($$.TextField, {
+            value : '',
+            width : '100%',
+            keyboardType : Ti.UI.KEYBOARD_DEFAULT,
+            hintText : 'input name'
+        }));
+        win.fields.ID = si.ui.createScanInput(si.combine($$.TextField, {
+            value : '',
+            width : '100%',
+            keyboardType : Ti.UI.KEYBOARD_DEFAULT,
+            hintText : 'input ID'
+        }));
+        win.fields.classification = si.ui.createPickerInput(si.app.classifications(), {hintText:''});
+        win.fields.physical_form = si.ui.createPickerInput(si.app.physical_forms(), {hintText:''});
+        win.fields.quantity = Ti.UI.createTextField({
+            value : '',
+            width : Ti.UI.FILL,
+            keyboardType : Ti.UI.KEYBOARD_NUMBER_PAD,
+            hintText : 'input quantity'            
+        });
+
+        win.fields.quantity_unit = Ti.UI.createTextField({
+            value : '',
+            width : Ti.UI.FILL,
+            keyboardType : Ti.UI.KEYBOARD_DEFAULT,
+            hintText : 'input quantity unit'            
+        });
+
+        win.fields.description = Ti.UI.createTextArea({
+            width : Ti.UI.FILL,
+            hintText : 'input description'
+        });
+
+
         var viewBase = Ti.UI.createView({
             width : '100%',
             height : '100%',
@@ -22,101 +75,104 @@
             //layout : 'vertical'
         });
 
-        var viewHeaderRight = Ti.UI.createView({
+        var viewHeaderLeft = Ti.UI.createView({
             width : Ti.UI.SIZE,
             height : Ti.UI.SIZE,
-            right : 0,
+            left : 0,
+            top : 0,
             //backgroundColor : 'yellow',
             layout : 'horizontal'
         });
 
-        var viewButton = Ti.UI.createView({
-//            backgroundColor : 'black',
+        var viewHeaderRight = Ti.UI.createView({
+            width : Ti.UI.SIZE,
             height : Ti.UI.SIZE,
-            width : '100%',
+            right : 0,
+            top : 0,
+            //backgroundColor : 'yellow',
+            layout : 'horizontal'
         });
 
         var activityIndicator = Ti.UI.createActivityIndicator({
             style : Ti.UI.ActivityIndicatorStyle.BIG,
         });
 
-        var text = Ti.UI.createTextField(si.combine($$.TextField, {
-            value : '',
-            width : '100%',
-            keyboardType : Ti.UI.KEYBOARD_DEFAULT,
-            hintText : 'input name'
-        }));
-
-        var button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
-            title : 'OK',
-            top : 0
-        }));
-
-        button.addEventListener('click', function() {
-            win.save();
-        });
-
-        var cancel_button = Ti.UI.createButton(si.combine($$.LeftBottomButton, {
-            top : 0,
-            title : 'Cancel',
-        }));
-
-        cancel_button.addEventListener('click', function() {
-            win.close();
-        });
-
-        var scan_input = si.ui.createScanInput(si.combine($$.TextField, {
-            value : '',
-            width : '100%',
-            keyboardType : Ti.UI.KEYBOARD_DEFAULT,
-            hintText : 'input ID'
-        }));
 
         var myImageView = si.ui.createMyImageView({
             width : Ti.UI.SIZE
         });
+
+        var table = Ti.UI.createScrollView({
+            contentWidth: 'auto',
+            contentHeight: 'auto',
+            showVerticalScrollIndicator: true,
+            height : Ti.UI.SIZE,
+            width : Ti.UI.FILL,
+            layout : 'vertical'
+        });
+        table.add(si.ui.createInputRow("Name", win.fields.name, {}));
+        if (!Ti.App.Properties.getBool('printLabel')){
+            table.add(si.ui.createInputRow("ID", win.fields.ID, {}));
+        }
+        table.add(si.ui.createInputRow("Classification", win.fields.classification, {}));
+        table.add(si.ui.createInputRow("Physical form", win.fields.physical_form, {}));
+        table.add(si.ui.createInputRow("Quantity", win.fields.quantity, {}));
+        table.add(si.ui.createInputRow("Quantity unit", win.fields.quantity_unit, {}));
+        table.add(si.ui.createInputRow("Description", win.fields.description, {}));
+
         viewBase.add(viewBody);
         viewBody.add(viewHeader);
+        viewHeader.add(viewHeaderLeft);
+        viewHeaderLeft.add(win.buttons.Close);
         viewHeader.add(viewHeaderRight);
         viewHeaderRight.add(myImageView);
-        viewBody.add(Ti.UI.createLabel({left: 5, text : 'Name'}));
-        viewBody.add(text);
-        if (!Ti.App.Properties.getBool('printLabel')){
-            viewBody.add(Ti.UI.createLabel({left: 5, text : 'ID'}));
-            viewBody.add(scan_input);
-        }
-        viewBody.add(viewButton);
-        viewButton.add(button);
-        viewButton.add(cancel_button);
-        //viewBody.add(Ti.UI.createLabel({left: 5, text : 'Attachment file'}));        
-        //viewBody.add(myImageView);
+        viewHeaderRight.add(win.buttons.Save);
 
+        viewBody.add(table);
         win.add(viewBase);
         win.add(activityIndicator);
-        win.name_field = text;
-        win.save_button = button;
-        win.global_id = scan_input.input;
+        win.name_field = win.fields.name;
+        win.save_button = win.buttons.Save;
+        win.global_id = win.fields.ID.input;
 
         win.set_image = function(_image) {
             myImageView.set_image(_image);
         };
         win.set_global_id = function(gid) {
-            scan_input.set_value(gid);
+            win.fields.ID.set_value(gid);
         }
 
         win.save = function(){
-            if (text.value == '') {
+            if (win.fields.name.value == '') {
                 si.ui.alert_simple('Input name of new stone');
                 return;
             }
             var params = {};
-            params['name'] = text.value;
+            params['name'] = win.fields.name.value;
             if (win.global_id.value){
                 Ti.API.info("global_id:" + win.global_id.value);
                 params['global_id'] = win.global_id.value;
             } else {
                 Ti.API.info("no global_id");
             }
+            if (win.fields.classification.value){
+                params['classification_id'] = win.fields.classification.value;
+            }
+            if (win.fields.physical_form.value){
+                params['physical_form_id'] = win.fields.physical_form.value;
+            }
+            if (win.fields.quantity.value){
+                params['quantity'] = win.fields.quantity.value;
+            }
+
+            if (win.fields.quantity_unit.value){
+                params['quantity_unit'] = win.fields.quantity_unit.value;
+            }
+            if (win.fields.description.value){
+                params['description'] = win.fields.description.value;
+            }
+
+            Ti.API.info(params);
             activityIndicator.show();
             si.model.medusa.createNewStone({
                 args : params,

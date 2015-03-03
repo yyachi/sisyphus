@@ -68,6 +68,84 @@ var si = {};
         });
 
     };
+    si.app.classifications = function(){
+        return Ti.App.Properties.getList("classifications", null);
+    };
+    si.app.getClassifications = function(){
+        Ti.API.info('si.app.getClassifications');
+        var _message = 'classifications getting...';
+        si.model.medusa.getWithAuth({
+            path : '/classifications.json',
+            username : Ti.App.Properties.getString('username'),
+            password : Ti.App.Properties.getString('password'),
+            onsuccess : function(_array) {
+                //si.app.log.info(_message + 'ok');
+                for(var i=0; i<_array.length; i++){
+                    Ti.API.info("---");
+                    var _obj = _array[i];
+                    _obj.title = _obj.full_name;
+                }
+                Ti.App.Properties.setList("classifications", _array);
+            },
+            onerror : function(e) {
+                //si.app.log.error(_message + 'error ' + "[" + e.message + "]");
+                //_args.onerror(e);
+            }
+        });
+    };
+
+    si.app.physical_forms = function(){
+        return Ti.App.Properties.getList("physical_forms", null);
+    };
+    si.app.getPhysicalForms = function(){
+        Ti.API.info('si.app.getPhysicalforms');
+        var _message = 'physical_forms getting...';
+        si.model.medusa.getWithAuth({
+            path : '/physical_forms.json',
+            username : Ti.App.Properties.getString('username'),
+            password : Ti.App.Properties.getString('password'),
+            onsuccess : function(_array) {
+                si.app.log.info(_message + 'ok');
+                for(var i=0; i<_array.length; i++){
+                    Ti.API.info("---");
+                    var _obj = _array[i];
+                    _obj.title = _obj.name;
+                }
+                Ti.App.Properties.setList("physical_forms", _array);
+            },
+            onerror : function(e) {
+                si.app.log.error(_message + 'error ' + "[" + e.message + "]");
+                //_args.onerror(e);
+            }
+        });
+    };
+
+    si.app.box_types = function(){
+        return Ti.App.Properties.getList("box_types", null);
+    };
+    si.app.getBoxTypes = function(){
+        Ti.API.info('si.app.getBoxTypes');
+        var _message = 'box_types getting...';
+        si.model.medusa.getWithAuth({
+            path : '/box_types.json',
+            username : Ti.App.Properties.getString('username'),
+            password : Ti.App.Properties.getString('password'),
+            onsuccess : function(_array) {
+                si.app.log.info(_message + 'ok');
+                for(var i=0; i<_array.length; i++){
+                    Ti.API.info("---");
+                    var _obj = _array[i];
+                    _obj.title = _obj.name;
+                }
+                Ti.App.Properties.setList("box_types", _array);
+            },
+            onerror : function(e) {
+                si.app.log.error(_message + 'error ' + "[" + e.message + "]");
+                //_args.onerror(e);
+            }
+        });
+    };
+
 
     var empty = {};
     function mixin(/*Object*/target, /*Object*/source) {

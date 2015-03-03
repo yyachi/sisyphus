@@ -7,9 +7,9 @@ describe('New Stone Window', function() {
     var isSuccess;
 
     beforeEach(function() {
-        Ti.App.Properties.setString('server', si.config.Medusa.defaultServer);
-        Ti.App.Properties.setString('username', 'admin');
-        Ti.App.Properties.setString('password', 'password');
+        // Ti.App.Properties.setString('server', si.config.Medusa.defaultServer);
+        // Ti.App.Properties.setString('username', 'admin');
+        // Ti.App.Properties.setString('password', 'password');
 
         win = si.ui.createNewStoneWindow({
             onsuccess: function(_newstone){

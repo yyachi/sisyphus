@@ -5,6 +5,24 @@
 //            backgroundColor : 'white'
         });
 
+        win.buttons = {};
+        win.buttons.Close = si.ui.createImageButtonView('/images/glyphicons-208-remove-2.png', {
+            width : 90,
+            height : 90,
+            imgDimensions : 30,
+            onclick : function(e) { win.close() }
+        });
+        win.buttons.Close.left = 0;
+
+        win.buttons.Save = si.ui.createImageButtonView('/images/glyphicons-415-disk-save.png', {
+            right : 0,
+            width : 90,
+            height : 90,
+            imgDimensions : 30,
+            onclick : function(e) { win.save() }
+        });
+        win.buttons.Save.right = 0;
+
        var viewBase = Ti.UI.createView({
 //            backgroundColor : 'white',
             top : 0,
@@ -16,12 +34,31 @@
         var viewHeader = Ti.UI.createView({
 //            backgroundColor : 'white',
             height : Ti.UI.SIZE,
-            layout : 'vertical'
+            width : Ti.UI.FILL,
+            //layout : 'vertical'
+        });
+
+        var viewHeaderLeft = Ti.UI.createView({
+            width : Ti.UI.SIZE,
+            height : Ti.UI.SIZE,
+            left : 0,
+            top : 0,
+            //backgroundColor : 'yellow',
+            layout : 'horizontal'
+        });
+
+        var viewHeaderRight = Ti.UI.createView({
+            width : Ti.UI.SIZE,
+            height : Ti.UI.SIZE,
+            right : 0,
+            top : 0,
+            //backgroundColor : 'yellow',
+            layout : 'horizontal'
         });
 
         var viewBody = Ti.UI.createView({
-//            backgroundColor : 'white',
-            top : 0
+            height : '100%',
+            layout : 'vertical'
         });
 
         var viewStatus = Ti.UI.createView({
@@ -45,23 +82,18 @@
 
         var server = si.ui.createScanInput(si.combine($$.TextField, {
             value: Ti.App.Properties.getString('printServer'),
+            width: '100%',
             keyboardType : Ti.UI.KEYBOARD_URL,
-            hintText : 'print server url',            
+            hintText : 'input print server URL',            
         }));
 
         var template = si.ui.createScanInput(si.combine($$.TextField, {
             value: Ti.App.Properties.getString('printFormatUrl'),
+            width: '100%',
             keyboardType : Ti.UI.KEYBOARD_URL,
-            hintText : 'template file url',            
+            hintText : 'input template file URL',            
         }));
 
-
-        // var template = Ti.UI.createTextField(si.combine($$.TextField, {
-        //     value : Ti.App.Properties.getString('printFormatUrl'),
-        //     //top : '5%',
-        //     keyboardType :  Ti.UI.KEYBOARD_URL,
-        //     hintText : 'Print format url'
-        // }));
 
         var printtext = si.ui.createInputPrint(si.combine($$.TextField, {
             //width: '50%',
@@ -71,48 +103,52 @@
             hintText : 'text for print',            
         }));
 
-        var button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
-            title : 'OK',
-            top : 0
-        }));
-
-        button.addEventListener('click', function() {
-            // if (text.value == '') {
-            //     si.ui.alert_simple('Please input url of print format');
-            //     return;
-            // }
+        win.save = function(){
             Ti.App.Properties.setString('printServer',server.input.value);
             Ti.App.Properties.setString('printFormatUrl',template.input.value);
             win.close();
-        });
+        };
 
-        var cancel_button = Ti.UI.createButton(si.combine($$.LeftBottomButton, {
-            top : 0,
-            title : 'Cancel',
-        }));
-
-        cancel_button.addEventListener('click', function() {
-            win.close();
-        });
 
         win.add(viewBase);
         viewBase.add(viewHeader);
         viewBase.add(viewBody);
-        viewHeader.add(Ti.UI.createLabel({left: 5, text: 'ON/OFF'}));
-        viewStatus.add(statusSwitch);
-        viewHeader.add(viewStatus);        
-        viewHeader.add(Ti.UI.createLabel({left: 5, text: 'URL'}));
-        viewHeader.add(server);
-        viewHeader.add(Ti.UI.createLabel({left: 5, text: 'Template'}));
-        viewHeader.add(template);
+        viewHeader.add(viewHeaderLeft);
+        viewHeaderLeft.add(win.buttons.Close);        
+        viewHeader.add(viewHeaderRight);
+        viewHeaderRight.add(win.buttons.Save);
+
+        // win.add(viewBase);
+        // viewBase.add(viewHeader);
+        // viewBase.add(viewBody);
+
+        var table = Ti.UI.createScrollView({
+            contentWidth: 'auto',
+            contentHeight: 'auto',
+            showVerticalScrollIndicator: true,
+            height : Ti.UI.SIZE,
+            width : Ti.UI.FILL,
+            layout : 'vertical'
+        });
+        table.add(si.ui.createInputRow("ON/OFF", statusSwitch, {}));
+        table.add(si.ui.createInputRow("URL", server, {}));
+        table.add(si.ui.createInputRow("Template", template, {}));
+        viewBody.add(table);
+        // viewBody.add(Ti.UI.createLabel({left: 5, text: 'ON/OFF'}));
+        // viewStatus.add(statusSwitch);
+        // viewBody.add(viewStatus);        
+        // viewBody.add(Ti.UI.createLabel({left: 5, text: 'URL'}));
+        // viewBody.add(server);
+        // viewBody.add(Ti.UI.createLabel({left: 5, text: 'Template'}));
+        // viewBody.add(template);
         //viewStatus.add(viewTestPrint);
         //viewTestPrint.add(printtext);
-        viewBody.add(button);
-        viewBody.add(cancel_button);
+        //viewBody.add(button);
+        //viewBody.add(cancel_button);
 
         win.server = server;
         win.template = template;
-        win.save_button = button;
+        win.save_button = win.buttons.Save;
         return win;
     };
 })(); 

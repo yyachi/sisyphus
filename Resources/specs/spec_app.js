@@ -27,4 +27,16 @@ describe('si.app', function() {
 		});
 
 	});
+	describe('si.app.getClassifications', function(){
+		it('does something', function(){
+			si.app.getClassifications({
+				onsuccess: function(a){
+					Ti.API.info(a);
+				},
+				onerror: function(e){
+					Ti.API.info(e)
+				}
+			});
+		});
+	})
 });

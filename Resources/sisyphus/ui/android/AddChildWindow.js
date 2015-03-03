@@ -49,6 +49,17 @@
                 si.app.getAccountInfo({
                     onsuccess : function(account){
                         Ti.API.info(account);
+                        //Ti.API.info(si.app.classifications());
+                        if (si.app.classifications() == null){
+                            si.app.getClassifications();
+                        }
+                        //Ti.API.info(si.app.physical_forms());
+                        if (si.app.physical_forms() == null){
+                            si.app.getPhysicalForms();
+                        }
+                        if (si.app.box_types() == null){
+                            si.app.getBoxTypes();
+                        }
                         win.functions.refresh();
                     },
                     onerror : function(e){

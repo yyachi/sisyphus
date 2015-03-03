@@ -22,6 +22,8 @@
     var PATH_RECORED_PROPERTY_JSON = PATH_RECORED_PROPERTY + PATH_JSON;
     var PATH_ACCOUNT = '/account';
     var PATH_ACCOUNT_JSON = PATH_ACCOUNT + PATH_JSON;
+    var PATH_CLASSIFICATION = '/classifications'
+    var PATH_CLASSIFICATION_JSON = PATH_CLASSIFICATION + PATH_JSON;
 
     si.model.medusa.getResourceURLwithAuth = function(_record, _args) {
         var _path = si.model.medusa.getResourcePath(_record);
@@ -46,6 +48,47 @@
         var host = result2[0];
         return host;
     };
+
+    si.model.medusa.get = function(_args) {
+        var client = Ti.Network.createHTTPClient({
+            onload : function() {
+                _args.onsuccess(eval('(' + this.responseText + ')'));
+            },
+            onerror : function(e) {
+                e.status = this.status;
+                _args.onerror(e);
+            },
+            timeout : 30000 // in milliseconds
+        });
+        var url = Ti.App.Properties.getString('server') + _args.path;
+        client.open('GET', url);
+        // var auth_text = 'Basic ' + Ti.Utils.base64encode(_args.username + ':' + _args.password);
+        // client.setRequestHeader('Authorization', auth_text);
+        client.send(_args.args);
+    };
+
+    si.model.medusa.getClassifications = function(_args) {
+        si.model.medusa.get({
+            //path : PATH_STONE + '/1' + PATH_JSON,
+            path : PATH_CLASSIFICATION_JSON,
+            //onsuccess : _args.onsuccess,
+            onsuccess : function(_record){
+                Ti.API.debug(JSON.stringify(_record));
+                Ti.API.debug(_record);
+                _args.onsuccess(_record);
+            },
+            onerror : function(e) {
+                Ti.API.info(e.status);
+                Ti.API.info(e.error);
+                //if (e.status == 404) {
+                //    _args.onsuccess();
+                //} else {
+                    _args.onerror(e);
+                //}
+            },
+        });
+    };
+
 
     si.model.medusa.getWithAuth = function(_args) {
         var client = Ti.Network.createHTTPClient({

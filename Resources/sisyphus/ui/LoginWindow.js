@@ -7,6 +7,24 @@
 //            backgroundColor : '#ffffff'
         });
 
+        win.buttons = {};
+        win.buttons.Close = si.ui.createImageButtonView('/images/glyphicons-208-remove-2.png', {
+            width : 90,
+            height : 90,
+            imgDimensions : 30,
+            onclick : function(e) { win.close() }
+        });
+        win.buttons.Close.left = 0;
+
+        win.buttons.Save = si.ui.createImageButtonView('/images/glyphicons-415-disk-save.png', {
+            right : 0,
+            width : 90,
+            height : 90,
+            imgDimensions : 30,
+            onclick : function(e) { win.save() }
+        });
+        win.buttons.Save.right = 0;
+
        var viewBase = Ti.UI.createView({
 //            backgroundColor : 'white',
             top : 0,
@@ -17,16 +35,32 @@
 
         var viewHeader = Ti.UI.createView({
 //            backgroundColor : 'white',
-            width : '100%',
             height : Ti.UI.SIZE,
-            layout : 'vertical'
+            width : Ti.UI.FILL,
+            //layout : 'vertical'
+        });
+
+        var viewHeaderLeft = Ti.UI.createView({
+            width : Ti.UI.SIZE,
+            height : Ti.UI.SIZE,
+            left : 0,
+            top : 0,
+            //backgroundColor : 'yellow',
+            layout : 'horizontal'
+        });
+
+        var viewHeaderRight = Ti.UI.createView({
+            width : Ti.UI.SIZE,
+            height : Ti.UI.SIZE,
+            right : 0,
+            top : 0,
+            //backgroundColor : 'yellow',
+            layout : 'horizontal'
         });
 
         var viewBody = Ti.UI.createView({
-//            backgroundColor : 'white',
-            top : 0,
-            top : 0,
-            //height : '70%',
+            height : '100%',
+            layout : 'vertical'
         });
 
 
@@ -43,43 +77,34 @@
         var server = si.ui.createScanInput(si.combine($$.TextField, {
             value: Ti.App.Properties.getString('server'),
             keyboardType : Ti.UI.KEYBOARD_URL,
-            hintText : 'URI',            
+            hintText : 'input URI',
+            width : '100%',
         }));
 
 
         var username = si.ui.createScanInput(si.combine($$.TextField, {
 //            width : '100%',
+            width : '100%',
             value : Ti.App.Properties.getString('username'),
             keyboardType : Ti.UI.KEYBOARD_DEFAULT,
-            hintText : 'user name'
+            hintText : 'input user name'
         }));
 
-        
-        var textPassword = Ti.UI.createTextField(si.combine($$.TextField, {
-            value : Ti.App.Properties.getString('password'),
-            passwordMask : true,
-            //top : '30%',
-            hintText : 'password'
-        }));
 
         var password = si.ui.createScanInput(si.combine($$.TextField, {
 //            width : '100%',
             value : Ti.App.Properties.getString('password'),
             passwordMask : true,
+            width : '100%',
             //top : '30%',
-            hintText : 'password'
+            hintText : 'input password'
         }));
 
         
-        var button = Ti.UI.createButton(si.combine($$.RightBottomButton, {
-            title : 'OK',
-            //width : '90%',
-            top : 0
-        }));
-        button.addEventListener('click', function() {
+        win.save = function(){
             isDone = false;
             Ti.API.info('click');
-            textPassword.blur();
+            password.blur();
             if (server.input.value == '' || username.input.value == '' || password.input.value == '') {
                 si.ui.myAlert({message: 'Input URL, Username, and Password'});
                 return;
@@ -111,42 +136,34 @@
                     si.ui.showErrorDialog(_message);
                 }
             });
-        });
+        };
 
-        var cancel_button = Ti.UI.createButton(si.combine($$.LeftBottomButton, {
-            title : 'Cancel',
-            top : 0
-        }));
-
-        cancel_button.addEventListener('click', function() {
-            win.close();
+        var table = Ti.UI.createScrollView({
+            contentWidth: 'auto',
+            contentHeight: 'auto',
+            showVerticalScrollIndicator: true,
+            height : Ti.UI.SIZE,
+            width : Ti.UI.FILL,
+            layout : 'vertical'
         });
+        table.add(si.ui.createInputRow("URL", server, {}));
+        table.add(si.ui.createInputRow("Username", username, {}));
+        table.add(si.ui.createInputRow("Password", password, {}));
 
         win.add(viewBase);
         viewBase.add(viewHeader);
         viewBase.add(viewBody);
-
-        //viewHeader.add(textUsername);
-        //viewHeader.add(textPassword);
-        viewHeader.add(Ti.UI.createLabel({left: 5, text : 'URL'}));
-        viewHeader.add(server);        
-        viewHeader.add(Ti.UI.createLabel({left: 5, text : 'Username'}));
-        viewHeader.add(username);
-        viewHeader.add(Ti.UI.createLabel({left: 5, text : 'Password'}));        
-        viewHeader.add(password);        
-        viewBody.add(button);
-        viewBody.add(cancel_button);
-
-
-        // win.add(textUsername);
-        // win.add(textPassword);
-        // win.add(button);
+        viewHeader.add(viewHeaderLeft);
+        viewHeaderLeft.add(win.buttons.Close);        
+        viewHeader.add(viewHeaderRight);
+        viewHeaderRight.add(win.buttons.Save);
+        viewBody.add(table);
         win.add(activityIndicator);
         win.isDone = isDone; 
 
         win.username = username;
         win.password = password;
-        win.save_button = button;
+        win.save_button = win.buttons.Save;
         win.activityIndicator = activityIndicator;
 
         return win;

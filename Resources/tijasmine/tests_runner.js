@@ -5,10 +5,10 @@ function run() {
     tijasmine.addSpecModules(
        //'/specs/spec_BarcodeReader'//,
        //'/specs/spec_medusa',
-       //'/specs/spec_app',
+       //'/specs/spec_app'//,
        //'/specs/spec_ui'//,
        //'/specs/spec_LoginWindow', 
-       //'/specs/spec_NewStoneWindow'//, 
+       '/specs/spec_NewStoneWindow'//, 
        //'/specs/spec_NewBoxWindow'//, 
        // '/specs/spec_PrintFormatUrlSettingWindow',
        // '/specs/spec_ServerSettingWindow',

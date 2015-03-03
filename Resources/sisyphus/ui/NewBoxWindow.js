@@ -6,6 +6,40 @@
 //            backgroundColor : 'black'
         });
 
+        win.buttons = {};
+        win.buttons.Close = si.ui.createImageButtonView('/images/glyphicons-208-remove-2.png', {
+            width : 90,
+            height : 90,
+            imgDimensions : 30,
+            onclick : function(e) { win.close() }
+        });
+        win.buttons.Close.left = 0;
+
+        win.buttons.Save = si.ui.createImageButtonView('/images/glyphicons-415-disk-save.png', {
+            right : 0,
+            width : 90,
+            height : 90,
+            imgDimensions : 30,
+            onclick : function(e) { win.save() }
+        });
+        win.buttons.Save.right = 0;
+
+
+        win.fields = {};
+        win.fields.name = Ti.UI.createTextField(si.combine($$.TextField, {
+            value : '',
+            width : '100%',
+            keyboardType : Ti.UI.KEYBOARD_DEFAULT,
+            hintText : 'input name'
+        }));
+        win.fields.ID = si.ui.createScanInput(si.combine($$.TextField, {
+            value : '',
+            width : '100%',
+            keyboardType : Ti.UI.KEYBOARD_DEFAULT,
+            hintText : 'input ID'
+        }));
+        win.fields.box_type = si.ui.createPickerInput(si.app.box_types(), {hintText:''});
+
         var viewBase = Ti.UI.createView({
             width : '100%',
             height : '100%',
@@ -24,10 +58,20 @@
             //layout : 'vertical'
         });
 
+        var viewHeaderLeft = Ti.UI.createView({
+            width : Ti.UI.SIZE,
+            height : Ti.UI.SIZE,
+            left : 0,
+            top : 0,
+            //backgroundColor : 'yellow',
+            layout : 'horizontal'
+        });
+
         var viewHeaderRight = Ti.UI.createView({
             width : Ti.UI.SIZE,
             height : Ti.UI.SIZE,
             right : 0,
+            top : 0,
             //backgroundColor : 'yellow',
             layout : 'horizontal'
         });
@@ -78,47 +122,71 @@
         var myImageView = si.ui.createMyImageView({
             width : Ti.UI.SIZE
         });
+
+        var table = Ti.UI.createScrollView({
+            contentWidth: 'auto',
+            contentHeight: 'auto',
+            showVerticalScrollIndicator: true,
+            height : Ti.UI.SIZE,
+            width : Ti.UI.FILL,
+            layout : 'vertical'
+        });
+        table.add(si.ui.createInputRow("Name", win.fields.name, {}));
+        if (!Ti.App.Properties.getBool('printLabel')){
+            table.add(si.ui.createInputRow("ID", win.fields.ID, {}));
+        }
+        table.add(si.ui.createInputRow("Physical form", win.fields.box_type, {}));
+
         viewBase.add(viewBody);
         viewBody.add(viewHeader);
+        viewHeader.add(viewHeaderLeft);
+        viewHeaderLeft.add(win.buttons.Close);        
         viewHeader.add(viewHeaderRight);
         viewHeaderRight.add(myImageView);
-        viewBody.add(Ti.UI.createLabel({left: 5, text : 'Name'}));
-        viewBody.add(text);
-        if (!Ti.App.Properties.getBool('printLabel')){
-            viewBody.add(Ti.UI.createLabel({left: 5, text : 'ID'}));
-            viewBody.add(scan_input);
-        }
-        viewBody.add(viewButton);
-        viewButton.add(button);
-        viewButton.add(cancel_button);
+        viewHeaderRight.add(win.buttons.Save);
+
+        // viewBody.add(Ti.UI.createLabel({left: 5, text : 'Name'}));
+        // viewBody.add(text);
+        // if (!Ti.App.Properties.getBool('printLabel')){
+        //     viewBody.add(Ti.UI.createLabel({left: 5, text : 'ID'}));
+        //     viewBody.add(scan_input);
+        // }
+        // viewBody.add(viewButton);
+        // viewButton.add(button);
+        // viewButton.add(cancel_button);
 
 
+        viewBody.add(table);
         win.add(viewBase);
         win.add(activityIndicator);
-        win.name_field = text;
-        win.save_button = button;
-        win.global_id = scan_input.input;
+        win.name_field = win.fields.name;
+        win.save_button = win.buttons.Save;
+        win.global_id = win.fields.ID.input;
 
         win.set_image = function(_image) {
             myImageView.set_image(_image);
         };
         win.set_global_id = function(gid) {
-            scan_input.set_value(gid);
+            win.fields.ID.set_value(gid);
         }
 
         win.save = function(){
-            if (text.value == '') {
+            if (win.fields.name.value == '') {
                 si.ui.alert_simple('Input name of new box');
                 return;
             }
             var params = {};
-            params['name'] = text.value;
+            params['name'] = win.fields.name.value;
             if (win.global_id.value){
                 Ti.API.info("global_id:" + win.global_id.value);
                 params['global_id'] = win.global_id.value;
             } else {
                 Ti.API.info("no global_id");
             }
+            if (win.fields.box_type.value){
+                params['box_type_id'] = win.fields.box_type.value;
+            }
+
             activityIndicator.show();
             si.model.medusa.createNewBox({
                 args : params,

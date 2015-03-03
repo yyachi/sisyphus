@@ -78,6 +78,49 @@
         return tabGroup;
     };
 
+    si.ui.createInputRow = function(_title, _input, opts){
+        var _row = Ti.UI.createView({
+             layout : 'vertical',
+             height : Ti.UI.SIZE,
+        });
+        var _label = Ti.UI.createLabel({left: 5, text:_title});
+        _row.add(_label);
+        _row.add(_input);
+        return _row;
+    };
+
+    si.ui.createInputTableRow = function(_title, _input, opts){
+        var _row = Ti.UI.createTableViewRow({
+             layout : 'vertical',
+             height : Ti.UI.SIZE,
+        });
+        var _label = Ti.UI.createLabel({left: 5, text:_title});
+        _row.add(_label);
+        _row.add(_input);
+        return _row;
+    };
+
+    si.ui.createPickerInput = function(_data, opts){
+        var picker = Ti.UI.createPicker({
+            width: Ti.UI.FILL,
+            //color: 'red'
+        });
+        var data = [Ti.UI.createPickerRow({title: opts.hintText || '', id: null})];
+        picker.value = null;
+        picker.add(data);
+        if (_data){
+            for(var i=0; i<_data.length; i++){
+                var _obj = _data[i];
+                row = Ti.UI.createPickerRow(_obj);
+                picker.add(row)
+            }
+        }
+        picker.selectionIndicator = true;
+        picker.addEventListener('change', function(e){
+            picker.value = e.row.id;
+        });
+        return picker;  
+    };
 
     si.ui.createInputPrint = function(opts){
         var view = Ti.UI.createView({
