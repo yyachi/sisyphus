@@ -97,7 +97,7 @@
                     //picker.setScanningHotSpotHeight(HotSpotHeight);
                     picker.startScanning();
                     //addChild(si.config.debug.child_global_id, false);
-                }, 500);
+                }, 800);
 
             });
             picker.setCancelCallback(function(e) {
