@@ -110,6 +110,7 @@
                 return;
             }
 
+            var server_old = Ti.App.Properties.getString('server');
             Ti.App.Properties.setString('server',server.input.value);
 
             activityIndicator.show();
@@ -131,6 +132,7 @@
                 onerror : function(e) {
                     activityIndicator.hide();
                     isDone = true;
+                    Ti.App.Properties.setString('server', server_old);
                     var _message = 'Login failed';
                     //si.ui.myAlert({message:'Login failed'});
                     si.ui.showErrorDialog(_message);
