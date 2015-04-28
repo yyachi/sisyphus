@@ -250,8 +250,8 @@
         viewToolLeft.add(win.buttons.Home);
         viewToolLeft.add(win.buttons.ScanParent);
         viewToolRight.add(win.buttons.Print);
-        viewToolRight.add(win.buttons.Menu);
         viewToolRight.add(win.buttons.Clip);
+        viewToolRight.add(win.buttons.Menu);
         viewToolBar.add(viewToolLeft);
         viewToolBar.add(viewToolRight);        
         viewHeader.add(viewParent);
