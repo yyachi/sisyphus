@@ -131,10 +131,11 @@
             width : Ti.UI.FILL,
             layout : 'vertical'
         });
-        table.add(si.ui.createInputRow("Name", win.fields.name, {}));
+
         if (!Ti.App.Properties.getBool('printLabel')){
             table.add(si.ui.createInputRow("ID", win.fields.ID, {}));
         }
+        table.add(si.ui.createInputRow("Name", win.fields.name, {}));
         table.add(si.ui.createInputRow("Physical form", win.fields.box_type, {}));
 
         viewBase.add(viewBody);
