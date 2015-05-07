@@ -68,6 +68,15 @@ var si = {};
         });
 
     };
+
+
+    si.app.clearData = function(){
+        Ti.App.Properties.setString('current_box_global_id', null);
+        Ti.App.Properties.setList("classifications", null);        
+        Ti.App.Properties.setList("physical_forms", null);
+        Ti.App.Properties.setList("box_types", null);        
+    };
+
     si.app.classifications = function(){
         return Ti.App.Properties.getList("classifications", null);
     };
@@ -79,7 +88,7 @@ var si = {};
             username : Ti.App.Properties.getString('username'),
             password : Ti.App.Properties.getString('password'),
             onsuccess : function(_array) {
-                //si.app.log.info(_message + 'ok');
+                si.app.log.info(_message + 'ok');
                 for(var i=0; i<_array.length; i++){
                     Ti.API.info("---");
                     var _obj = _array[i];

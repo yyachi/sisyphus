@@ -61,6 +61,18 @@
             text : 'Sisyphus for Medusa' + ' ' + Ti.App.version 
         }));
 
+        var buttonClearData = Ti.UI.createButton(si.combine($$.NormalButton, {
+            title : 'Clear data',
+            font : {fontSize:36},
+            borderRadius : 10,
+            width : '100%',
+            height : Ti.UI.SIZE
+        }));
+        buttonClearData.addEventListener('click', function(e) {
+            si.app.clearData();
+            //Ti.Platform.openURL('http://dream.misasa.okayama-u.ac.jp/documentation/Archives/client-Android.apk');
+        });
+
         var buttonUpdate = Ti.UI.createButton(si.combine($$.NormalButton, {
             title : 'Update',
             font : {fontSize:36},
@@ -87,6 +99,7 @@
         image_and_info.add(info_view);        
         info_view.add(label_version);
         info_view.add(label_copyright);        
+        footer.add(buttonClearData);
         footer.add(buttonUpdate);
         footer.add(buttonHelp);
         //info_view.add(label_publisher);
