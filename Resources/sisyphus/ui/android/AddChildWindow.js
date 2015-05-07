@@ -50,6 +50,11 @@
                     onsuccess : function(account){
                         Ti.API.info(account);
                         //Ti.API.info(si.app.classifications());
+                        if (Ti.App.Properties.getString('current_global_id') == null){
+                            if (account.box_global_id){
+                                Ti.App.Properties.setString('current_box_global_id', account.box_global_id);
+                            }
+                        }
                         if (si.app.classifications() == null){
                             si.app.getClassifications();
                         }
