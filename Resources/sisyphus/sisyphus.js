@@ -52,7 +52,7 @@ var si = {};
 
 
     si.app.getAccountInfo = function(_args){
-        Ti.API.info('si.app.getAccountInfo');
+        //Ti.API.info('si.app.getAccountInfo');
         var _message = 'account info getting...';
         si.model.medusa.getAccountInfo({
             username : Ti.App.Properties.getString('username'),
@@ -71,6 +71,7 @@ var si = {};
 
 
     si.app.clearData = function(){
+        Ti.App.Properties.setString('current_global_id', null);        
         Ti.App.Properties.setString('current_box_global_id', null);
         Ti.App.Properties.setList("classifications", null);        
         Ti.App.Properties.setList("physical_forms", null);
@@ -90,7 +91,7 @@ var si = {};
             onsuccess : function(_array) {
                 si.app.log.info(_message + 'ok');
                 for(var i=0; i<_array.length; i++){
-                    Ti.API.info("---");
+                //    Ti.API.info("---");
                     var _obj = _array[i];
                     _obj.title = _obj.full_name;
                 }
@@ -116,7 +117,7 @@ var si = {};
             onsuccess : function(_array) {
                 si.app.log.info(_message + 'ok');
                 for(var i=0; i<_array.length; i++){
-                    Ti.API.info("---");
+                    //Ti.API.info("---");
                     var _obj = _array[i];
                     _obj.title = _obj.name;
                 }
@@ -142,7 +143,7 @@ var si = {};
             onsuccess : function(_array) {
                 si.app.log.info(_message + 'ok');
                 for(var i=0; i<_array.length; i++){
-                    Ti.API.info("---");
+                    //Ti.API.info("---");
                     var _obj = _array[i];
                     _obj.title = _obj.name;
                 }

@@ -621,9 +621,9 @@
             labelName.text = _record.name;
             //!!!!!!!!!画像のパスの取得は要検討!!!!!!!!!!!!!!!!!!!!!!
             if (_record.image_path) {
-                Ti.API.info("image_path");
-                Ti.API.info(_record);
-                Ti.API.info(_record.image_path);
+                //Ti.API.info("image_path");
+                //Ti.API.info(_record);
+                //Ti.API.info(_record.image_path);
                 //var _path = Ti.App.Properties.getString('server') + '/' + _record.image_path;
                 var _url = si.imageURL(_record.image_path);
                 //Ti.API.info(_url);

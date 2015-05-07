@@ -48,11 +48,12 @@
             if (si.app.is_network_available()){
                 si.app.getAccountInfo({
                     onsuccess : function(account){
-                        Ti.API.info(account);
+                        //Ti.API.info(account);
                         //Ti.API.info(si.app.classifications());
-                        if (Ti.App.Properties.getString('current_global_id') == null){
+                        if (Ti.App.Properties.getString('current_box_global_id') == null){
                             if (account.box_global_id){
                                 Ti.App.Properties.setString('current_box_global_id', account.box_global_id);
+                                //win.buttons.Home.setEnabled(true);
                             }
                         }
                         if (si.app.classifications() == null){
@@ -323,20 +324,36 @@
         };
 
         win.functions.refresh = function(){
+            Ti.API.info("functions.refresh...");
             //changeMode('ready');
             if (mode !== 'loading') {
                 changeMode('refresh');
             } 
             current_global_id = Ti.App.Properties.getString('current_global_id');
-            if (parent == null) {
-                if (current_global_id != null) {
+            default_global_id = Ti.App.Properties.getString('current_box_global_id');            
+            if (parent && parent.global_id !== current_global_id) {
+//                Ti.API.info('parent:' + parent);                
+//                Ti.API.info('current_global_id:' + current_global_id);
+                if (current_global_id !== null ){
+                //    Ti.API.info('current_global_id:' + current_global_id);
                     loadParent(current_global_id);
-                }
-            } else {
-                if (parent.global_id != current_global_id) {
-                    loadParent(current_global_id);
+                } else if (default_global_id !== null){
+                //    Ti.API.info('default_global_id:' + default_global_id);                    
+                    loadParent(default_global_id);
+                } else {
+                    parent = null;
+                    viewParent.update(null);
                 }
             }
+            // if (parent == null) {
+            //     if (current_global_id != null) {
+            //         loadParent(current_global_id);
+            //     }
+            // } else {
+            //     if (parent.global_id != current_global_id) {
+            //         loadParent(current_global_id);
+            //     }
+            // }
         };
 
         win.functions.clickHomeButton = function(){

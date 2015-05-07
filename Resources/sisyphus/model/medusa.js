@@ -173,13 +173,13 @@
             password : _args.password,
             //onsuccess : _args.onsuccess,
             onsuccess : function(_record){
-                Ti.API.debug(JSON.stringify(_record));
-                Ti.API.debug(_record);
+                //Ti.API.debug(JSON.stringify(_record));
+                //Ti.API.debug(_record);
                 _args.onsuccess(_record);
             },
             onerror : function(e) {
-                Ti.API.info(e.status);
-                Ti.API.info(e.error);
+                //Ti.API.info(e.status);
+                //Ti.API.info(e.error);
                 //if (e.status == 404) {
                 //    _args.onsuccess();
                 //} else {
