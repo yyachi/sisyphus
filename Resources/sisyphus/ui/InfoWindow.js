@@ -99,7 +99,7 @@
         image_and_info.add(info_view);        
         info_view.add(label_version);
         info_view.add(label_copyright);        
-        footer.add(buttonClearData);
+//        footer.add(buttonClearData);
         footer.add(buttonUpdate);
         footer.add(buttonHelp);
         //info_view.add(label_publisher);
