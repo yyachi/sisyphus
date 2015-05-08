@@ -331,7 +331,7 @@
             } 
             current_global_id = Ti.App.Properties.getString('current_global_id');
             default_global_id = Ti.App.Properties.getString('current_box_global_id');            
-            if (parent && parent.global_id !== current_global_id) {
+            if (!(parent && parent.global_id === current_global_id)) {
 //                Ti.API.info('parent:' + parent);                
 //                Ti.API.info('current_global_id:' + current_global_id);
                 if (current_global_id !== null ){
