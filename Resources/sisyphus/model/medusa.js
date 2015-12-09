@@ -2,7 +2,7 @@
     si.model = {};
     si.model.medusa = {};
 
-    var CLASSNAME_STONE = 'Stone';
+    var CLASSNAME_STONE = 'Specimen';
     var CLASSNAME_BOX = 'Box';
     var CLASSNAME_PLACE = 'Place';
     var CLASSNAME_ANALYSIS = 'Analysis';
@@ -10,7 +10,7 @@
     var CLASSNAME_ATTACHMENT_FILE = 'AttachmentFile';
     var PATH_JSON = '.json';
     var PATH_RECORED = '/records';
-    var PATH_STONE = '/stones';
+    var PATH_STONE = '/specimens';
     var PATH_BOX = '/boxes';
     var PATH_PLACE = '/places';
     var PATH_ANALYSIS = '/analyses';
@@ -546,7 +546,7 @@
     };
 
     si.model.medusa.createNewStone = function(_args) {
-        si.model.medusa.create('Stone', _args);
+        si.model.medusa.create('Specimen', _args);
     };
 
     si.model.medusa.createNewBox = function(_args) {

@@ -48,7 +48,7 @@
             if (si.app.is_network_available()){
                 si.app.getAccountInfo({
                     onsuccess : function(account){
-                        //Ti.API.info(account);
+                        Ti.API.info(account);
                         //Ti.API.info(si.app.classifications());
                         if (Ti.App.Properties.getString('current_box_global_id') == null){
                             if (account.box_global_id){
@@ -215,6 +215,13 @@
             onclick : function(e) { win.functions.clickPrintButton(e) }
         });
 
+        win.buttons.Camera = si.ui.createImageButtonView('/images/glyphicons-12-camera.png', {
+            width : 90,
+            height : 90,
+            imgDimensions : 30,
+            onclick : function(e) { win.functions.clickCameraButton() }
+        });
+
         win.buttons.Clip = si.ui.createImageButtonView('/images/glyphicons-63-paperclip.png', {
             width : 90,
             height : 90,
@@ -256,6 +263,7 @@
         viewToolLeft.add(win.buttons.Home);
         viewToolLeft.add(win.buttons.ScanParent);
         viewToolRight.add(win.buttons.Print);
+        viewToolRight.add(win.buttons.Camera);        
         viewToolRight.add(win.buttons.Clip);
         viewToolRight.add(win.buttons.Menu);
         viewToolBar.add(viewToolLeft);
@@ -313,6 +321,7 @@
 
             if (parent == null) {
                 win.buttons.ScanChild.setEnabled(false);
+                win.buttons.Camera.setEnabled(false);
                 win.buttons.Clip.setEnabled(false);
                 win.buttons.Print.setEnabled(false);
                 win.buttons.Menu.setEnabled(false);
@@ -396,6 +405,16 @@
             win.functions.printLabelfor(parent);
         }
 
+        win.functions.clickCameraButton = function(){
+            Ti.API.info('clickCameraButton...');
+            Ti.API.info(parent);
+            if (parent == null){
+                si.ui.alert_no_parent();
+                return;
+            }
+            uploadImageFromCamera();
+            //optionDialog.show();
+        };
 
         win.functions.clickClipButton = function(){
             Ti.API.info('clickClipButton...');
@@ -404,24 +423,7 @@
                 si.ui.alert_no_parent();
                 return;
             }
-
-            var optionDialog = Ti.UI.createOptionDialog({
-                options : ['Add snapshot', 'Add local file'],
-                title : ''
-            });
-            optionDialog.addEventListener('click', function(e){
-                switch (e.index) {
-                    case 0:
-                        uploadImageFromCamera();
-                        break;
-                    case 1:
-                        uploadImageFromAlbum();
-                        break;
-                    default:
-                        break;
-                };
-            });
-            optionDialog.show();
+            uploadImageFromAlbum();
         };
 
         win.functions.clickNewStoneButton = function(){

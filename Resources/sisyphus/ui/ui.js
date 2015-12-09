@@ -100,25 +100,39 @@
         return _row;
     };
 
-    si.ui.createPickerInput = function(_data, opts){
+    si.ui.createPickerInput = function(_data, _id){
         var picker = Ti.UI.createPicker({
             width: Ti.UI.FILL,
             //color: 'red'
         });
-        var data = [Ti.UI.createPickerRow({title: opts.hintText || '', id: null})];
+        var data = [Ti.UI.createPickerRow({title: '', id: null})];
         picker.value = null;
         picker.add(data);
+        var selected_id;
         if (_data){
             for(var i=0; i<_data.length; i++){
                 var _obj = _data[i];
                 row = Ti.UI.createPickerRow(_obj);
-                picker.add(row)
+                picker.add(row);
+                if (_obj.id == _id){
+                    Ti.API.info("find default selection!");
+                    Ti.API.info(_obj);
+                    selected_id = i + 1;
+                }
             }
         }
+
         picker.selectionIndicator = true;
+        if (selected_id){
+            picker.setSelectedRow(0, selected_id,false);
+            picker.value = _id;
+        }
+
+
         picker.addEventListener('change', function(e){
             picker.value = e.row.id;
         });
+
         return picker;  
     };
 
@@ -325,21 +339,61 @@
         });
 
         if (!opts.image){
-            var photoButtonView = si.ui.createImageButtonView('/images/glyphicons-63-paperclip.png', {
-            //var photoButtonView = si.ui.createImageButtonView('/images/167-upload-photo.png', {
+            var selectPhotoView = si.ui.createImageButtonView('/images/glyphicons-63-paperclip.png', {
                 width : 90,
                 height : 90,
                 imgDimensions : 30
             });
-            photoButtonView.button.addEventListener('click', function(e) {
-                optionDialog.show();
+
+            selectPhotoView.button.addEventListener('click', function(e) {
+                //optionDialog.show();
+                    Ti.Media.openPhotoGallery({
+                        success : function(event) {
+                            if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
+                                view.set_image(event.media);
+                            }
+                        },
+                        cancel : function() {
+                        },
+                        error : function(error) {
+                        },
+                        allowEditing : true,
+                        mediaTypes : [Ti.Media.MEDIA_TYPE_PHOTO]
+                    });
             });
-            view.add(photoButtonView);
+
+            var takePhotoView = si.ui.createImageButtonView('/images/glyphicons-12-camera.png', {
+                width : 90,
+                height : 90,
+                imgDimensions : 30
+            });
+
+            takePhotoView.button.addEventListener('click', function(e) {
+                    Ti.Media.showCamera({
+                        success : function(event) {
+                            if (event.mediaType == Ti.Media.MEDIA_TYPE_PHOTO) {
+                                view.set_image(event.media);
+                            }
+                        },
+                        cancel : function() {
+                        },
+                        error : function(error) {
+                        },
+                        saveToPhotoGallery : true,
+                        allowEditing : true,
+                        mediaTypes : [Ti.Media.MEDIA_TYPE_PHOTO]
+                    });
+            });
+
+            view.add(takePhotoView);
+            view.add(selectPhotoView);
         } else {
             view.set_image(opts.image);
         }
 
         view.set_image = function(_image){
+            Ti.API.info("set_image...");
+            Ti.API.info(_image);
             view.removeAllChildren();
             // var flame = Ti.UI.createView({
             //     height : '95%',
@@ -361,7 +415,9 @@
             //view.add(flame);
             //flame.add(imageView);
             view.add(imageView);
-            view.add(photoButtonView);
+            view.add(takePhotoView);
+            view.add(selectPhotoView);
+
             view.image = _image;
         }
 

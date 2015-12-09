@@ -5,6 +5,7 @@
 //            backgroundColor : 'black'
         });
 
+        Ti.API.info("new stone...");
         win.buttons = {};
         win.buttons.Close = si.ui.createImageButtonView('/images/glyphicons-208-remove-2.png', {
             width : 90,
@@ -22,10 +23,12 @@
             onclick : function(e) { win.save() }
         });
         win.buttons.Save.right = 0;
+        p_params = Ti.App.Properties.getObject("stone_params", {});
+        Ti.API.info(p_params);
 
         win.fields = {};
         win.fields.name = Ti.UI.createTextField(si.combine($$.TextField, {
-            value : '',
+            value : p_params['name'],
             width : '100%',
             keyboardType : Ti.UI.KEYBOARD_DEFAULT,
             hintText : 'input name'
@@ -36,23 +39,29 @@
             keyboardType : Ti.UI.KEYBOARD_DEFAULT,
             hintText : 'input ID'
         }));
-        win.fields.classification = si.ui.createPickerInput(si.app.classifications(), {hintText:''});
-        win.fields.physical_form = si.ui.createPickerInput(si.app.physical_forms(), {hintText:''});
+        win.fields.classification = si.ui.createPickerInput(si.app.classifications(), p_params["classification_id"]);
+        win.fields.physical_form = si.ui.createPickerInput(si.app.physical_forms(), p_params["physical_form_id"]);
+        //Ti.API.info("seleting classification...");
+        //win.fields.classification.setSelectedRow(0,findIndex(p_params["classification_id"], si.app.classifications()) || 0,false);
+        //Ti.API.info("seleting physical_form...");
+        //win.fields.physical_form.setSelectedRow(0,findIndex(p_params["physical_form_id"], si.app.physical_forms()) || 0,false);
+
         win.fields.quantity = Ti.UI.createTextField({
-            value : '',
+            value : p_params['quantity'],
             width : Ti.UI.FILL,
             keyboardType : Ti.UI.KEYBOARD_NUMBER_PAD,
             hintText : 'input quantity'            
         });
 
         win.fields.quantity_unit = Ti.UI.createTextField({
-            value : '',
+            value : p_params['quantity_unit'],
             width : Ti.UI.FILL,
             keyboardType : Ti.UI.KEYBOARD_DEFAULT,
             hintText : 'input quantity unit'            
         });
 
         win.fields.description = Ti.UI.createTextArea({
+            value : p_params['description'],
             width : Ti.UI.FILL,
             hintText : 'input description'
         });
@@ -181,6 +190,9 @@
                 password : Ti.App.Properties.getString('password'),
                 onsuccess : function(_record) {
                     activityIndicator.hide();
+                    Ti.API.info(params);
+                    Ti.App.Properties.setObject("stone_params", params);
+
                     //si.ui.android.printLabel(_record.global_id, _record.name);
                     if (myImageView.image){
                         si.model.medusa.uploadImage({
@@ -212,6 +224,25 @@
                },
             });
         };
+
+
+        function findIndex(id, data) {
+            //Ti.API.info('findIndex: ' + target);
+            //var x;
+            //for (i in data) {
+            Ti.API.info(id);
+            for(var i=0; i<data.length; i++){    
+                var x = data[i];
+                Ti.API.info(x);
+                if (x.id == id) {
+                    //Ti.API.info(x);
+                    //Ti.API.info(i);
+                    //Ti.API.info(i+1);
+                    return i + 1;
+                }
+            }
+            return null;
+        }
 
         return win;
     };

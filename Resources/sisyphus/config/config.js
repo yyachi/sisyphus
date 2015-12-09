@@ -4,7 +4,7 @@
 	si.config.Medusa = {
 		defaultServer: 'http://dream.misasa.okayama-u.ac.jp/demo/',
 		defaultUsername: 'admin',
-		defaultPassword: 'admin',		
+		defaultPassword: 'admin',
 		//defaultServer: 'http://192.168.56.102:3000/',
 		defaultPrintServer: 'http://localhost:8080/',
 		defaultPrintFormatUrl : 'http://database.misasa.okayama-u.ac.jp/format_archive/dream-label.spfmtz',
