@@ -75,7 +75,38 @@ var si = {};
         Ti.App.Properties.setString('current_box_global_id', null);
         Ti.App.Properties.setList("classifications", null);        
         Ti.App.Properties.setList("physical_forms", null);
-        Ti.App.Properties.setList("box_types", null);        
+        Ti.App.Properties.setList("box_types", null);
+        Ti.App.Properties.setList("groups", null);                
+    };
+
+    si.app.account = function(){
+        return Ti.App.Properties.getObject("account", {});
+    };
+
+    si.app.groups = function(){
+        return Ti.App.Properties.getList("groups", null);
+    };
+    si.app.getGroups = function(){
+        Ti.API.info('si.app.getGroups');
+        var _message = 'groups getting...';
+        si.model.medusa.getWithAuth({
+            path : '/account/groups.json',
+            username : Ti.App.Properties.getString('username'),
+            password : Ti.App.Properties.getString('password'),
+            onsuccess : function(_array) {
+                si.app.log.info(_message + 'ok');
+                for(var i=0; i<_array.length; i++){
+                //    Ti.API.info("---");
+                    var _obj = _array[i];
+                    _obj.title = _obj.name;
+                }
+                Ti.App.Properties.setList("groups", _array);
+            },
+            onerror : function(e) {
+                //si.app.log.error(_message + 'error ' + "[" + e.message + "]");
+                //_args.onerror(e);
+            }
+        });
     };
 
     si.app.classifications = function(){

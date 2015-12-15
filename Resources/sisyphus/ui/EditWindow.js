@@ -1,11 +1,14 @@
 (function() {
-    si.ui.createNewStoneWindow = function(_args) {
+    si.ui.createEditWindow = function(_args) {
+        var _obj = _args.obj;
+        var _className = _obj._className;
+        var title = _className;
+
         var win = Ti.UI.createWindow({
-            title : 'New stone',
+            title : title,
 //            backgroundColor : 'black'
         });
 
-        Ti.API.info("new stone...");
         win.buttons = {};
         win.buttons.Close = si.ui.createImageButtonView('/images/glyphicons-208-remove-2.png', {
             width : 90,
@@ -23,7 +26,9 @@
             onclick : function(e) { win.save() }
         });
         win.buttons.Save.right = 0;
-        p_params = Ti.App.Properties.getObject("stone_params", {});
+        //p_params = Ti.App.Properties.getObject("stone_params", {});
+
+        p_params = _args.obj;
         Ti.API.info(p_params);
 
         win.fields = {};
@@ -41,11 +46,8 @@
         }));
         win.fields.classification = si.ui.createPickerInput(si.app.classifications(), p_params["classification_id"]);
         win.fields.physical_form = si.ui.createPickerInput(si.app.physical_forms(), p_params["physical_form_id"]);
+        win.fields.box_type = si.ui.createPickerInput(si.app.box_types(), p_params["box_type_id"]);
         win.fields.group = si.ui.createPickerInput(si.app.groups(), p_params["group_id"]);
-        //Ti.API.info("seleting classification...");
-        //win.fields.classification.setSelectedRow(0,findIndex(p_params["classification_id"], si.app.classifications()) || 0,false);
-        //Ti.API.info("seleting physical_form...");
-        //win.fields.physical_form.setSelectedRow(0,findIndex(p_params["physical_form_id"], si.app.physical_forms()) || 0,false);
 
         win.fields.quantity = Ti.UI.createTextField({
             value : p_params['quantity'],
@@ -121,16 +123,24 @@
             layout : 'vertical'
         });
 
-        if (!Ti.App.Properties.getBool('printLabel')){
-            table.add(si.ui.createInputRow("ID", win.fields.ID, {}));
-        }
+        // if (!Ti.App.Properties.getBool('printLabel')){
+        //     table.add(si.ui.createInputRow("ID", win.fields.ID, {}));
+        // }
         table.add(si.ui.createInputRow("Name", win.fields.name, {}));
-        table.add(si.ui.createInputRow("Classification", win.fields.classification, {}));
-        table.add(si.ui.createInputRow("Physical form", win.fields.physical_form, {}));
-        table.add(si.ui.createInputRow("Quantity", win.fields.quantity, {}));
-        table.add(si.ui.createInputRow("Quantity unit", win.fields.quantity_unit, {}));
-        table.add(si.ui.createInputRow("Description", win.fields.description, {}));
-        table.add(si.ui.createInputRow("Group", win.fields.group, {}));
+        if (_className === "Specimen" || _className === "Stone"){
+            table.add(si.ui.createInputRow("Classification", win.fields.classification, {}));
+            table.add(si.ui.createInputRow("Physical form", win.fields.physical_form, {}));
+            table.add(si.ui.createInputRow("Quantity", win.fields.quantity, {}));
+            table.add(si.ui.createInputRow("Quantity unit", win.fields.quantity_unit, {}));
+            table.add(si.ui.createInputRow("Description", win.fields.description, {}));
+        } else {
+            table.add(si.ui.createInputRow("Physical form", win.fields.box_type, {}));            
+        }
+        //Ti.API.info(Ti.App.Properties.getObject('account', {}));
+        Ti.API.info(si.app.account());
+        if (si.app.account().administrator || si.app.account().id === _obj.user_id){
+            table.add(si.ui.createInputRow("Group", win.fields.group, {}));
+        }
 
         viewBase.add(viewBody);
         viewBody.add(viewHeader);
@@ -185,22 +195,22 @@
                 params['description'] = win.fields.description.value;
             }
 
+            if (win.fields.box_type.value){
+                params['box_type_id'] = win.fields.box_type.value;
+            }
+
             if (win.fields.group.value){
                 params['group_id'] = win.fields.group.value;
             }
-
-            Ti.API.info(params);
+            params._className = _className;
+            params.id = _obj.id
             activityIndicator.show();
-            si.model.medusa.createNewStone({
+            si.model.medusa.update(_className, {
                 args : params,
                 username : Ti.App.Properties.getString('username'),
                 password : Ti.App.Properties.getString('password'),
                 onsuccess : function(_record) {
                     activityIndicator.hide();
-                    Ti.API.info(params);
-                    Ti.App.Properties.setObject("stone_params", params);
-
-                    //si.ui.android.printLabel(_record.global_id, _record.name);
                     if (myImageView.image){
                         si.model.medusa.uploadImage({
                             record : _record,
@@ -225,7 +235,7 @@
                 },
                 onerror : function(e) {
                     activityIndicator.hide();
-                    var _message = 'No stone created'
+                    var _message = 'Update record failed'
                     si.ui.showErrorDialog(_message);
                     //si.ui.alert_simple('error : ' + e.error);
                },

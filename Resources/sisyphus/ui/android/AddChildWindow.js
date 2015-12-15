@@ -49,12 +49,16 @@
                 si.app.getAccountInfo({
                     onsuccess : function(account){
                         Ti.API.info(account);
+                        Ti.App.Properties.setObject('account', account);
                         //Ti.API.info(si.app.classifications());
                         if (Ti.App.Properties.getString('current_box_global_id') == null){
                             if (account.box_global_id){
                                 Ti.App.Properties.setString('current_box_global_id', account.box_global_id);
                                 //win.buttons.Home.setEnabled(true);
                             }
+                        }
+                        if (si.app.groups() == null){
+                            si.app.getGroups();
                         }
                         if (si.app.classifications() == null){
                             si.app.getClassifications();
@@ -66,6 +70,8 @@
                         if (si.app.box_types() == null){
                             si.app.getBoxTypes();
                         }
+
+ 
                         win.functions.refresh();
                     },
                     onerror : function(e){
@@ -264,7 +270,7 @@
         viewToolLeft.add(win.buttons.ScanParent);
         viewToolRight.add(win.buttons.Print);
         viewToolRight.add(win.buttons.Camera);        
-        viewToolRight.add(win.buttons.Clip);
+        //viewToolRight.add(win.buttons.Clip);
         viewToolRight.add(win.buttons.Menu);
         viewToolBar.add(viewToolLeft);
         viewToolBar.add(viewToolRight);        
@@ -322,7 +328,7 @@
             if (parent == null) {
                 win.buttons.ScanChild.setEnabled(false);
                 win.buttons.Camera.setEnabled(false);
-                win.buttons.Clip.setEnabled(false);
+                //win.buttons.Clip.setEnabled(false);
                 win.buttons.Print.setEnabled(false);
                 win.buttons.Menu.setEnabled(false);
             }
@@ -377,7 +383,7 @@
 
         win.functions.clickMenuButton = function(){
             var optionDialogForMenu = Ti.UI.createOptionDialog({
-                options : ['Open with browser'],
+                options : ['Open with browser', 'Add a local file', 'Edit'],
                 title : ''
             });
             optionDialogForMenu.addEventListener('click', function(e) {
@@ -386,6 +392,26 @@
                         var url = si.model.medusa.getResourceURLwithAuth(parent);
                         Ti.Platform.openURL(url);
                         break;
+                    case 1:
+                        if (parent == null){
+                            si.ui.alert_no_parent();
+                            return;
+                        }
+                        uploadImageFromAlbum();
+                        break;
+                    case 2:
+                        var windowEdit = si.ui.createEditWindow({
+                            obj: parent,
+                            //var _message = _new.global_id + '...' + _new.name + '...';
+                            onsuccess: function(_obj){
+//                                var _message = _obj.global_id + '...' + _obj.name + '...updating...';
+                                loadParent(_obj.global_id);
+                            }
+                        });
+                        si.app.tabGroup.activeTab.open(windowEdit, {
+                            animated : true
+                        });
+
                     default:
                         break;
                 };

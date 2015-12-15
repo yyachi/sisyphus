@@ -213,6 +213,9 @@
             onsuccess : function(response) {
                 record.id = response.datum_id;
                 record._className = response.datum_type;
+                record.user_id = response.user_id;
+                record.group_id = response.group_id;
+
                 si.model.medusa.getWithAuth({
                     args : _args.args,
                     path : si.model.medusa.getClassPath(record) + '/' + record.id + PATH_JSON,
@@ -220,7 +223,10 @@
                     password : _args.password,
                     onerror : _args.onerror,
                     onsuccess : function(_response) {
-                        record.name = _response.name;
+                        for (var attrname in _response) { record[attrname] = _response[attrname]; }
+                        //record.name = _response.name;
+                        //Ti.API.info(_response);
+                        //Ti.API.info(record);
                         si.model.medusa.getWithAuth({
                             args : _args.args,
                             path : si.model.medusa.getClassPath(record) + '/' + record.id + PATH_ATTACHMENT_FILE_JSON,
@@ -414,9 +420,10 @@
 
         params[_paramName + '[record_property_attributes][global_id]'] = _record.global_id;
         params[_paramName + '[record_property_attributes][user_id]'] = _record.user_id;        
+        params[_paramName + '[record_property_attributes][group_id]'] = _record.group_id;        
         for (var key in _args.args){
             var param_key = _paramName;
-            if (key == 'global_id' || key == 'user_id'){
+            if (key == 'global_id' || key == 'user_id' || key == "group_id"){
                 param_key += '[record_property_attributes][' + key +  ']';
             } else {
                 param_key += '[' + key +  ']';
@@ -474,6 +481,7 @@
                      //_record._className = _recordProperty.datum_type;
                      _record.user_id = _recordProperty.user_id;
                      _record.global_id = _recordProperty.global_id;
+                     _record.group_id = _recordProperty.group_id;
                     _args.onsuccess(_record);
                 } else {
                     _args.onerror({error : 'recored property not found'});
@@ -487,6 +495,7 @@
 
     };
 
+
     si.model.medusa.create = function(_className, _args) {
         var params = {};
         var properties = null;
@@ -495,7 +504,7 @@
             var param_key = _paramName;
             param_key += '[' + key +  ']';
 
-            if (key == 'global_id' || key == 'user_id'){
+            if (key == 'global_id' || key == 'user_id' || key == 'group_id'){
                 if (!properties){
                     properties = {};
                 }
@@ -504,8 +513,6 @@
                 params[param_key] = _args.args[key];
             }
         }
-//        Ti.API.info(params);
-//        Ti.API.info(properties);
         var path = si.model.medusa.getCollectionPath(_className);
         si.model.medusa.postWithAuth({
             args : params,
@@ -553,6 +560,71 @@
         si.model.medusa.create('Box', _args);
     };
 
+    si.model.medusa.update = function(_className, _args) {
+        var params = {};
+        var properties = null;
+        var _paramName = _className.toLowerCase();
+        for (var key in _args.args){
+            var param_key = _paramName;
+            param_key += '[' + key +  ']';
+
+            if (key == 'global_id' || key == 'user_id' || key == 'group_id'){
+                if (!properties){
+                    properties = {};
+                }
+                properties[key] = _args.args[key];
+            } else {
+                params[param_key] = _args.args[key];
+            }
+        }
+        var path = si.model.medusa.getResourcePath(_args.args);
+
+        si.model.medusa.putWithAuth({
+            args : params,
+            path : path,
+            username : _args.username,
+            password : _args.password,
+            onsuccess : function(_obj) {
+                var record = _args.args;
+                record._className = _className;
+                Ti.API.info(record);
+                si.model.medusa.load_property(record, {
+                    username : _args.username,
+                    password : _args.password,
+                    onsuccess : function(_record) {
+                        if (properties){
+                            // update record_properties
+                            si.model.medusa.update_attributes(_record, {
+                                args: properties,
+                                username : _args.username,
+                                password : _args.password,
+                                onsuccess : function(_updated){
+                                    _args.onsuccess(_updated);
+                                },
+                                onerror : function(e) { _args.onerror(e) }
+                            });
+                        } else {
+                            // si.model.medusa.reload(_record,{
+                            //     username: _args.username,
+                            //     password: _args.password,
+                            //     onerror : _args.onerror,
+                            //     onsuccess : function(record){
+                                Ti.API.info(_record);
+                                    _args.onsuccess(_record);
+                             //   }
+                            // });
+                            //_args.onsuccess(_record);
+                        }
+                    },
+                    onerror: function(e) {_args.onerror(e)}         
+                });
+            },
+            onerror : function(e){ 
+                Ti.API.info(e);
+                _args.onerror(e) 
+            }
+        });
+    };
 
 
 })();
