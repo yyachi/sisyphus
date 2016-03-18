@@ -13,8 +13,10 @@
 			//{title:'----', hasChild:false, target:'PrintServer', header:'print server', font: font},
 			//{title:'----', hasChild:false, target:'PrintFormatUrl', header:'print format url', font: font},
 			{title:'----', hasChild:false, target:'ScanToLoad', header:'Home', font: font},
-			{title:'----', hasChild:false, target:'BarcodeReader', header: 'Barcode reader', font: font}
+			{title:'----', hasChild:false, target:'BarcodeReader', header: 'Barcode reader', font: font},
 			//{title:'----', hasChild:false, target:'ScanCamera', header: 'Barcode reader', font: font}
+			{title: '----', hasChild: false, target: 'TagReader', header: 'Tag reader', font: font},
+			{title: '----', hasChild: false, target: 'TagWriter', header: 'Tag writer', font: font}
 		];
 		var index_medusa_server = findIndex('Server');
 		var index_account = findIndex('LogIn');
@@ -24,6 +26,8 @@
 		var index_print_label = findIndex('PrintLabel');
 		var index_scan_camera = findIndex('ScanCamera');
 		var index_barcode_reader = findIndex('BarcodeReader');		
+		var index_tag_reader = findIndex('TagReader');
+		var index_tag_writer = findIndex('TagWriter');
 
 		var tableViewOptions = {
 				data:data,
@@ -80,6 +84,48 @@
 			label_barcode_reader.text = ScanCameraInfo();
         });
 
+        var optionsForTagReader = ['Rear camera', 'Front camera'];
+        if (si.nfc.isEnabled()) {
+            optionsForTagReader.push('NFC reader');
+        }
+        var optionDialogForTagReader = Ti.UI.createOptionDialog({
+            options : optionsForTagReader,
+            selectedIndex: Ti.App.Properties.getInt('tagReader'),
+            title : 'Tag reader setting'
+        });
+        optionDialogForTagReader.addEventListener('click', function(e) {
+            switch (e.index) {
+                case 0:
+                case 1:
+                case 2:
+                    Ti.App.Properties.setInt('tagReader', e.index);
+                    break;
+                default:
+                    break;
+            };
+            label_tag_reader.text = TagReaderInfo();
+        });
+        
+        var optionsForTagWriter = ['Label printer'];
+        if (si.nfc.isEnabled()) {
+            optionsForTagWriter.push('NFC writer');
+        }
+        var optionDialogForTagWriter = Ti.UI.createOptionDialog({
+            options : optionsForTagWriter,
+            selectedIndex: Ti.App.Properties.getInt('tagWriter'),
+            title : 'Tag writer setting'
+        });
+        optionDialogForTagWriter.addEventListener('click', function(e) {
+            switch (e.index) {
+                case 0:
+                case 1:
+                    Ti.App.Properties.setInt('tagWriter', e.index);
+                    break;
+                default:
+                    break;
+            };
+            label_tag_writer.text = TagWriterInfo();
+        });
 
 		var tableView = Ti.UI.createTableView(tableViewOptions);
 		tableView.addEventListener('click', function(e){
@@ -110,17 +156,17 @@
 					break;
 				case 'ScanToLoad':
 					// var w = si.ui.createInputOrScanWindow({
-     //    				title: 'Home setting',
-     //    				value: Ti.App.Properties.getString('current_box_global_id'),
-     //        			save : function(value) {
-     //        				var global_id = value;
-     //                    	Ti.App.Properties.setString('current_box_global_id',global_id);
-     //                    	w.close();
-     //                		updateHomeRow();
-     //        			}
-     //    			});
+                    // title: 'Home setting',
+                    // value: Ti.App.Properties.getString('current_box_global_id'),
+                    // save : function(value) {
+                        // ar global_id = value;
+                        // Ti.App.Properties.setString('current_box_global_id',global_id);
+                        // w.close();
+                        // updateHomeRow();
+                        // }
+                    // });
 					// si.app.tabGroup.activeTab.open(
-					// 	w,{animated:true}
+					    // w,{animated:true}
 					// );
 					scanAndLoadDefaultBox();
 					break;
@@ -134,11 +180,17 @@
 				case 'BarcodeReader':
 					optionDialogForBarcodeReader.show();
 					break;	
+				case 'TagReader':
+					optionDialogForTagReader.show();
+					break;
+				case 'TagWriter':
+					optionDialogForTagWriter.show();
+					break;
 				case 'PrintLabel':
 					var windowLabelPrint = si.ui.createLabelPrintSettingWindow();
 					si.app.tabGroup.activeTab.open(windowLabelPrint,{animated:true});
 					break;
-				 //    optionDialogForPrintLabel.show();
+				    // optionDialogForPrintLabel.show();
 					// break;
 				default:
 					break;
@@ -200,6 +252,32 @@
 		tableView.data[index_barcode_reader].rows[0].add(view_barcode_reader_base);
 		//tableView.data[index_account].rows[0].add(label2);		
 		win.add(tableView);
+		
+		var view_tag_reader_base = Ti.UI.createView({
+			layout : 'vertical',
+			//backgroundColor: 'yellow'
+		});
+		var label_tag_reader = Ti.UI.createLabel({
+			left : 10,
+			font : font,
+			text : 'TagReader'
+		});
+		view_tag_reader_base.add(label_tag_reader);
+		tableView.data[index_tag_reader].rows[0].add(view_tag_reader_base);
+		win.add(tableView);
+		
+		var view_tag_writer_base = Ti.UI.createView({
+			layout : 'vertical',
+			//backgroundColor: 'yellow'
+		});
+		var label_tag_writer = Ti.UI.createLabel({
+			left : 10,
+			font : font,
+			text : 'TagWriter'
+		});
+		view_tag_writer_base.add(label_tag_writer);
+		tableView.data[index_tag_writer].rows[0].add(view_tag_writer_base);
+		win.add(tableView);
 
 	    win.addEventListener('focus', function (e) {
 	    	label_server.text = serverInfo();
@@ -208,6 +286,8 @@
 	    	label_print_server.text = printServerInfo();
 	    	label_template.text = printFormatUrlInfo();
 	    	label_barcode_reader.text = ScanCameraInfo();
+            label_tag_reader.text = TagReaderInfo();
+            label_tag_writer.text = TagWriterInfo();
 	    	//tableView.data[index_medusa_server].rows[0].title = serverInfo();
 		   	//tableView.data[index_account].rows[0].title = accountInfo();
 		   	//tableView.data[index_print_server].rows[0].title = printServerInfo();		   	
@@ -259,6 +339,26 @@
 				return 'Rear camera';
 			}
 		}
+		
+		function TagReaderInfo(){
+			var tagReader = Ti.App.Properties.getInt('tagReader');
+			if (tagReader == 1){
+				return 'Front camera';
+			} else if (tagReader == 0) {
+				return 'Rear camera';
+			} else {
+			    return 'NFC reader';
+			}
+		}
+		
+		function TagWriterInfo(){
+			var tagWriter = Ti.App.Properties.getInt('tagWriter');
+			if (tagWriter == 1){
+				return 'NFC writer';
+			} else {
+				return 'Label printer';
+			}
+		}
 
 		function LabelPrintStatus(){
 			if (Ti.App.Properties.getBool('printLabel')){
@@ -278,6 +378,14 @@
 
 		function updateScanCameraRow(){
 			tableView.data[index_scan_camera].rows[0].title = ScanCameraInfo();
+		}
+		
+		function updateTagReaderRow(){
+			tableView.data[index_tag_reader].rows[0].title = TagReaderInfo();
+		}
+		
+		function updateTagWriterRow(){
+			tableView.data[index_tag_writer].rows[0].title = TagWriterInfo();
 		}
 
 		function updatePrintLabelRow(){
@@ -315,22 +423,33 @@
 
 		function scanAndLoadDefaultBox(){
             if (!si.config.Medusa.debug){
-                var _win = si.BarcodeReader.createScanWindow({                
-                	success:function(data){
-                    	if(data && data.barcode){
-                        	var global_id = data.barcode;
-                        	Ti.App.Properties.setString('current_box_global_id',global_id);
-	                        updateHomeRow();
-                        }
-                        _win.close();
-                	},
-                	cancel:function(){
-                        _win.close();
-                	},
-                	error:function(){
-                        _win.close();
-                	}
-                });
+                var _win = null;
+                if (Ti.App.Properties.getInt('tagReader') === 2) {
+                    _win = si.nfc.createScanWindow({
+                        success: function() {
+                            if (si.nfc.tagDataValue) {
+                                Ti.App.Properties.setString('current_box_global_id', si.nfc.tagDataValue);
+                                updateHomeRow();
+                            }
+                            _win.close();
+                        },
+                        cancel: function() { _win.close(); },
+                        error: function() { _win.close(); }
+                    });
+                } else {
+                    _win = si.BarcodeReader.createScanWindow({
+                        success:function(data){
+                            if(data && data.barcode){
+                                var global_id = data.barcode;
+                                Ti.App.Properties.setString('current_box_global_id',global_id);
+	                            updateHomeRow();
+                            }
+                            _win.close();
+                        },
+                        cancel:function(){ _win.close(); },
+                        error:function(){ _win.close(); }
+                    });
+                }
                 si.app.tabGroup.activeTab.open(
                     _win,{animated:true}
                 );                                

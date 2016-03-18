@@ -347,13 +347,13 @@
             current_global_id = Ti.App.Properties.getString('current_global_id');
             default_global_id = Ti.App.Properties.getString('current_box_global_id');            
             if (!(parent && parent.global_id === current_global_id)) {
-//                Ti.API.info('parent:' + parent);                
-//                Ti.API.info('current_global_id:' + current_global_id);
+                 // Ti.API.info('parent:' + parent);                
+                 // Ti.API.info('current_global_id:' + current_global_id);
                 if (current_global_id !== null ){
-                //    Ti.API.info('current_global_id:' + current_global_id);
+                     // Ti.API.info('current_global_id:' + current_global_id);
                     loadParent(current_global_id);
                 } else if (default_global_id !== null){
-                //    Ti.API.info('default_global_id:' + default_global_id);                    
+                     // Ti.API.info('default_global_id:' + default_global_id);                    
                     loadParent(default_global_id);
                 } else {
                     parent = null;
@@ -382,8 +382,13 @@
         };
 
         win.functions.clickMenuButton = function(){
+            var options = ['Open with browser', 'Add a local file', 'Edit'];
+            if (si.nfc.isEnabled()) {
+                options = options.concat(['NFC read', 'NFC write']);
+            }
+            
             var optionDialogForMenu = Ti.UI.createOptionDialog({
-                options : ['Open with browser', 'Add a local file', 'Edit'],
+                options : options,
                 title : ''
             });
             optionDialogForMenu.addEventListener('click', function(e) {
@@ -402,16 +407,33 @@
                     case 2:
                         var windowEdit = si.ui.createEditWindow({
                             obj: parent,
-                            //var _message = _new.global_id + '...' + _new.name + '...';
+                            // var _message = _new.global_id + '...' + _new.name + '...';
                             onsuccess: function(_obj){
-//                                var _message = _obj.global_id + '...' + _obj.name + '...updating...';
+                            // var _message = _obj.global_id + '...' + _obj.name + '...updating...';
                                 loadParent(_obj.global_id);
                             }
                         });
                         si.app.tabGroup.activeTab.open(windowEdit, {
                             animated : true
                         });
-
+                        break;
+                    case 3:
+                        var windowScan = si.nfc.createScanWindow({
+                            obj: parent,
+                            success : function(global_id) {
+                                if (global_id) {
+                                    loadParent(global_id);
+                                }
+                                windowScan.close();
+                            },
+                        });
+                        si.app.tabGroup.activeTab.open(windowScan, {
+                            animated : true
+                        });
+                        break;
+                    case 4:
+                        win.functions.printProcess(parent);
+                        break;
                     default:
                         break;
                 };
@@ -428,7 +450,12 @@
                 si.ui.alert_no_parent();
                 return;
             }
-            win.functions.printLabelfor(parent);
+            
+            if (Ti.App.Properties.getInt('tagWriter') === 1) {
+                win.functions.printProcess(parent);
+            } else {
+                win.functions.printLabelfor(parent);
+            }
         }
 
         win.functions.clickCameraButton = function(){
@@ -455,7 +482,7 @@
         win.functions.clickNewStoneButton = function(){
             var windowNewStone = si.ui.createNewStoneWindow({
                 //var _message = _new.global_id + '...' + _new.name + '...';
-                onsuccess: function(_new){
+                onsuccess: function(_new, e){
                     var _message = _new.global_id + '...' + _new.name + '...creating...';
                     si.sound_created.play();
                     //si.app.log.info(labelStatus.text + 'creating...ok');
@@ -465,10 +492,14 @@
                     if (parent){
                         addChild(_new.global_id, false);
                     }
-                    win.functions.printLabelfor(_new);
+                    if (Ti.App.Properties.getInt('tagWriter') === 1) {
+                        win.functions.printProcess(_new);
+                    } else {
+                        win.functions.printLabelfor(_new);
+                    }
                 }
             });
-            if (parent && parent._className === 'Stone'){
+            if (parent && parent._className === 'Specimen'){
                 windowNewStone.name_field.value = parent.name;
             }
             si.app.tabGroup.activeTab.open(windowNewStone, {
@@ -478,7 +509,7 @@
 
         win.functions.clickNewBoxButton = function(){
             var windowNewBox = si.ui.createNewBoxWindow({
-                onsuccess: function(_new){
+                onsuccess: function(_new, e){
                     var _message = _new.global_id + '...' + _new.name + '...creating...';
                     si.sound_created.play();
                     //labelInfo.text = labelStatus.text + 'creating' + labelInfo.text;
@@ -488,15 +519,17 @@
                     if (parent){
                         addChild(_new.global_id, false);
                     }
-                    win.functions.printLabelfor(_new);
+                    if (Ti.App.Properties.getInt('tagWriter') === 1) {
+                        win.functions.printProcess(_new);
+                    } else {
+                        win.functions.printLabelfor(_new);
+                    }
                 }
             });
             si.app.tabGroup.activeTab.open(windowNewBox, {
                 animated : true
             });            
         }
-
-
 
         win.functions.clickScanChildButton = function(){
             if (parent){
@@ -509,23 +542,33 @@
 
         win.functions.clickScanParentButton = function () {
             if (!si.config.Medusa.debug) {
-                var _win = si.BarcodeReader.createScanWindow({                
-                    success : function(_data) {
-                        if (_data && _data.barcode) {
-                            loadParent(_data.barcode);
-                        }
-                        _win.close();
-                    },
-                    cancel : function() {
-                        _win.close();
-                    },
-                    error : function() {
-                        _win.close();                        
-                    }
-                });
+                var _win = null;
+                if (Ti.App.Properties.getInt('tagReader') === 2) {
+                    _win = si.nfc.createScanWindow({
+                        success : function() {
+                            if (si.nfc.tagDataValue) {
+                                loadParent(si.nfc.tagDataValue);
+                            }
+                            _win.close();
+                        },
+                        cancel : function() { _win.close(); },
+                        error : function() { _win.close(); }
+                    });
+                } else {
+                    _win = si.BarcodeReader.createScanWindow({
+                        success : function(_data) {
+                            if (_data && _data.barcode) {
+                                loadParent(_data.barcode);
+                            }
+                            _win.close();
+                        },
+                        cancel : function() { _win.close(); },
+                        error : function() { _win.close(); }
+                    });
+                }
                 si.app.tabGroup.activeTab.open(
-                    _win,{animated:true}
-                );                
+                    _win, {animated: true}
+                );
             } else {
                 setTimeout(function() {
                     loadParent(si.config.debug.parent_global_id);
@@ -549,6 +592,24 @@
                     //si.ui.showErrorDialog('No label created');
                 }
             });
+        };
+
+
+        win.functions.printProcess = function(_record){
+            Ti.API.info('printProcess...');
+            var _message = _record.global_id + '...';
+            si.app.log.info(_message + 'print...ok');
+            _message += 'printcreating...';
+            var win = si.nfc.createWriteWindow(_record.global_id, {
+                onsuccess: function(){
+                    si.sound_label.play();
+                    si.app.log.info(_message + 'ok');
+                },
+                onerror: function(){
+                    changeMode('error',_message);
+                }
+            });
+            win.open();
         };
 
 
@@ -639,9 +700,6 @@
         }
 
 
-
-
-
         win.set_parent = function(_parent){
             parent = _parent;
         };
@@ -674,21 +732,31 @@
 
         function scanChild() {
             if (!si.config.Medusa.debug) {
-                var _win = si.BarcodeReader.createScanWindow({
-                    success : function(_data) {
-                        if (_data && _data.barcode) {
-                            addChild(_data.barcode, true);
+                var _win = null;
+                if (Ti.App.Properties.getInt('tagReader') === 2) {
+                    _win = si.nfc.createScanWindow({
+                        success: function() {
+                            if (si.nfc.tagDataValue) {
+                                addChild(si.nfc.tagDataValue, true);
+                            }
                         }
-                    },
-                    cancel : function() {
-                    },
-                    error : function() {
-                    }
-                });
+                    });
+                } else {
+                    _win = si.BarcodeReader.createScanWindow({
+                        success : function(_data) {
+                            if (_data && _data.barcode) {
+                                addChild(_data.barcode, true);
+                            }
+                        },
+                        cancel : function() { },
+                        error : function() { }
+                    });
+                }
                 si.app.tabGroup.activeTab.open(
-                    _win,{animated:true}
-                );                
+                    _win, {animated: true}
+                );
             } else {
+                // At debug, use static(dummy) global_id
                 setTimeout(function() {
                     addChild(si.config.debug.child_global_id, false);
                 }, 1000);
@@ -717,10 +785,10 @@
                             //si.app.log.info(labelStatus.text + 'ok');
                             //labelInfo.text = labelStatus.text + labelInfo.text;
 
-//                            if (isMultiScan) {
-//                                win.buttons.ScanChild.setEnabled(true);
-//                                win.buttons.ScanChild.fireEvent('click');
-//                            }
+                              //if (isMultiScan) {
+                                //win.buttons.ScanChild.setEnabled(true);
+                                //win.buttons.ScanChild.fireEvent('click');
+                            //}
                             // else {
                             //     labelStatus.text = 'Ready for scan';
                             //     changeMode('ready');

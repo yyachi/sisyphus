@@ -54,6 +54,12 @@ if (Ti.App.Properties.getString('printFormatUrl') == null) {
 if (Ti.App.Properties.getInt('facing') == null) {
     Ti.App.Properties.setInt('facing', si.config.Medusa.facing);
 }
+if (Ti.App.Properties.getInt('tagReader') == null) {
+    Ti.App.Properties.setInt('tagReader', si.config.Medusa.tagReader);
+}
+if (Ti.App.Properties.getInt('tagWriter') == null) {
+    Ti.App.Properties.setInt('tagWriter', si.config.Medusa.tagWriter);
+}
 if (Ti.App.Properties.getString('scanditsdk_app_key') == null) {
     Ti.App.Properties.setString('scanditsdk_app_key', si.config.BarcodeReader.scanditsdk_app_key);
 }

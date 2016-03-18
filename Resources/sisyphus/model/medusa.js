@@ -22,8 +22,10 @@
     var PATH_RECORED_PROPERTY_JSON = PATH_RECORED_PROPERTY + PATH_JSON;
     var PATH_ACCOUNT = '/account';
     var PATH_ACCOUNT_JSON = PATH_ACCOUNT + PATH_JSON;
-    var PATH_CLASSIFICATION = '/classifications'
+    var PATH_CLASSIFICATION = '/classifications';
     var PATH_CLASSIFICATION_JSON = PATH_CLASSIFICATION + PATH_JSON;
+    var PATH_INVENTORY = '/inventory';
+    var PATH_INVENTORY_JSON = PATH_INVENTORY + PATH_JSON;
 
     si.model.medusa.getResourceURLwithAuth = function(_record, _args) {
         var _path = si.model.medusa.getResourcePath(_record);
@@ -48,8 +50,8 @@
         var host = result2[0];
         return host;
     };
-
-    si.model.medusa.get = function(_args) {
+    
+    si.model.medusa.client = function(_args) {
         var client = Ti.Network.createHTTPClient({
             onload : function() {
                 _args.onsuccess(eval('(' + this.responseText + ')'));
@@ -60,6 +62,11 @@
             },
             timeout : 30000 // in milliseconds
         });
+        return client;
+    };
+
+    si.model.medusa.get = function(_args) {
+        var client = si.model.medusa.client(_args);
         var url = Ti.App.Properties.getString('server') + _args.path;
         client.open('GET', url);
         // var auth_text = 'Basic ' + Ti.Utils.base64encode(_args.username + ':' + _args.password);
@@ -91,16 +98,7 @@
 
 
     si.model.medusa.getWithAuth = function(_args) {
-        var client = Ti.Network.createHTTPClient({
-            onload : function() {
-                _args.onsuccess(eval('(' + this.responseText + ')'));
-            },
-            onerror : function(e) {
-                e.status = this.status;
-                _args.onerror(e);
-            },
-            timeout : 30000 // in milliseconds
-        });
+        var client = si.model.medusa.client(_args);
         var url = Ti.App.Properties.getString('server') + _args.path;
         client.open('GET', url);
         var auth_text = 'Basic ' + Ti.Utils.base64encode(_args.username + ':' + _args.password);
@@ -109,16 +107,7 @@
     };
 
     si.model.medusa.putWithAuth = function(_args) {
-        var client = Ti.Network.createHTTPClient({
-            onload : function() {
-                _args.onsuccess(eval('(' + this.responseText + ')'));
-            },
-            onerror : function(e) {
-                e.status = this.status;
-                _args.onerror(e);
-            },
-            timeout : 30000 // in milliseconds
-        });
+        var client = si.model.medusa.client(_args);
         var url = Ti.App.Properties.getString('server') + _args.path;
         client.open('PUT', url);
         var auth_text = 'Basic ' + Ti.Utils.base64encode(_args.username + ':' + _args.password);
@@ -127,16 +116,7 @@
     };
 
     si.model.medusa.postWithAuth = function(_args) {
-        var client = Ti.Network.createHTTPClient({
-            onload : function() {
-                _args.onsuccess(eval('(' + this.responseText + ')'));
-            },
-            onerror : function(e) {
-                e.status = this.status;
-                _args.onerror(e);
-            },
-            timeout : 30000 // in milliseconds
-        });
+        var client = si.model.medusa.client(_args);
         var url = Ti.App.Properties.getString('server') + _args.path;
         client.open('POST', url);
         var auth_text = 'Basic ' + Ti.Utils.base64encode(_args.username + ':' + _args.password);
@@ -145,16 +125,7 @@
     };
 
     si.model.medusa.deleteWithAuth = function(_args) {
-        var client = Ti.Network.createHTTPClient({
-            onload : function() {
-                _args.onsuccess(eval('(' + this.responseText + ')'));
-            },
-            onerror : function(e) {
-                e.status = this.status;
-                _args.onerror(e);
-            },
-            timeout : 30000 // in milliseconds
-        });
+        var client = si.model.medusa.client(_args);
         var url = Ti.App.Properties.getString('server') + _args.path;
         Ti.API.info("deleting...");
         Ti.API.info(url);
@@ -188,8 +159,6 @@
             },
         });
     };
-
-
 
 
     si.model.medusa.getRecordFromGlobalId = function(_args) {
@@ -344,7 +313,6 @@
         var path = '';
         path += si.model.medusa.getClassPath(_parent);
         path += '/' + _parent.id;
-        ;
 
         if ((_parent._className == CLASSNAME_STONE) && (_child._className == CLASSNAME_STONE)) {
             path += PATH_DAUGHTERS;
@@ -356,17 +324,39 @@
         return path;
     };
 
+    si.model.medusa.inventoryPath = function(_parent, _child) {
+        var path = '';
+        path += (PATH_BOX + '/' + _parent.id);
+        path += si.model.medusa.getClassPath(_child);
+        path += '/' + _child.id;
+        path += PATH_INVENTORY_JSON;
+        return path;
+    };
+
     si.model.medusa.createLink = function(_parent, _child, _args) {
-        si.model.medusa.putWithAuth({
-            args : _args.args,
-            path : si.model.medusa.getLinkPath(_parent, _child),
-            username : _args.username,
-            password : _args.password,
-            onsuccess : function(response) {
-                _args.onsuccess(response);
-            },
-            onerror : _args.onerror
-        });
+        if (((_parent._className == CLASSNAME_BOX) && (_child._className == CLASSNAME_STONE)) || ((_parent._className == CLASSNAME_BOX) && (_child._className == CLASSNAME_BOX))) {
+            si.model.medusa.postWithAuth({
+                args : _args.args,
+                path : si.model.medusa.inventoryPath(_parent, _child),
+                username : _args.username,
+                password : _args.password,
+                onsuccess : function(response) {
+                    _args.onsuccess(response);
+                },
+                onerror : _args.onerror
+            });
+        } else {
+            si.model.medusa.putWithAuth({
+                args : _args.args,
+                path : si.model.medusa.getLinkPath(_parent, _child),
+                username : _args.username,
+                password : _args.password,
+                onsuccess : function(response) {
+                    _args.onsuccess(response);
+                },
+                onerror : _args.onerror
+            });
+        }
     };
 
     si.model.medusa.getImageUploadPath = function(_parent) {
@@ -491,8 +481,6 @@
                 _args.onerror(e);
             },
         });
-
-
     };
 
 

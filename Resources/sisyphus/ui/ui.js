@@ -39,7 +39,7 @@
     };
 
     si.ui.error_print = function(e){
-//        si.ui.myAlert({message: e.message, title:''});
+        //si.ui.myAlert({message: e.message, title:''});
         si.sound_error.play();
         var dialog = Ti.UI.createAlertDialog({
             message: e.error,
@@ -70,6 +70,10 @@
             title : 'Info',
             //icon : '/images/preferences.png',
             window : si.ui.createInfoWindow()
+        });
+
+        tabGroup.addEventListener('open', function(e) {
+        Ti.API.info('window open...');
         });
 
         tabGroup.addTab(tabMain);
@@ -231,24 +235,31 @@
         });
         imageButton.button.addEventListener('click', function(e) {
             if (!si.config.Medusa.debug) {
-                var _win = si.BarcodeReader.createScanWindow({
-                    success : function(_data) {
-                        if (_data && _data.barcode) {
-                            text.value = _data.barcode;
-                        }
-                        _win.close();
-                    },
-                    cancel : function() {
-                        _win.close();
-                    },
-                    error : function() {
-                        _win.close();                        
-                    }
-                });
-                _win.open();
-                // si.app.tabGroup.activeTab.open(
-                //     _win,{animated:true}
-                // );                
+                var _win = null;
+                if (Ti.App.Properties.getInt('tagReader') === 2) {
+                    _win = si.nfc.createScanWindow({
+                        success : function() {
+                            if (si.nfc.tagDataValue) {
+                                text.value = si.nfc.tagDataValue;
+                            }
+                            _win.close();
+                        },
+                        cancel : function() { _win.close(); },
+                        error : function() { _win.close(); }
+                    });
+                } else {
+                    _win = si.BarcodeReader.createScanWindow({
+                        success : function(_data) {
+                            if (_data && _data.barcode) {
+                                text.value = _data.barcode;
+                            }
+                            _win.close();
+                        },
+                        cancel : function() { _win.close(); },
+                        error : function() { _win.close(); }
+                    });
+                }
+                _win.open();                
             }
         });
 
@@ -469,7 +480,7 @@
         var view = Ti.UI.createView({
             width: opts.width,
             height: opts.height,
-//            backgroundColor : 'red'
+            //backgroundColor : 'red'
         });
         //return view;
         var button = Ti.UI.createButton({
