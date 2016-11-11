@@ -100,7 +100,29 @@
             hintText : 'input password'
         }));
 
-        
+        var loginTypeInfo = Ti.UI.createTextField({
+            value : function(){
+                        var staffId = Ti.App.Properties.getString('staffId') || '';
+                        var loginType = '';
+                        if(staffId.length > 0) {
+                            loginType = 'IC Card';
+                        } else {
+                            loginType = 'Account';
+                        }
+                        return loginType;
+                    }(),
+            passwordMask : false,
+            width : '100%',
+            enabled: false
+        });
+
+        var icCardInfo = Ti.UI.createTextField({
+            value : Ti.App.Properties.getString('staffId'),
+            passwordMask : false,
+            width : '100%',
+            enabled: false
+        });
+
         win.save = function(){
             isDone = false;
             Ti.API.info('click');
@@ -111,7 +133,9 @@
             }
 
             var server_old = Ti.App.Properties.getString('server');
+            var token_old = Ti.App.Properties.getString('token');
             Ti.App.Properties.setString('server',server.input.value);
+            Ti.App.Properties.setString('token', '');
 
             activityIndicator.show();
             si.model.medusa.getAccountInfo({
@@ -120,6 +144,8 @@
                 onsuccess : function(response) {
                     Ti.App.Properties.setString('username', username.input.value);
                     Ti.App.Properties.setString('password', password.input.value);
+                    Ti.App.Properties.setString('cardId', '');
+                    Ti.App.Properties.setString('staffId', '');
                     si.app.clearData();
                     if (response.box_global_id){
                         Ti.App.Properties.setString('current_box_global_id', response.box_global_id);
@@ -136,6 +162,8 @@
                     activityIndicator.hide();
                     isDone = true;
                     Ti.App.Properties.setString('server', server_old);
+                    Ti.App.Properties.setString('token', token_old);
+
                     var _message = 'Login failed';
                     //si.ui.myAlert({message:'Login failed'});
                     si.ui.showErrorDialog(_message);
@@ -154,6 +182,8 @@
         table.add(si.ui.createInputRow("URL", server, {}));
         table.add(si.ui.createInputRow("Username", username, {}));
         table.add(si.ui.createInputRow("Password", password, {}));
+        table.add(si.ui.createInputRow("LoginType", loginTypeInfo, {}));
+        table.add(si.ui.createInputRow("StaffID", icCardInfo, {}));
 
         win.add(viewBase);
         viewBase.add(viewHeader);
