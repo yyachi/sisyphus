@@ -295,14 +295,14 @@ si.nfc.onReadFelica = function (_args) {
             var response = tech.transceive(command);
 
             if (response[10] != 0x00) {
-                _args.onerror();
+                throw new Error("This card is out of the target.");
             } else {
                 si.nfc.tagDataValue = response;
                 _args.onsuccess();
             }
         }
     } catch (e) {
-        alert("Tag connection error:" + e.message);
+        alert("Tag connection error: " + e.message);
         _args.onerror();
     } finally {
         if (tech.isConnected()) {
