@@ -26,6 +26,7 @@
     var PATH_CLASSIFICATION_JSON = PATH_CLASSIFICATION + PATH_JSON;
     var PATH_INVENTORY = '/inventory';
     var PATH_INVENTORY_JSON = PATH_INVENTORY + PATH_JSON;
+    var PATH_TOKEN = '/tokens' + PATH_JSON;
 
     si.model.medusa.getResourceURLwithAuth = function(_record, _args) {
         var _path = si.model.medusa.getResourcePath(_record);
@@ -98,43 +99,50 @@
 
 
     si.model.medusa.getWithAuth = function(_args) {
-        var client = si.model.medusa.client(_args);
-        var url = Ti.App.Properties.getString('server') + _args.path;
-        client.open('GET', url);
-        var auth_text = 'Basic ' + Ti.Utils.base64encode(_args.username + ':' + _args.password);
-        client.setRequestHeader('Authorization', auth_text);
-        client.send(_args.args);
+        si.model.medusa.sendWithAuth(_args, 'GET');
     };
 
     si.model.medusa.putWithAuth = function(_args) {
-        var client = si.model.medusa.client(_args);
-        var url = Ti.App.Properties.getString('server') + _args.path;
-        client.open('PUT', url);
-        var auth_text = 'Basic ' + Ti.Utils.base64encode(_args.username + ':' + _args.password);
-        client.setRequestHeader('Authorization', auth_text);
-        client.send(_args.args);
+        si.model.medusa.sendWithAuth(_args, 'PUT');
     };
 
     si.model.medusa.postWithAuth = function(_args) {
-        var client = si.model.medusa.client(_args);
-        var url = Ti.App.Properties.getString('server') + _args.path;
-        client.open('POST', url);
-        var auth_text = 'Basic ' + Ti.Utils.base64encode(_args.username + ':' + _args.password);
-        client.setRequestHeader('Authorization', auth_text);
-        client.send(_args.args);
+        si.model.medusa.sendWithAuth(_args, 'POST');
     };
 
     si.model.medusa.deleteWithAuth = function(_args) {
+        Ti.API.info("deleting...");
+        si.model.medusa.sendWithAuth(_args, 'DELETE');
+    };
+
+    si.model.medusa.sendWithAuth = function(_args, method) {
         var client = si.model.medusa.client(_args);
         var url = Ti.App.Properties.getString('server') + _args.path;
-        Ti.API.info("deleting...");
         Ti.API.info(url);
-        client.open('DELETE', url);
-        var auth_text = 'Basic ' + Ti.Utils.base64encode(_args.username + ':' + _args.password);
+        client.open(method, url);
+        var auth_text = '';
+        var token = Ti.App.Properties.getString('token') || '';
+        if(token.length > 0) {
+            auth_text = 'Token ' + token;
+        } else {
+            auth_text = 'Basic ' + Ti.Utils.base64encode(_args.username + ':' + _args.password);
+        }
         client.setRequestHeader('Authorization', auth_text);
         client.send(_args.args);
     };
 
+    si.model.medusa.getToken = function(_args) {
+        si.model.medusa.postWithAuth({
+            path : PATH_TOKEN,
+            args: _args,
+            onsuccess : function(_record){
+                _args.onsuccess(_record);
+            },
+            onerror : function(e) {
+                _args.onerror(e);
+            },
+        });
+    };
 
     si.model.medusa.getAccountInfo = function(_args) {
         si.model.medusa.getWithAuth({
