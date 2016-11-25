@@ -165,9 +165,9 @@ si.nfc.setupNfc = function (success_callback, win) {
             { action: si.nfc.module.ACTION_TECH_DISCOVERED, mimeType: '*/*' }
         ],
         techLists: [
-	        [ "android.nfc.tech.Ndef" ],
-	        [ "android.nfc.tech.NdefFormatable" ]
-	    ]
+            [ "android.nfc.tech.Ndef" ],
+            [ "android.nfc.tech.NdefFormatable" ]
+        ]
     });
     
     // Set the default Ndef message to send when tapped
@@ -226,25 +226,25 @@ si.nfc.onWrite = function (global_id, _args) {
     if (global_id == undefined) { global_id = Ti.App.Properties.getString('current_global_id'); }
 
     for (var i = 0; i < si.nfc.scannedTag.techList.length; i++) {
-	if(si.nfc.scannedTag.techList[i] === 'android.nfc.tech.Ndef') {
-	    si.nfc.writeNdef(global_id, _args);
-	    return;
-	}
+        if(si.nfc.scannedTag.techList[i] === 'android.nfc.tech.Ndef') {
+            si.nfc.writeNdef(global_id, _args);
+            return;
+        }
     }
     si.nfc.formatNdef(global_id, _args);
 }
 
 si.nfc.formatNdef = function(global_id, _args) {
     var tech = si.nfc.module.createTagTechnologyNdefFormatable({
-	tag: si.nfc.scannedTag
+        tag: si.nfc.scannedTag
     });
     if (!tech.isValid()) {
-	alert("Failed to create Ndef tag type.");
-	return;
+        alert("Failed to create Ndef tag type.");
+        return;
     }
 
     try {
-	tech.connect();
+        tech.connect();
 
         // Create a new message to write to the tag
         var textRecord = si.nfc.module.createNdefRecordText({
@@ -253,7 +253,7 @@ si.nfc.formatNdef = function(global_id, _args) {
         var msg = si.nfc.module.createNdefMessage({
             records: [textRecord]
         });
-	tech.format(msg);
+        tech.format(msg);
         alert("Tag successfully formatted.");
         _args.onsuccess();
         si.nfc.onClear();
