@@ -134,7 +134,7 @@
     si.model.medusa.getToken = function(_args) {
         si.model.medusa.postWithAuth({
             path : PATH_TOKEN,
-            args: _args,
+            args : { api_key : _args.staff_id + _args.card_id },
             onsuccess : function(_record){
                 _args.onsuccess(_record);
             },
