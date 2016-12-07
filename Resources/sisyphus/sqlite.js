@@ -12,7 +12,7 @@ si.sqlite.Db = function(dbName, createSqlList) {
 
     this.open();
     for(var i = 0; i < createSqlList.length; i++) {
-        this.db.execute(createSqlList[i])
+        this.db.execute(createSqlList[i]);
     }
     this.close();
 };
