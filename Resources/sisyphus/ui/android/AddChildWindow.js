@@ -798,15 +798,15 @@
                                 parent['description'],
                                 Date.now()
                             );
-                            var histories = si.sqlite.sisyphus.db.execute('select * from histories order by loaded_at desc');
-                            for (var i = 1; histories.isValidRow(); i++) {
-                                if (i > HISTORY_MAX_COUNT) {
-                                    si.sqlite.sisyphus.db.execute(
-                                        'delete from histories where global_id = ?',
-                                        histories.fieldByName('global_id')
-                                    );
-                                }
-                                histories.next();
+                            var history = si.sqlite.sisyphus.db.execute(
+                                'select loaded_at from histories order by loaded_at desc limit 1 offset ?',
+                                 HISTORY_MAX_COUNT
+                            );
+                            if (history.isValidRow()) {
+                                si.sqlite.sisyphus.db.execute(
+                                    'delete from histories where loaded_at <= ?',
+                                    history.fieldByName('loaded_at')
+                                );
                             }
                             si.sqlite.sisyphus.close();
                         } catch (e) {
