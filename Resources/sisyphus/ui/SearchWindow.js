@@ -23,11 +23,11 @@
         });
 
         var condition = Ti.UI.createTextField({
-          borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-          text: win.condition,
-          top: 10,
-          width: '85%',
-          layout : 'horizontal'
+            borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+            text: win.condition,
+            top: 10,
+            width: '85%',
+            layout : 'horizontal'
         });
 
         win.dialogs = {};
