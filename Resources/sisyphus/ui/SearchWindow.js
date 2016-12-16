@@ -29,6 +29,12 @@
             width: '85%',
             layout : 'horizontal'
         });
+        condition.addEventListener('blur', function (e){
+           onSearchFlag = true;
+           page = 1;
+           win.condition = condition.value;
+           win.load();
+        });
 
         win.dialogs = {};
         win.dialogs.historyClearedAlert = Ti.UI.createAlertDialog({
