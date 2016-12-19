@@ -25,6 +25,13 @@
         });
         win.buttons.Save.right = 0;
 
+        win.buttons.FelicaLogin = si.ui.createImageButtonView('/images/189-plant.png', {
+            width : 90,
+            height : 90,
+            imgDimensions : 30,
+            onclick: function(e){ win.clickFelicaLoginButton() }
+        });
+
        var viewBase = Ti.UI.createView({
 //            backgroundColor : 'white',
             top : 0,
@@ -171,6 +178,96 @@
             });
         };
 
+        win.clickFelicaLoginButton = function () {
+            if (!si.config.Medusa.debug) {
+                var _win = null;
+                var staffId = "";
+                var cardId = "";
+                _win = si.nfc.createScanFelicaWindow({
+                    onsuccess : function() {
+                        if (si.nfc.tagDataValue) {
+                            staffId = readFelicaData();
+                            cardId = si.nfc.scannedTag.getId()
+                            felicaLogin(cardId, staffId);
+                            _win.close();
+                        } else {
+                            alert('si.nfc.tagDataValue is null');
+                            _win.close();
+                        }
+                    },
+                    cancel : function() { _win.close(); },
+                    onerror : function() { _win.close(); },
+                });
+                si.app.tabGroup.activeTab.open(
+                    _win, {animated: true}
+                );
+            } else {
+                setTimeout(function() {
+                    loadParent(si.config.debug.parent_global_id);
+                }, 1000);
+            }
+        };
+
+        var readFelicaData = function() {
+            Ti.API.info('readFelicaData...');
+
+            var data = si.nfc.tagDataValue;
+
+            // read staffId
+            var staffId = "";
+
+            try {
+                for(var i = 15; i <= 22; i++) {
+                    staffId += String.fromCharCode(data[i]);
+                }
+            } catch(e) {
+                alert('Felica data is Invalid.');
+                staffId = "";
+            }
+
+            return staffId;
+        };
+
+        var felicaLogin = function(cardId, staffId) {
+            isDone = false;
+            Ti.API.info('Login by Felica');
+
+            if (cardId === '' || staffId === '') {
+                si.ui.myAlert({message: 'Invalid IC Card'});
+                return;
+            }
+
+            var server = Ti.App.Properties.getString('server');
+
+            activityIndicator.show();
+            si.model.medusa.getToken({
+                card_id : cardId,
+                staff_id : staffId,
+                onsuccess : function(response) {
+                    Ti.App.Properties.setString('cardId', cardId);
+                    Ti.App.Properties.setString('staffId', staffId);
+                    Ti.App.Properties.setString('token', response.token);
+                    si.app.clearData();
+                    if (response.box_global_id){
+                        Ti.App.Properties.setString('current_box_global_id', response.box_global_id);
+                    } else {
+                        Ti.App.Properties.setString('current_box_global_id', null);
+                    }
+                    activityIndicator.hide();
+                    si.ui.alert_simple('Login successful');
+                    isDone = true;
+                    win.close();
+                },
+                onerror : function(e) {
+                    activityIndicator.hide();
+                    isDone = true;
+                    var _message = 'IC Card Login failed';
+                    si.ui.myAlert({message: _message});
+                    si.ui.showErrorDialog(_message);
+                }
+            });
+        };
+
         var table = Ti.UI.createScrollView({
             contentWidth: 'auto',
             contentHeight: 'auto',
@@ -191,6 +288,7 @@
         viewHeader.add(viewHeaderLeft);
         viewHeaderLeft.add(win.buttons.Close);        
         viewHeader.add(viewHeaderRight);
+        viewHeaderRight.add(win.buttons.FelicaLogin);
         viewHeaderRight.add(win.buttons.Save);
         viewBody.add(table);
         win.add(activityIndicator);
