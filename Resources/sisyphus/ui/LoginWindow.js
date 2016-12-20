@@ -123,8 +123,8 @@
             enabled: false
         });
 
-        var icCardInfo = Ti.UI.createTextField({
-            value : Ti.App.Properties.getString('staffId'),
+        var loginUserInfo = Ti.UI.createTextField({
+            value : Ti.App.Properties.getString('loginUsername'),
             passwordMask : false,
             width : '100%',
             enabled: false
@@ -153,6 +153,7 @@
                     Ti.App.Properties.setString('password', password.input.value);
                     Ti.App.Properties.setString('cardId', '');
                     Ti.App.Properties.setString('staffId', '');
+                    Ti.App.Properties.setString('loginUsername', response.username);
                     si.app.clearData();
                     if (response.box_global_id){
                         Ti.App.Properties.setString('current_box_global_id', response.box_global_id);
@@ -247,25 +248,36 @@
                     Ti.App.Properties.setString('cardId', cardId);
                     Ti.App.Properties.setString('staffId', staffId);
                     Ti.App.Properties.setString('token', response.token);
-                    si.app.clearData();
-                    if (response.box_global_id){
-                        Ti.App.Properties.setString('current_box_global_id', response.box_global_id);
-                    } else {
-                        Ti.App.Properties.setString('current_box_global_id', null);
-                    }
-                    activityIndicator.hide();
-                    si.ui.alert_simple('Login successful');
-                    isDone = true;
-                    win.close();
+                    si.model.medusa.getAccountInfo({
+                        onsuccess : function(response) {
+                            Ti.App.Properties.setString('loginUsername', response.username);
+                            si.app.clearData();
+                            if (response.box_global_id){
+                                Ti.App.Properties.setString('current_box_global_id', response.box_global_id);
+                            } else {
+                                Ti.App.Properties.setString('current_box_global_id', null);
+                            }
+                            activityIndicator.hide();
+                            win.close();
+                            isDone = true;
+                            _args.onsuccess();
+                        },
+                        onerror : function(e) {
+                            felicaLoginFail(e);
+                        }
+                    });
                 },
                 onerror : function(e) {
-                    activityIndicator.hide();
-                    isDone = true;
-                    var _message = 'IC Card Login failed';
-                    si.ui.myAlert({message: _message});
-                    si.ui.showErrorDialog(_message);
+                    felicaLoginFail(e);
                 }
             });
+        };
+
+        var felicaLoginFail = function(e) {
+            activityIndicator.hide();
+            isDone = true;
+            var _message = 'IC Card Login failed';
+            si.ui.showErrorDialog(_message);
         };
 
         var table = Ti.UI.createScrollView({
@@ -277,10 +289,10 @@
             layout : 'vertical'
         });
         table.add(si.ui.createInputRow("URL", server, {}));
+        table.add(si.ui.createInputRow("LoginUsername", loginUserInfo, {}));
+        table.add(si.ui.createInputRow("LoginType", loginTypeInfo, {}));
         table.add(si.ui.createInputRow("Username", username, {}));
         table.add(si.ui.createInputRow("Password", password, {}));
-        table.add(si.ui.createInputRow("LoginType", loginTypeInfo, {}));
-        table.add(si.ui.createInputRow("StaffID", icCardInfo, {}));
 
         win.add(viewBase);
         viewBase.add(viewHeader);

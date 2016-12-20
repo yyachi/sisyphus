@@ -81,7 +81,7 @@
                         //si.ui.alert_simple('print error : ' + e.error);
                         var windowLogin = si.ui.createLoginWindow({
                             onsuccess : function(){
-                                si.ui.myAlert({message: 'Login successfully'});
+                                si.ui.myAlert({message: 'Login successful with ' + Ti.App.Properties.getString('loginUsername')});
                             }
                         });
                         si.app.tabGroup.activeTab.open(windowLogin,{animated:true});
@@ -907,6 +907,7 @@
         };
 
        win.functions.clickLogoutButton = function () {
+           Ti.App.Properties.setString('loginUsername', '');
            Ti.App.Properties.setString('username', '');
            Ti.App.Properties.setString('password', '');
            Ti.App.Properties.setString('cardId', '');
@@ -914,7 +915,7 @@
            Ti.App.Properties.setString('token', '');
            var windowLogin = si.ui.createLoginWindow({
                onsuccess : function(){
-                   si.ui.myAlert({message: 'Login successfully'});
+                   si.ui.myAlert({message: 'Login successful with ' + Ti.App.Properties.getString('loginUsername')});
                }
            });
            si.app.tabGroup.activeTab.open(windowLogin,{animated:true});

@@ -138,7 +138,7 @@
 				case 'LogIn':
 					var windowLogin = si.ui.createLoginWindow({
 						onsuccess : function(){
-							si.ui.myAlert({message: 'Login successfully'});
+                                                    si.ui.myAlert({message: 'Login successful with ' + Ti.App.Properties.getString('loginUsername')});
 						}
 					});
 					si.app.tabGroup.activeTab.open(windowLogin,{animated:true});
@@ -309,8 +309,8 @@
 		}
 
 		function accountInfo(){
-			var username = Ti.App.Properties.getString('username');
-			if (username == null){
+			var username = Ti.App.Properties.getString('loginUsername');
+			if (username == null || username == ''){
 				username = 'Click to login.';
 			}
 			return username;
