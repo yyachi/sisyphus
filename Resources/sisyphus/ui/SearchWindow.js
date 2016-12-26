@@ -156,11 +156,15 @@
             } else {
                 for (var i = 0; i < response.length; i++) {
                     data = response[i];
-                    var name = data["name"];
-                    if (name.length <= 0) {
-                        name = '[no name]';
-                    }
-                    loadData = { name: { text: name }, description: { text: data.datum_attributes["description"] }, datum_type: { text: data.datum_type }, global_id: data.global_id };
+                    var name = data.name || '[no name]';
+                    var record_type = data.datum_attributes.physical_form_name || data.datum_attributes.box_type_name || '';
+                    loadData = {
+                        global_id: data.global_id,
+                        name: { text: name },
+                        global_id_text: { text: data.global_id },
+                        record_type: { text: record_type },
+                        picture: { image: si.imageURL(data.datum_attributes.primary_file_thumbnail_path) }
+                    };
                     loadDataSet.push(loadData);
                 }
                 try {
@@ -187,9 +191,18 @@
                 for (var i = 1; histories.isValidRow(); i++) {
                     var global_id = histories.fieldByName('global_id');
                     var name = histories.fieldByName('name');
-                    var datum_type = histories.fieldByName('datum_type');
-                    var description = histories.fieldByName('description');
-                    var record = { global_id: global_id, name: name, datum_type: datum_type, datum_attributes: { description: description } };
+                    var physical_form_name = histories.fieldByName('physical_form_name');
+                    var box_type_name = histories.fieldByName('box_type_name');
+                    var thumbnail_path = histories.fieldByName('thumbnail_path');
+                    var record = {
+                        global_id: global_id,
+                        name: name,
+                        datum_attributes: {
+                            physical_form_name: physical_form_name,
+                            box_type_name: box_type_name,
+                            primary_file_thumbnail_path: thumbnail_path
+                        }
+                    };
                     records.push(record);
                     histories.next();
                 }
@@ -239,29 +252,38 @@
             childTemplates: [
                 {
                     type: 'Ti.UI.Label',
-                    bindId: 'datum_type',
-                    properties: {
-                        color: 'gray',
-                        font: { fontFamily:'Arial', fontSize: '10dp' },
-                        right: '10dp', top: 0,
-                    }
-                },
-                {
-                    type: 'Ti.UI.Label',
                     bindId: 'name',
                     properties: {
                         color: 'gray',
                         font: { fontFamily:'Arial', fontSize: '20dp', fontWeight:'bold' },
-                        left: '0dp', top: 0,
+                        left: '0dp', top: '0dp',
                     }
                 },
                 {
                     type: 'Ti.UI.Label',
-                    bindId: 'description',
+                    bindId: 'global_id_text',
                     properties: {
                         color: 'gray',
                         font: { fontFamily:'Arial', fontSize: '14dp' },
                         left: '0dp', top: '25dp',
+                    }
+                },
+                {
+                    type: 'Ti.UI.Label',
+                    bindId: 'record_type',
+                    properties: {
+                        color: 'gray',
+                        font: { fontFamily:'Arial', fontSize: '10dp' },
+                        left: '0dp', top: '44dp',
+                    }
+                },
+                {
+                    type: 'Ti.UI.ImageView',
+                    bindId: 'picture',
+                    properties: {
+                        background: 'white',
+                        right: '10dp', top: 0,
+                        height: 120
                     }
                 }
             ]

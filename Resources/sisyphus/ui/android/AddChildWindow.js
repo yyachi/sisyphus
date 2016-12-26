@@ -791,11 +791,12 @@
                                 parent.global_id
                             );
                             si.sqlite.sisyphus.db.execute(
-                                'insert into histories (global_id, name, datum_type, description, loaded_at) values (?, ?, ?, ?, ?)',
+                                'insert into histories (global_id, name, physical_form_name, box_type_name, thumbnail_path, loaded_at) values (?, ?, ?, ?, ?, ?)',
                                 parent.global_id,
                                 parent.name,
-                                parent._className,
-                                parent['description'],
+                                parent.physical_form_name,
+                                parent.box_type_name,
+                                parent.thumbnail_path,
                                 Date.now()
                             );
                             var history = si.sqlite.sisyphus.db.execute(
