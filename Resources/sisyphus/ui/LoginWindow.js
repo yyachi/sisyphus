@@ -300,6 +300,9 @@
         viewHeader.add(viewHeaderLeft);
         viewHeaderLeft.add(win.buttons.Close);        
         viewHeader.add(viewHeaderRight);
+        if (!si.nfc.isEnabled()) {
+            win.buttons.FelicaLogin.setEnabled(false);
+        }
         viewHeaderRight.add(win.buttons.FelicaLogin);
         viewHeaderRight.add(win.buttons.Save);
         viewBody.add(table);
