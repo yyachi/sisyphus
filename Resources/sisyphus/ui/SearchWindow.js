@@ -35,6 +35,19 @@
            win.condition = condition.value;
            win.load();
         });
+        var timeout_id = null;
+        condition.addEventListener('change', function (e){
+           if (timeout_id !== null) {
+               clearTimeout(timeout_id);
+               timeout_id = null;
+           }
+           timeout_id = setTimeout(function() {
+               onSearchFlag = true;
+               page = 1;
+               win.condition = condition.value;
+               win.load();
+           }, 1000);
+        });
 
         win.dialogs = {};
         win.dialogs.historyClearedAlert = Ti.UI.createAlertDialog({
@@ -155,7 +168,7 @@
                 win.buttons.Next.enabled = false;
             }
             if (response.length <= 0) {
-                if (_args.type === 'Search') {
+                if (page > 1) {
                     alert('There are no more records.');
                 }
                 page--;
