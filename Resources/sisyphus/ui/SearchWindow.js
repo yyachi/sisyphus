@@ -23,11 +23,30 @@
         });
 
         var condition = Ti.UI.createTextField({
-          borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
-          text: win.condition,
-          top: 10,
-          width: '85%',
-          layout : 'horizontal'
+            borderStyle: Ti.UI.INPUT_BORDERSTYLE_ROUNDED,
+            text: win.condition,
+            top: 10,
+            width: '85%',
+            layout : 'horizontal'
+        });
+        condition.addEventListener('blur', function (e){
+           onSearchFlag = true;
+           page = 1;
+           win.condition = condition.value;
+           win.load();
+        });
+        var timeout_id = null;
+        condition.addEventListener('change', function (e){
+           if (timeout_id !== null) {
+               clearTimeout(timeout_id);
+               timeout_id = null;
+           }
+           timeout_id = setTimeout(function() {
+               onSearchFlag = true;
+               page = 1;
+               win.condition = condition.value;
+               win.load();
+           }, 1000);
         });
 
         win.dialogs = {};
@@ -149,7 +168,7 @@
                 win.buttons.Next.enabled = false;
             }
             if (response.length <= 0) {
-                if (_args.type === 'Search') {
+                if (page > 1) {
                     alert('There are no more records.');
                 }
                 page--;
