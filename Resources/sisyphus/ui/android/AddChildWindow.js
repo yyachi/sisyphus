@@ -296,8 +296,8 @@
         viewToolLeft.add(win.buttons.Home);
         viewToolLeft.add(win.buttons.Logout);
         viewToolLeft.add(win.buttons.ScanParent);
-        viewToolRight.add(win.buttons.Search);
-        viewToolRight.add(win.buttons.History);
+        viewToolLeft.add(win.buttons.Search);
+        viewToolLeft.add(win.buttons.History);
         viewToolRight.add(win.buttons.Print);
         viewToolRight.add(win.buttons.Camera);        
         //viewToolRight.add(win.buttons.Clip);

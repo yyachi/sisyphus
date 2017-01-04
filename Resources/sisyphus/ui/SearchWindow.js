@@ -116,14 +116,14 @@
         });
         win.buttons.Search.right = 0;
 
-        win.buttons.Next = Ti.UI.createButton({
-            title: 'next',
+        win.buttons.More = Ti.UI.createButton({
+            title: 'more',
             width: '75%',
             height: 100,
             bottom: 0
         });
 
-        win.buttons.Next.addEventListener('click',function(e)
+        win.buttons.More.addEventListener('click',function(e)
         {
             page++;
             condition.text = win.condition;
@@ -165,7 +165,7 @@
             var loadDataSet = [];
 
             if (response.length < PER_PAGE) {
-                win.buttons.Next.enabled = false;
+                win.buttons.More.enabled = false;
             }
             if (response.length <= 0) {
                 if (page > 1) {
@@ -196,7 +196,7 @@
 
         win.loadHistory = function() {
             isDone = false;
-            win.buttons.Next.enabled = true;
+            win.buttons.More.enabled = true;
             Ti.API.info('click');
 
             try {
@@ -236,7 +236,7 @@
 
         win.search = function(){
             isDone = false;
-            win.buttons.Next.enabled = true;
+            win.buttons.More.enabled = true;
             Ti.API.info('click');
 
             activityIndicator.show();
@@ -320,7 +320,7 @@
         });
 
         var sections = [];
-        var section = Ti.UI.createListSection({ headerTitle: 'Records', footerView: win.buttons.Next});
+        var section = Ti.UI.createListSection({ headerTitle: 'Records', footerView: win.buttons.More});
         section.setItems([]);
         sections.push(section);
         listView.setSections(sections);
