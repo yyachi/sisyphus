@@ -124,6 +124,11 @@
         client.open(method, url);
         var auth_text = '';
         var token = Ti.App.Properties.getString('token') || '';
+        if(!si.nfc.isEnabled()) {
+            Ti.App.Properties.setString('cardId', '');
+            Ti.App.Properties.setString('staffId', '');
+            Ti.App.Properties.setString('token', '');
+        }
         if(token.length > 0) {
             auth_text = 'Token ' + token;
         } else {
