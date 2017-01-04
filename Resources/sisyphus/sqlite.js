@@ -19,6 +19,6 @@ si.sqlite.Db = function(dbName, createSqlList) {
 
 si.sqlite.sisyphus = new si.sqlite.Db('sisyphus',
     [
-        'create table if not exists histories (global_id text, name text, datum_type text, loaded_at integer, description text)'
+        'create table if not exists histories (global_id text, name text, physical_form_name text, box_type_name text, thumbnail_path text, loaded_at integer)'
     ]
 );

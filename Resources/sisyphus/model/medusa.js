@@ -24,6 +24,8 @@
     var PATH_ACCOUNT_JSON = PATH_ACCOUNT + PATH_JSON;
     var PATH_CLASSIFICATION = '/classifications';
     var PATH_CLASSIFICATION_JSON = PATH_CLASSIFICATION + PATH_JSON;
+    var PATH_PHYSICAL_FORM = '/physical_forms';
+    var PATH_BOX_TYPE = '/box_types';
     var PATH_INVENTORY = '/inventory';
     var PATH_INVENTORY_JSON = PATH_INVENTORY + PATH_JSON;
     var PATH_TOKEN = '/tokens' + PATH_JSON;
@@ -219,7 +221,41 @@
                                     record.thumbnail_path = attachmentFile.thumbnail_path;
                                     record.tiny_path = attachmentFile.tiny_path;
                                 }
-                                _args.onsuccess(record);
+                                switch(record._className) {
+                                    case CLASSNAME_STONE:
+                                        si.model.medusa.getWithAuth({
+                                            args : _args.args,
+                                            path : PATH_PHYSICAL_FORM + '/' + record.physical_form_id + PATH_JSON,
+                                            username : _args.username,
+                                            password : _args.password,
+                                            onsuccess : function(response) {
+                                                record.physical_form_name = response.name;
+                                                _args.onsuccess(record)
+                                            },
+                                            onerror : function(){
+                                                _args.onsuccess(record)
+                                            }
+                                        });
+                                        break;
+                                    case CLASSNAME_BOX:
+                                        si.model.medusa.getWithAuth({
+                                            args : _args.args,
+                                            path : PATH_BOX_TYPE + '/' + record.box_type_id + PATH_JSON,
+                                            username : _args.username,
+                                            password : _args.password,
+                                            onsuccess : function(response) {
+                                                record.box_type_name = response.name;
+                                                _args.onsuccess(record)
+                                            },
+                                            onerror : function(){
+                                                _args.onsuccess(record)
+                                            }
+                                        });
+                                        break;
+                                    default:
+                                        _args.onsuccess(record)
+                                        break;
+                                }
                             }
                         });
                     }
