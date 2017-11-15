@@ -22,6 +22,8 @@
 		var index_account = findIndex('LogIn');
 		var index_print_server = findIndex('PrintServer');
 		var index_print_format_url = findIndex('PrintFormatUrl');
+		var index_printer_name = findIndex('PrinterName');
+		var index_template_name = findIndex('TemplateName');
 		var index_home = findIndex('ScanToLoad');
 		var index_print_label = findIndex('PrintLabel');
 		var index_scan_camera = findIndex('ScanCamera');
@@ -154,6 +156,14 @@
 					var windowsPrintFormatUrlSetting = si.ui.createPrintFormatUrlSettingWindow();
 					si.app.tabGroup.activeTab.open(windowsPrintFormatUrlSetting,{animated:true});
 					break;
+				case 'PrinterName':
+					var windowsPrinterNameSetting = si.ui.createPrinterNameSettingWindow();
+					si.app.tabGroup.activeTab.open(windowsPrinterNameSetting,{animated:true});
+					break;
+				case 'TemplateName':
+					var windowsTemplateNameSetting = si.ui.createTemplateNameSettingWindow();
+					si.app.tabGroup.activeTab.open(windowsTemplateNameSetting,{animated:true});
+					break;
 				case 'ScanToLoad':
 					// var w = si.ui.createInputOrScanWindow({
                     // title: 'Home setting',
@@ -232,10 +242,22 @@
 			font : font,			
 			text : 'Template'
 		});
+		var label_printer_name = Ti.UI.createLabel({
+			left : 10,
+			font : font,			
+			text : 'PrinterName'
+		});
+		var label_template_name = Ti.UI.createLabel({
+			left : 10,
+			font : font,			
+			text : 'TemplateName'
+		});
 
 		view_label_print_base.add(label_print_status);
 		view_label_print_base.add(label_print_server);				
 		view_label_print_base.add(label_template);				
+		view_label_print_base.add(label_printer_name);
+		view_label_print_base.add(label_template_name);
 		tableView.data[index_print_label].rows[0].add(view_label_print_base);
 
 
@@ -285,6 +307,8 @@
 	    	label_print_status.text = LabelPrintStatus();
 	    	label_print_server.text = printServerInfo();
 	    	label_template.text = printFormatUrlInfo();
+	    	label_printer_name.text = printerNameInfo();
+	    	label_template_name.text = TemplateNameInfo();
 	    	label_barcode_reader.text = ScanCameraInfo();
             label_tag_reader.text = TagReaderInfo();
             label_tag_writer.text = TagWriterInfo();
@@ -329,6 +353,22 @@
 		function printFormatUrlInfo(){
             var printFormatUrl = Ti.App.Properties.getString('printFormatUrl');
             return printFormatUrl;
+		};
+
+		function printerNameInfo(){
+			var printerName = Ti.App.Properties.getString('printerName');
+			if (printerName == null || printerName == ''){
+				printerName = '[Select printer name.]';
+			}
+			return printerName;
+		};
+
+		function TemplateNameInfo(){
+			var templateName = Ti.App.Properties.getString('templateName');
+			if (templateName == null || templateName == ''){
+				templateName = '[Select template name.]';
+			}
+			return templateName;
 		};
 
 		function ScanCameraInfo(){

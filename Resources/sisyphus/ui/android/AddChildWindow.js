@@ -70,6 +70,12 @@
                         if (si.app.box_types() == null){
                             si.app.getBoxTypes();
                         }
+                        if (si.app.printer_names() == null){
+                            si.app.getPrinterNames();
+                        }
+                        if (si.app.template_names() == null){
+                            si.app.getTemplateNames();
+                        }
 
  
                         win.functions.refresh();

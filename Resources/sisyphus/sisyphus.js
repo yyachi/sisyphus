@@ -187,6 +187,69 @@ var si = {};
         });
     };
 
+    si.app.printer_names = function(){
+        return Ti.App.Properties.getList("printer_names", null);
+    };
+    si.app.getPrinterNames = function(){
+        Ti.API.info('si.app.getPrinterNames');
+
+        var client = Ti.Network.createHTTPClient();
+        client.onload = function(){
+            var data = [];
+            var printers = JSON.parse(this.responseText);
+            for(var i=0; i<printers.length; i++){
+               data.push({"title":printers[i].name,"id":i});
+            }
+            Ti.App.Properties.setList("printer_names", data);
+        }
+
+        var printServer = Ti.App.Properties.getString('printServer');
+        var url = printServer;
+        if (printServer.match(/^\w+:\/\//) == null) {
+            url = 'http://' + url;
+        }
+
+        if (printServer.match(/\/$/) == null) {
+            url = url + '/';
+        }
+        url += 'printers.json';
+        Ti.API.info('url:' + url);
+
+        client.open('GET', url);
+        client.send();
+    };
+
+    si.app.template_names = function(){
+        return Ti.App.Properties.getList("template_names", null);
+    };
+    si.app.getTemplateNames = function(){
+        Ti.API.info('si.app.getTemplateNames');
+
+        var client = Ti.Network.createHTTPClient();
+        client.onload = function(){
+            var data = [];
+            var templates = JSON.parse(this.responseText);
+            for(var i=0; i<templates.length; i++){
+               data.push({"title":templates[i].name,"id":i});
+            }
+            Ti.App.Properties.setList("template_names", data);
+        }
+
+        var printServer = Ti.App.Properties.getString('printServer');
+        var url = printServer;
+        if (printServer.match(/^\w+:\/\//) == null) {
+            url = 'http://' + url;
+        }
+
+        if (printServer.match(/\/$/) == null) {
+            url = url + '/';
+        }
+        url += 'templates.json';
+        Ti.API.info('url:' + url);
+
+        client.open('GET', url);
+        client.send();
+    };
 
     var empty = {};
     function mixin(/*Object*/target, /*Object*/source) {

@@ -94,6 +94,8 @@
             hintText : 'input template file URL',            
         }));
 
+        var printer_name = si.ui.createPickerInput(si.app.printer_names(), Ti.App.Properties.getString('printerNameID'));
+        var template_name = si.ui.createPickerInput(si.app.template_names(), Ti.App.Properties.getString('templateNameID'));
 
         var printtext = si.ui.createInputPrint(si.combine($$.TextField, {
             //width: '50%',
@@ -104,9 +106,22 @@
         }));
 
         win.save = function(){
+            var print_server_bak = Ti.App.Properties.getString('printServer');
+
             Ti.App.Properties.setString('printServer',server.input.value);
             Ti.App.Properties.setString('printFormatUrl',template.input.value);
+            Ti.App.Properties.setString('printerName',printer_name.getSelectedRow(0).title);
+            Ti.App.Properties.setString('printerNameID',printer_name.getSelectedRow(0).id);
+            Ti.App.Properties.setString('templateName',template_name.getSelectedRow(0).title);
+            Ti.App.Properties.setString('templateNameID',template_name.getSelectedRow(0).id);
             win.close();
+
+            if (print_server_bak != Ti.App.Properties.getString('printServer')) {
+               Ti.App.Properties.setList("printer_names", null);
+               si.app.getPrinterNames();
+               Ti.App.Properties.setList("template_names", null);
+               si.app.getTemplateNames();
+            }
         };
 
 
@@ -116,6 +131,26 @@
         viewHeader.add(viewHeaderLeft);
         viewHeaderLeft.add(win.buttons.Close);        
         viewHeader.add(viewHeaderRight);
+        win.buttons.Print = si.ui.createImageButtonView('/images/glyphicons-16-print.png', {
+            width : 90,
+            height : 90,
+            imgDimensions : 30,
+            onclick : function(e) {
+                var _message = 'test print...test print...label...';
+                si.app.log.info(_message + 'sending...ok');
+                _message += 'creating...';
+                si.ui.android.testPrintLabel('test print', 'test print', server.input.value, template.input.value, printer_name.getSelectedRow(0).title, template_name.getSelectedRow(0).title, {
+                    onsuccess: function(e){
+                        si.sound_label.play();
+                        si.app.log.info(_message + 'ok');
+                    },
+                    onerror: function(e){
+                        changeMode('error',_message);
+                    }
+                });
+            }
+        });
+        viewHeaderRight.add(win.buttons.Print);
         viewHeaderRight.add(win.buttons.Save);
 
         // win.add(viewBase);
@@ -133,6 +168,8 @@
         table.add(si.ui.createInputRow("ON/OFF", statusSwitch, {}));
         table.add(si.ui.createInputRow("URL", server, {}));
         table.add(si.ui.createInputRow("Template", template, {}));
+        table.add(si.ui.createInputRow("PrinterName", printer_name, {}));
+        table.add(si.ui.createInputRow("TemplateName", template_name, {}));
         viewBody.add(table);
         // viewBody.add(Ti.UI.createLabel({left: 5, text: 'ON/OFF'}));
         // viewStatus.add(statusSwitch);
@@ -148,6 +185,9 @@
 
         win.server = server;
         win.template = template;
+        win.printer_name = printer_name;
+        win.template_name = template_name;
+        win.print_button = win.buttons.Print;
         win.save_button = win.buttons.Save;
         return win;
     };
