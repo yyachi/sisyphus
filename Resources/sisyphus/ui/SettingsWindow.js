@@ -230,34 +230,39 @@
 		var label_print_status = Ti.UI.createLabel({
 			left : 10,
 			font : font,			
-			text : 'Status'
+			text : null
 		});
 		var label_print_server = Ti.UI.createLabel({
 			left : 10,
 			font : font,			
-			text : 'URL'
+			text : null
 		});
 		var label_template = Ti.UI.createLabel({
 			left : 10,
 			font : font,			
-			text : 'Template'
+			text : null
 		});
 		var label_printer_name = Ti.UI.createLabel({
 			left : 10,
 			font : font,			
-			text : 'PrinterName'
+			text : null
 		});
 		var label_template_name = Ti.UI.createLabel({
 			left : 10,
 			font : font,			
-			text : 'TemplateName'
+			text : null
 		});
+		var label_print_status_row = si.ui.createInputRow('Print label:', label_print_status);
+		var label_print_server_row = si.ui.createInputRow('Print server:', label_print_server);
+		var label_template_row = si.ui.createInputRow('Print format URL:', label_template);
+		var label_printer_name_row = si.ui.createInputRow('Printer name:', label_printer_name);
+		var label_template_name_row = si.ui.createInputRow('Template name:', label_template_name);
 
-		view_label_print_base.add(label_print_status);
-		view_label_print_base.add(label_print_server);				
-		view_label_print_base.add(label_template);				
-		view_label_print_base.add(label_printer_name);
-		view_label_print_base.add(label_template_name);
+		view_label_print_base.add(label_print_status_row);
+		view_label_print_base.add(label_print_server_row);
+		view_label_print_base.add(label_template_row);
+		view_label_print_base.add(label_printer_name_row);
+		view_label_print_base.add(label_template_name_row);
 		tableView.data[index_print_label].rows[0].add(view_label_print_base);
 
 
@@ -358,7 +363,7 @@
 		function printerNameInfo(){
 			var printerName = Ti.App.Properties.getString('printerName');
 			if (printerName == null || printerName == ''){
-				printerName = '[Select printer name.]';
+				printerName = 'default';
 			}
 			return printerName;
 		};
@@ -366,7 +371,7 @@
 		function TemplateNameInfo(){
 			var templateName = Ti.App.Properties.getString('templateName');
 			if (templateName == null || templateName == ''){
-				templateName = '[Select template name.]';
+				templateName = 'default';
 			}
 			return templateName;
 		};
