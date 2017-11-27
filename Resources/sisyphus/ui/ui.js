@@ -748,6 +748,8 @@
         //Ti.API.info(client);
         //var printServer = Ti.App.Properties.getString('printServer');
         var formatArchiveUrl = Ti.App.Properties.getString('printFormatUrl');
+        var printerName = Ti.App.Properties.getString('printerName')
+        var templateName = Ti.App.Properties.getString('templateName')
         var myAppDir = Ti.Filesystem.getFile(Ti.Filesystem.externalStorageDirectory);
         var sdcardDir = myAppDir.getParent();
         //Ti.API.info('sdcardDir : ' + sdcardDir.nativePath);
@@ -760,8 +762,57 @@
         url += '&UID=' + _global_id;
 //        url += '&UID_QRCODE=' + _global_id;
         url += '&NAME=' + _name;
+        if (printerName != null && printerName != '') {
+           url += '&printer=' + printerName;
+        }
+        if (templateName != null && templateName != '') {
+           url += '&template=' + templateName;
+        }
         url += '&SET=1';
 //        url += '&(発行枚数)=1';
+        Ti.API.info('url:' + url);
+
+        client.open('GET', url);
+        client.send();
+    };
+
+    si.ui.android.testPrintLabel = function(_global_id, _name, _print_server, _print_format_url, _printer_name, _template_name, _args) {
+        if (!Ti.App.Properties.getBool('printLabel')){
+            return;
+        }
+        Ti.API.info('testPrintLabel in ');
+        var client = Ti.Network.createHTTPClient({
+            onload : function(e) {
+                Ti.API.info('print global_id : ' + _global_id + ' name : ' + _name);
+                Ti.API.info('onload'); 
+                _args.onsuccess(e);
+            },
+            onerror : function(e) {
+                Ti.API.info('onerror');
+                _args.onerror(e);
+            },
+            timeout : 15000 // in milliseconds
+        });
+        var url = _print_server;
+        if (_print_server.match(/^\w+:\/\//) == null) {
+            url = 'http://' + url;
+        }
+
+        if (_print_server.match(/\/$/) == null) {
+            url = url + '/';
+        }
+        url += 'Format/Print?';
+        url += '__format_archive_url=' + _print_format_url;
+        url += '&__format_id_number=1';
+        url += '&UID=' + _global_id;
+        url += '&NAME=' + _name;
+        if (_printer_name != null && _printer_name != '') {
+           url += '&printer=' + _printer_name;
+        }
+        if (_template_name != null && _template_name != '') {
+           url += '&template=' + _template_name;
+        }
+        url += '&SET=1';
         Ti.API.info('url:' + url);
 
         client.open('GET', url);
