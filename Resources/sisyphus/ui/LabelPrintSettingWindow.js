@@ -118,16 +118,19 @@
             Ti.App.Properties.setString('printServer',server.input.value);
             Ti.App.Properties.setString('printFormatUrl',template.input.value);
 
-            var _printer_name, _printer_id;
+            var _printer_name, _printer_id, _printer_title;
             if (printer_name.getSelectedRow(0) == null) {
                 _printer_name = null;
                 _printer_id = null;
+                _printer_title = null;
             } else {
-                _printer_name = printer_name.getSelectedRow(0).title;
+                _printer_name = printer_name.getSelectedRow(0).name;
                 _printer_id = printer_name.getSelectedRow(0).id;
+                _printer_title = printer_name.getSelectedRow(0).title;
             }
             Ti.App.Properties.setString('printerName',_printer_name);
             Ti.App.Properties.setString('printerNameID',_printer_id);
+            Ti.App.Properties.setString('printerNameTitle',_printer_title);
 
             var _template_name, _template_id;
             if (template_name.getSelectedRow(0) == null) {
@@ -158,7 +161,7 @@
             if (printer_name.getSelectedRow(0) == null) {
                 _printer_name = null;
             } else {
-                _printer_name = printer_name.getSelectedRow(0).title;
+                _printer_name = printer_name.getSelectedRow(0).name;
             }
             var _template_name;
             if (template_name.getSelectedRow(0) == null) {

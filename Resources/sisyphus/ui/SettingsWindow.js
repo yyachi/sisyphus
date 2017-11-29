@@ -361,7 +361,7 @@
 		};
 
 		function printerNameInfo(){
-			var printerName = Ti.App.Properties.getString('printerName');
+			var printerName = Ti.App.Properties.getString('printerNameTitle');
 			if (printerName == null || printerName == ''){
 				printerName = 'default';
 			}
