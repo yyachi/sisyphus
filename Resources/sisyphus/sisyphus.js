@@ -198,7 +198,11 @@ var si = {};
             var data = [];
             var printers = JSON.parse(this.responseText);
             for(var i=0; i<printers.length; i++){
-               data.push({"title":printers[i].name,"id":i});
+               var title = printers[i].nickname;
+               if (title == null || title == '') {
+                   title = printers[i].name;
+               }
+               data.push({"title":title,"id":i,"name":printers[i].name,"nickname":printers[i].nickname});
             }
             Ti.App.Properties.setList("printer_names", data);
         }
