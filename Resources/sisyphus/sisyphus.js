@@ -206,6 +206,9 @@ var si = {};
             }
             Ti.App.Properties.setList("printer_names", data);
         }
+        client.onerror = function(){
+            Ti.App.Properties.setList("printer_names", null);
+        }
 
         var printServer = Ti.App.Properties.getString('printServer');
         var url = printServer;
@@ -237,6 +240,9 @@ var si = {};
                data.push({"title":templates[i].name,"id":i});
             }
             Ti.App.Properties.setList("template_names", data);
+        }
+        client.onerror = function(){
+            Ti.App.Properties.setList("template_names", null);
         }
 
         var printServer = Ti.App.Properties.getString('printServer');

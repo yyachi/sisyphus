@@ -748,8 +748,8 @@
         //Ti.API.info(client);
         //var printServer = Ti.App.Properties.getString('printServer');
         var formatArchiveUrl = Ti.App.Properties.getString('printFormatUrl');
-        var printerName = Ti.App.Properties.getString('printerName')
-        var templateName = Ti.App.Properties.getString('templateName')
+        var printerName = Ti.App.Properties.getString('printerName');
+        var templateName = Ti.App.Properties.getString('templateName');
         var myAppDir = Ti.Filesystem.getFile(Ti.Filesystem.externalStorageDirectory);
         var sdcardDir = myAppDir.getParent();
         //Ti.API.info('sdcardDir : ' + sdcardDir.nativePath);

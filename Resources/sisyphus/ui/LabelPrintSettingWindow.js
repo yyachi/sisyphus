@@ -123,6 +123,10 @@
                 _printer_name = null;
                 _printer_id = null;
                 _printer_title = null;
+            } else if (printer_name.getSelectedRow(0).id == null) {
+                _printer_name = printer_name.getSelectedRow(0).title;
+                _printer_id = printer_name.getSelectedRow(0).id;
+                _printer_title = printer_name.getSelectedRow(0).title;
             } else {
                 _printer_name = printer_name.getSelectedRow(0).name;
                 _printer_id = printer_name.getSelectedRow(0).id;
@@ -160,6 +164,8 @@
             var _printer_name;
             if (printer_name.getSelectedRow(0) == null) {
                 _printer_name = null;
+            } else if (printer_name.getSelectedRow(0).id == null) {
+                _printer_name = printer_name.getSelectedRow(0).title;
             } else {
                 _printer_name = printer_name.getSelectedRow(0).name;
             }
@@ -205,8 +211,10 @@
         table.add(si.ui.createInputRow("ON/OFF", statusSwitch, {}));
         table.add(si.ui.createInputRow("URL", server, {}));
         table.add(si.ui.createInputRow("Template", template, {}));
-        table.add(si.ui.createInputRow("PrinterName", printer_name, {}));
-        table.add(si.ui.createInputRow("TemplateName", template_name, {}));
+        var printer_name_row = si.ui.createInputRow("PrinterName", printer_name, {});
+        table.add(printer_name_row);
+        var template_name_row = si.ui.createInputRow("TemplateName", template_name, {});
+        table.add(template_name_row);
         viewBody.add(table);
         // viewBody.add(Ti.UI.createLabel({left: 5, text: 'ON/OFF'}));
         // viewStatus.add(statusSwitch);
@@ -226,6 +234,90 @@
         win.template_name = template_name;
         win.print_button = win.buttons.Print;
         win.save_button = win.buttons.Save;
+
+        var input_server_bak = Ti.App.Properties.getString('printServer');
+        var reflectPrintServer = function() {
+            if (server.input.value != input_server_bak) {
+                var client_p = Ti.Network.createHTTPClient();
+                client_p.onload = function(){
+                    var data_p = [];
+                    var printers = JSON.parse(this.responseText);
+                    for(var i=0; i<printers.length; i++){
+                        var title = printers[i].nickname;
+                        if (title == null || title == '') {
+                            title = printers[i].name;
+                        }
+                        data_p.push({"title":title,"id":i,"name":printers[i].name,"nickname":printers[i].nickname});
+                    }
+                    printer_name_row.remove(printer_name);
+                    printer_name = si.ui.createPickerInput(data_p, null);
+                    printer_name_row.add(printer_name);
+                    win.printer_name = printer_name;
+                }
+                client_p.onerror = function(){
+                    printer_name_row.remove(printer_name);
+                    printer_name = si.ui.createPickerInput(null, null);
+                    printer_name_row.add(printer_name);
+                    win.printer_name = printer_name;
+                }
+                var url_p = server.input.value;
+                if (server.input.value.match(/^\w+:\/\//) == null) {
+                    url_p = 'http://' + url_p;
+                }
+                if (server.input.value.match(/\/$/) == null) {
+                    url_p = url_p + '/';
+                }
+                url_p += 'printers.json';
+                Ti.API.info('url:' + url_p);
+                client_p.open('GET', url_p);
+                client_p.timeout = 3000;
+                client_p.send();
+
+                var client_t = Ti.Network.createHTTPClient();
+                client_t.onload = function(){
+                    var data_t = [];
+                    var templates = JSON.parse(this.responseText);
+                    for(var i=0; i<templates.length; i++){
+                       data_t.push({"title":templates[i].name,"id":i});
+                    }
+                    template_name_row.remove(template_name);
+                    template_name = si.ui.createPickerInput(data_t, null);
+                    template_name_row.add(template_name);
+                    win.template_name = template_name;
+                }
+                client_t.onerror = function(){
+                    template_name_row.remove(template_name);
+                    template_name = si.ui.createPickerInput(null, null);
+                    template_name_row.add(template_name);
+                    win.template_name = template_name;
+                }
+                var url_t = server.input.value;
+                if (server.input.value.match(/^\w+:\/\//) == null) {
+                    url_t = 'http://' + url_t;
+                }
+                if (server.input.value.match(/\/$/) == null) {
+                    url_t = url_t + '/';
+                }
+                url_t += 'templates.json';
+                Ti.API.info('url:' + url_t);
+                client_t.open('GET', url_t);
+                client_t.timeout = 3000;
+                client_t.send();
+
+                input_server_bak = server.input.value;
+            }
+        }
+
+        win.server.input.addEventListener('blur', function(e){
+            reflectPrintServer();
+        });
+        printer_name_row.addEventListener('click', function(e){
+            reflectPrintServer();
+        });
+        template_name_row.addEventListener('click', function(e){
+            reflectPrintServer();
+        });
+
         return win;
     };
 })(); 
