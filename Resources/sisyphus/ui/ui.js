@@ -430,7 +430,11 @@
             view.add(selectPhotoView);
 
             view.image = _image;
-        }
+        };
+
+        view.showCamera = function() {
+	    optionDialog.fireEvent('click', { index: 0 });
+        };
 
         return view;
     };

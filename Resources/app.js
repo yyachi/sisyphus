@@ -60,6 +60,9 @@ if (Ti.App.Properties.getInt('tagReader') == null) {
 if (Ti.App.Properties.getInt('tagWriter') == null) {
     Ti.App.Properties.setInt('tagWriter', si.config.Medusa.tagWriter);
 }
+if (Ti.App.Properties.getInt('newStone') == null) {
+    Ti.App.Properties.setInt('newStone', si.config.Medusa.newStone);
+}
 if (Ti.App.Properties.getString('scanditsdk_app_key') == null) {
     Ti.App.Properties.setString('scanditsdk_app_key', si.config.BarcodeReader.scanditsdk_app_key);
 }
