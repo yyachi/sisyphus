@@ -780,7 +780,7 @@
         client.send();
     };
 
-    si.ui.android.testPrintLabel = function(_global_id, _name, _print_server, _print_format_url, _printer_name, _template_name, _args) {
+    si.ui.android.testPrintLabel = function(_global_id, _name, _print_server, _print_format_url, _printer_name, _template_name, _timeout, _args) {
         if (!Ti.App.Properties.getBool('printLabel')){
             return;
         }
@@ -795,7 +795,7 @@
                 Ti.API.info('onerror');
                 _args.onerror(e);
             },
-            timeout : 15000 // in milliseconds
+            timeout : _timeout * 1000 // in milliseconds
         });
         var url = _print_server;
         if (_print_server.match(/^\w+:\/\//) == null) {
