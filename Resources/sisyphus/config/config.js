@@ -12,7 +12,8 @@
 		tagReader: 0,//0 for Rear camera (default), 1 for Front camera, 2 for NFC reader
 		tagWriter: 0,//0 for Label printer(default), 1 for NFC writer
                 newStone: 0,//0 Input attributes, 1 Show camera
-		printLabel: false, //0 for does not print label, 1 for print label		
+                printLabel: false, //0 for does not print label, 1 for print label
+                printTimeout: 15, //15 for timeout of print label. [seconds]
 		debug: false,
 		test: true
 	};

@@ -747,7 +747,7 @@
                 //si.ui.alert_simple('print error : ' + e.error);
                 _args.onerror(e);
             },
-            timeout : 15000 // in milliseconds
+            timeout : Ti.App.Properties.getInt('printTimeout') * 1000 // in milliseconds
         });
         //Ti.API.info(client);
         //var printServer = Ti.App.Properties.getString('printServer');

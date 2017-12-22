@@ -273,17 +273,24 @@
 			font : font,			
 			text : null
 		});
+		var label_timeout = Ti.UI.createLabel({
+			left : 10,
+			font : font,
+			text : null
+		});
 		var label_print_status_row = si.ui.createInputRow('Print label:', label_print_status);
 		var label_print_server_row = si.ui.createInputRow('Print server:', label_print_server);
 		var label_template_row = si.ui.createInputRow('Print format URL:', label_template);
 		var label_printer_name_row = si.ui.createInputRow('Printer name:', label_printer_name);
 		var label_template_name_row = si.ui.createInputRow('Template name:', label_template_name);
+		var label_timeout_row = si.ui.createInputRow('Timeout[s]:', label_timeout);
 
 		view_label_print_base.add(label_print_status_row);
 		view_label_print_base.add(label_print_server_row);
 		view_label_print_base.add(label_template_row);
 		view_label_print_base.add(label_printer_name_row);
 		view_label_print_base.add(label_template_name_row);
+		view_label_print_base.add(label_timeout_row);
 		tableView.data[index_print_label].rows[0].add(view_label_print_base);
 
 
@@ -347,6 +354,7 @@
 	    	label_template.text = printFormatUrlInfo();
 	    	label_printer_name.text = printerNameInfo();
 	    	label_template_name.text = TemplateNameInfo();
+                label_timeout.text = printTimeoutInfo();
 	    	label_barcode_reader.text = ScanCameraInfo();
                 label_tag_reader.text = TagReaderInfo();
                 label_tag_writer.text = TagWriterInfo();
@@ -408,6 +416,10 @@
 				templateName = 'default';
 			}
 			return templateName;
+		};
+		function printTimeoutInfo(){
+                     var printTimeout = Ti.App.Properties.getString('printTimeout');
+                     return printTimeout;
 		};
 
 		function ScanCameraInfo(){

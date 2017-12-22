@@ -51,6 +51,9 @@ if (Ti.App.Properties.getString('printServer') == null) {
 if (Ti.App.Properties.getString('printFormatUrl') == null) {
     Ti.App.Properties.setString('printFormatUrl', si.config.Medusa.defaultPrintFormatUrl);
 }
+if (Ti.App.Properties.getString('printTimeout') == null) {
+    Ti.App.Properties.setString('printTimeout', si.config.Medusa.printTimeout);
+}
 if (Ti.App.Properties.getInt('facing') == null) {
     Ti.App.Properties.setInt('facing', si.config.Medusa.facing);
 }
