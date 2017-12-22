@@ -16,7 +16,8 @@
 			{title:'----', hasChild:false, target:'BarcodeReader', header: 'Barcode reader', font: font},
 			//{title:'----', hasChild:false, target:'ScanCamera', header: 'Barcode reader', font: font}
 			{title: '----', hasChild: false, target: 'TagReader', header: 'Tag reader', font: font},
-			{title: '----', hasChild: false, target: 'TagWriter', header: 'Tag writer', font: font}
+		        {title: '----', hasChild: false, target: 'TagWriter', header: 'Tag writer', font: font},
+			{title: '----', hasChild: false, target: 'NewStone', header: 'New stone', font: font}
 		];
 		var index_medusa_server = findIndex('Server');
 		var index_account = findIndex('LogIn');
@@ -30,6 +31,7 @@
 		var index_barcode_reader = findIndex('BarcodeReader');		
 		var index_tag_reader = findIndex('TagReader');
 		var index_tag_writer = findIndex('TagWriter');
+		var index_new_stone = findIndex('NewStone');
 
 		var tableViewOptions = {
 				data:data,
@@ -128,6 +130,22 @@
             };
             label_tag_writer.text = TagWriterInfo();
         });
+        var optionDialogForNewStone = Ti.UI.createOptionDialog({
+            options : ['input', 'camera'],
+            selectedIndex: Ti.App.Properties.getInt('newStone'),
+            title : 'New stone'
+        });
+        optionDialogForNewStone.addEventListener('click', function(e) {
+            switch (e.index) {
+                case 0:
+                case 1:
+	            Ti.App.Properties.setInt('newStone', e.index);
+                    break;
+                default:
+                    break;
+            };
+	    label_new_stone.text = NewStoneInfo();
+        });
 
 		var tableView = Ti.UI.createTableView(tableViewOptions);
 		tableView.addEventListener('click', function(e){
@@ -202,6 +220,9 @@
 					break;
 				    // optionDialogForPrintLabel.show();
 					// break;
+				case 'NewStone':
+					optionDialogForNewStone.show();
+					break;
 				default:
 					break;
 			}
@@ -252,17 +273,24 @@
 			font : font,			
 			text : null
 		});
+		var label_timeout = Ti.UI.createLabel({
+			left : 10,
+			font : font,
+			text : null
+		});
 		var label_print_status_row = si.ui.createInputRow('Print label:', label_print_status);
 		var label_print_server_row = si.ui.createInputRow('Print server:', label_print_server);
 		var label_template_row = si.ui.createInputRow('Print format URL:', label_template);
 		var label_printer_name_row = si.ui.createInputRow('Printer name:', label_printer_name);
 		var label_template_name_row = si.ui.createInputRow('Template name:', label_template_name);
+		var label_timeout_row = si.ui.createInputRow('Timeout[s]:', label_timeout);
 
 		view_label_print_base.add(label_print_status_row);
 		view_label_print_base.add(label_print_server_row);
 		view_label_print_base.add(label_template_row);
 		view_label_print_base.add(label_printer_name_row);
 		view_label_print_base.add(label_template_name_row);
+		view_label_print_base.add(label_timeout_row);
 		tableView.data[index_print_label].rows[0].add(view_label_print_base);
 
 
@@ -306,6 +334,18 @@
 		tableView.data[index_tag_writer].rows[0].add(view_tag_writer_base);
 		win.add(tableView);
 
+		var view_new_stone_base = Ti.UI.createView({
+			layout : 'vertical'
+		});
+		var label_new_stone = Ti.UI.createLabel({
+			left : 10,
+			font : font,
+			text : 'NewStone'
+		});
+		view_new_stone_base.add(label_new_stone);
+		tableView.data[index_new_stone].rows[0].add(view_new_stone_base);
+		win.add(tableView);
+
 	    win.addEventListener('focus', function (e) {
 	    	label_server.text = serverInfo();
 	    	label_account.text = accountInfo();
@@ -314,9 +354,11 @@
 	    	label_template.text = printFormatUrlInfo();
 	    	label_printer_name.text = printerNameInfo();
 	    	label_template_name.text = TemplateNameInfo();
+                label_timeout.text = printTimeoutInfo();
 	    	label_barcode_reader.text = ScanCameraInfo();
-            label_tag_reader.text = TagReaderInfo();
-            label_tag_writer.text = TagWriterInfo();
+                label_tag_reader.text = TagReaderInfo();
+                label_tag_writer.text = TagWriterInfo();
+	        label_new_stone.text = NewStoneInfo();
 	    	//tableView.data[index_medusa_server].rows[0].title = serverInfo();
 		   	//tableView.data[index_account].rows[0].title = accountInfo();
 		   	//tableView.data[index_print_server].rows[0].title = printServerInfo();		   	
@@ -375,6 +417,10 @@
 			}
 			return templateName;
 		};
+		function printTimeoutInfo(){
+                     var printTimeout = Ti.App.Properties.getString('printTimeout');
+                     return printTimeout;
+		};
 
 		function ScanCameraInfo(){
 			var facing = Ti.App.Properties.getInt('facing');
@@ -402,6 +448,15 @@
 				return 'NFC writer';
 			} else {
 				return 'Label printer';
+			}
+		}
+
+	        function NewStoneInfo() {
+		        var newStone = Ti.App.Properties.getInt('newStone');
+		        if (newStone == 1) {
+			        return 'Show camera';
+			} else {
+			        return 'Input attribute';
 			}
 		}
 

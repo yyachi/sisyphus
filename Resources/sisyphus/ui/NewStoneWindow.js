@@ -121,6 +121,12 @@
             layout : 'vertical'
         });
 
+        win.addEventListener('open', function(e) {
+            if (Ti.App.Properties.getInt('newStone') == 1) {
+                myImageView.showCamera();
+	    }
+        });
+
         if (!Ti.App.Properties.getBool('printLabel')){
             table.add(si.ui.createInputRow("ID", win.fields.ID, {}));
         }

@@ -103,6 +103,13 @@
 
         var printer_name = si.ui.createPickerInput(si.app.printer_names(), Ti.App.Properties.getString('printerNameID'));
         var template_name = si.ui.createPickerInput(si.app.template_names(), Ti.App.Properties.getString('templateNameID'));
+        var timeout = Ti.UI.createTextField({
+            value : Ti.App.Properties.getString('printTimeout'),
+            width : '100%',
+            keyboardType : Ti.UI.KEYBOARD_NUMBER_PAD,
+            hintText : 'input seconds for timeout'
+        });
+
 
         var printtext = si.ui.createInputPrint(si.combine($$.TextField, {
             //width: '50%',
@@ -147,6 +154,7 @@
             Ti.App.Properties.setString('templateName',_template_name);
             Ti.App.Properties.setString('templateNameID',_template_id);
 
+            Ti.App.Properties.setString('printTimeout',timeout.value);
             win.close();
  
             if (print_server_bak != Ti.App.Properties.getString('printServer')) {
@@ -215,6 +223,7 @@
         table.add(printer_name_row);
         var template_name_row = si.ui.createInputRow("TemplateName", template_name, {});
         table.add(template_name_row);
+        table.add(si.ui.createInputRow("Timeout", timeout, {}));
         viewBody.add(table);
         // viewBody.add(Ti.UI.createLabel({left: 5, text: 'ON/OFF'}));
         // viewStatus.add(statusSwitch);

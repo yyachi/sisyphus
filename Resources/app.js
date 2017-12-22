@@ -51,6 +51,9 @@ if (Ti.App.Properties.getString('printServer') == null) {
 if (Ti.App.Properties.getString('printFormatUrl') == null) {
     Ti.App.Properties.setString('printFormatUrl', si.config.Medusa.defaultPrintFormatUrl);
 }
+if (Ti.App.Properties.getString('printTimeout') == null) {
+    Ti.App.Properties.setString('printTimeout', si.config.Medusa.printTimeout);
+}
 if (Ti.App.Properties.getInt('facing') == null) {
     Ti.App.Properties.setInt('facing', si.config.Medusa.facing);
 }
@@ -59,6 +62,9 @@ if (Ti.App.Properties.getInt('tagReader') == null) {
 }
 if (Ti.App.Properties.getInt('tagWriter') == null) {
     Ti.App.Properties.setInt('tagWriter', si.config.Medusa.tagWriter);
+}
+if (Ti.App.Properties.getInt('newStone') == null) {
+    Ti.App.Properties.setInt('newStone', si.config.Medusa.newStone);
 }
 if (Ti.App.Properties.getString('scanditsdk_app_key') == null) {
     Ti.App.Properties.setString('scanditsdk_app_key', si.config.BarcodeReader.scanditsdk_app_key);
