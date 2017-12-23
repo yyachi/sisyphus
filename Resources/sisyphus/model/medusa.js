@@ -441,7 +441,7 @@
         var params = {};
         params['attachment_file[data]'] = _args.data;
         if (_args.record.group_id){
-            params['group_id'] = _args.record.group_id;
+            params['attachment_file[record_property_attributes][group_id]'] = _args.record.group_id;
         }
         si.model.medusa.postWithAuth({
             args : params,
