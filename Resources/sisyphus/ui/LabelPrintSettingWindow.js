@@ -183,7 +183,7 @@
             } else {
                 _template_name = template_name.getSelectedRow(0).title;
             }
-            si.ui.android.testPrintLabel('test print', 'test print', server.input.value, template.input.value, _printer_name, _template_name, {
+            si.ui.android.testPrintLabel('test print', 'test print', server.input.value, template.input.value, _printer_name, _template_name, timeout.value, {
                 onsuccess: function(e){
                     si.sound_label.play();
                     si.app.log.info(_message + 'ok');
@@ -208,6 +208,108 @@
         // viewBase.add(viewHeader);
         // viewBase.add(viewBody);
 
+        var refreshPrinterName = function(_print_server) {
+            var client = Ti.Network.createHTTPClient();
+            client.onload = function(){
+                var data = [];
+                var printers = JSON.parse(this.responseText);
+                for(var i=0; i<printers.length; i++){
+                    var title = printers[i].nickname;
+                    if (title == null || title == '') {
+                        title = printers[i].name;
+                    }
+                    data.push({"title":title,"id":i,"name":printers[i].name,"nickname":printers[i].nickname});
+                }
+                printer_name_row.remove(printer_name_refresh);
+                printer_name = si.ui.createPickerInput(data, null);
+                printer_name_refresh = addRefreshButton(printer_name);
+                printer_name_row.add(printer_name_refresh);
+            }
+            client.onerror = function(){
+                printer_name_row.remove(printer_name_refresh);
+                printer_name = si.ui.createPickerInput(null, null);
+                printer_name_refresh = addRefreshButton(printer_name);
+                printer_name_row.add(printer_name_refresh);
+            }
+            var url = _print_server;
+            if (server.input.value.match(/^\w+:\/\//) == null) {
+                url = 'http://' + url;
+            }
+            if (server.input.value.match(/\/$/) == null) {
+                url = url + '/';
+            }
+            url += 'printers.json';
+            Ti.API.info('url:' + url);
+            client.open('GET', url);
+            client.timeout = 3000;
+            client.send();
+        };
+
+        var refreshTemplateName = function(_print_server) {
+            var client = Ti.Network.createHTTPClient();
+            client.onload = function(){
+                var data = [];
+                var templates = JSON.parse(this.responseText);
+                for(var i=0; i<templates.length; i++){
+                   data.push({"title":templates[i].name,"id":i});
+                }
+                template_name_row.remove(template_name);
+                template_name = si.ui.createPickerInput(data, null);
+                template_name_row.add(template_name);
+            }
+            client.onerror = function(){
+                template_name_row.remove(template_name);
+                template_name = si.ui.createPickerInput(null, null);
+                template_name_row.add(template_name);
+            }
+            var url = _print_server;
+            if (server.input.value.match(/^\w+:\/\//) == null) {
+                url = 'http://' + url;
+            }
+            if (server.input.value.match(/\/$/) == null) {
+                url = url + '/';
+            }
+            url += 'templates.json';
+            Ti.API.info('url:' + url);
+            client.open('GET', url);
+            client.timeout = 3000;
+            client.send();
+        };
+
+        var addRefreshButton = function(_input_view) {
+            var view = Ti.UI.createView({
+                height : Ti.UI.SIZE,
+                width : Ti.UI.FILL,
+            });
+
+            var image_button = si.ui.createImageButtonView('/images/glyphicons-86-repeat.png', {
+                width : 90,
+                height : 90,
+                imgDimensions : 30,
+            });
+            image_button.button.addEventListener('click', function(e) {
+                refreshPrinterName(server.input.value);
+            });
+
+            var view_left = Ti.UI.createView({
+                height : Ti.UI.SIZE,
+                width : '80%',
+                left : 0,
+            });
+            var view_right = Ti.UI.createView({
+                height : Ti.UI.SIZE,
+                width : Ti.UI.SIZE,
+                right : 0,
+            });
+
+            view.add(view_left);
+            view.add(view_right);
+            view_left.add(_input_view);
+            view_right.add(image_button);
+
+            return view;
+        };
+
         var table = Ti.UI.createScrollView({
             contentWidth: 'auto',
             contentHeight: 'auto',
@@ -219,7 +321,8 @@
         table.add(si.ui.createInputRow("ON/OFF", statusSwitch, {}));
         table.add(si.ui.createInputRow("URL", server, {}));
         table.add(si.ui.createInputRow("Template", template, {}));
-        var printer_name_row = si.ui.createInputRow("PrinterName", printer_name, {});
+        var printer_name_refresh = addRefreshButton(printer_name);
+        var printer_name_row = si.ui.createInputRow("PrinterName", printer_name_refresh, {});
         table.add(printer_name_row);
         var template_name_row = si.ui.createInputRow("TemplateName", template_name, {});
         table.add(template_name_row);
@@ -239,80 +342,14 @@
 
         win.server = server;
         win.template = template;
-        win.printer_name = printer_name;
-        win.template_name = template_name;
         win.print_button = win.buttons.Print;
         win.save_button = win.buttons.Save;
 
         var input_server_bak = Ti.App.Properties.getString('printServer');
         var reflectPrintServer = function() {
             if (server.input.value != input_server_bak) {
-                var client_p = Ti.Network.createHTTPClient();
-                client_p.onload = function(){
-                    var data_p = [];
-                    var printers = JSON.parse(this.responseText);
-                    for(var i=0; i<printers.length; i++){
-                        var title = printers[i].nickname;
-                        if (title == null || title == '') {
-                            title = printers[i].name;
-                        }
-                        data_p.push({"title":title,"id":i,"name":printers[i].name,"nickname":printers[i].nickname});
-                    }
-                    printer_name_row.remove(printer_name);
-                    printer_name = si.ui.createPickerInput(data_p, null);
-                    printer_name_row.add(printer_name);
-                    win.printer_name = printer_name;
-                }
-                client_p.onerror = function(){
-                    printer_name_row.remove(printer_name);
-                    printer_name = si.ui.createPickerInput(null, null);
-                    printer_name_row.add(printer_name);
-                    win.printer_name = printer_name;
-                }
-                var url_p = server.input.value;
-                if (server.input.value.match(/^\w+:\/\//) == null) {
-                    url_p = 'http://' + url_p;
-                }
-                if (server.input.value.match(/\/$/) == null) {
-                    url_p = url_p + '/';
-                }
-                url_p += 'printers.json';
-                Ti.API.info('url:' + url_p);
-                client_p.open('GET', url_p);
-                client_p.timeout = 3000;
-                client_p.send();
-
-                var client_t = Ti.Network.createHTTPClient();
-                client_t.onload = function(){
-                    var data_t = [];
-                    var templates = JSON.parse(this.responseText);
-                    for(var i=0; i<templates.length; i++){
-                       data_t.push({"title":templates[i].name,"id":i});
-                    }
-                    template_name_row.remove(template_name);
-                    template_name = si.ui.createPickerInput(data_t, null);
-                    template_name_row.add(template_name);
-                    win.template_name = template_name;
-                }
-                client_t.onerror = function(){
-                    template_name_row.remove(template_name);
-                    template_name = si.ui.createPickerInput(null, null);
-                    template_name_row.add(template_name);
-                    win.template_name = template_name;
-                }
-                var url_t = server.input.value;
-                if (server.input.value.match(/^\w+:\/\//) == null) {
-                    url_t = 'http://' + url_t;
-                }
-                if (server.input.value.match(/\/$/) == null) {
-                    url_t = url_t + '/';
-                }
-                url_t += 'templates.json';
-                Ti.API.info('url:' + url_t);
-                client_t.open('GET', url_t);
-                client_t.timeout = 3000;
-                client_t.send();
-
+                refreshPrinterName(server.input.value);
+                refreshTemplateName(server.input.value);
                 input_server_bak = server.input.value;
             }
         }

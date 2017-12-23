@@ -353,7 +353,7 @@
 	    	label_print_server.text = printServerInfo();
 	    	label_template.text = printFormatUrlInfo();
 	    	label_printer_name.text = printerNameInfo();
-	    	label_template_name.text = TemplateNameInfo();
+	    	label_template_name.text = templateNameInfo();
                 label_timeout.text = printTimeoutInfo();
 	    	label_barcode_reader.text = ScanCameraInfo();
                 label_tag_reader.text = TagReaderInfo();
@@ -410,7 +410,7 @@
 			return printerName;
 		};
 
-		function TemplateNameInfo(){
+		function templateNameInfo(){
 			var templateName = Ti.App.Properties.getString('templateName');
 			if (templateName == null || templateName == ''){
 				templateName = 'default';
