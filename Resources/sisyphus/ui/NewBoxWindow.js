@@ -132,7 +132,7 @@
             layout : 'vertical'
         });
 
-        if (!Ti.App.Properties.getBool('printLabel')){
+        if (Ti.App.Properties.getInt('globalId') == 1){
             table.add(si.ui.createInputRow("ID", win.fields.ID, {}));
         }
         table.add(si.ui.createInputRow("Name", win.fields.name, {}));

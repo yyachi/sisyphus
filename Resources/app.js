@@ -42,6 +42,9 @@ if (Ti.App.Properties.getString('password') == null) {
     Ti.App.Properties.setString('password', si.config.Medusa.defaultPassword);
 }
 
+if (Ti.App.Properties.getInt('globalId') == null) {
+    Ti.App.Properties.setInt('globalId', si.config.Medusa.globalId);
+}
 if (Ti.App.Properties.getBool('printLabel') == null) {
     Ti.App.Properties.setBool('printLabel', si.config.Medusa.printLabel);
 }

@@ -9,6 +9,7 @@
 		var data = [
 //			{title:'----', hasChild:false, target:'Server', header:'Medusa server', font: font},
 			{title:'----', hasChild:false, target:'LogIn', header:'Account', font: font},
+			{title:'----', hasChild:false, target:'GlobalID', header:'GlobalID', font: font},
 			{title:'----', hasChild:false, target:'PrintLabel', header:'Label', font: font},			
 			//{title:'----', hasChild:false, target:'PrintServer', header:'print server', font: font},
 			//{title:'----', hasChild:false, target:'PrintFormatUrl', header:'print format url', font: font},
@@ -21,6 +22,7 @@
 		];
 		var index_medusa_server = findIndex('Server');
 		var index_account = findIndex('LogIn');
+		var index_global_id = findIndex('GlobalID');
 		var index_print_server = findIndex('PrintServer');
 		var index_print_format_url = findIndex('PrintFormatUrl');
 		var index_printer_name = findIndex('PrinterName');
@@ -38,6 +40,28 @@
 				backgroundColor:'transparent',
 				rowBackgroundColor:'white'
 		};
+
+
+        var optionDialogForGlobalId = Ti.UI.createOptionDialog({
+            options : ['Generate', 'Input'],
+            //cancel : 2,
+            selectedIndex: Ti.App.Properties.getInt('globalId'),
+            title : 'GlobalID setting'
+
+        });
+        optionDialogForGlobalId.addEventListener('click', function(e) {
+            switch (e.index) {
+                case 0:
+		    Ti.App.Properties.setInt('globalId',e.index);        
+                    break;
+                case 1:
+		    Ti.App.Properties.setInt('globalId',e.index);                
+                    break;
+                default:
+                    break;
+            };
+            label_global_id.text = globalIdInfo();
+        });
 
         var optionDialogForPrintLabel = Ti.UI.createOptionDialog({
             options : ['enable', 'disable', 'cancel'],
@@ -214,6 +238,9 @@
 				case 'TagWriter':
 					optionDialogForTagWriter.show();
 					break;
+				case 'GlobalID':
+					optionDialogForGlobalId.show();
+					break;
 				case 'PrintLabel':
 					var windowLabelPrint = si.ui.createLabelPrintSettingWindow();
 					si.app.tabGroup.activeTab.open(windowLabelPrint,{animated:true});
@@ -243,6 +270,17 @@
 		view_account.add(label_server);
 		view_account.add(label_account);
 		tableView.data[index_account].rows[0].add(view_account);
+
+		var view_global_id = Ti.UI.createView({
+			layout : 'vertical'
+		});
+		var label_global_id = Ti.UI.createLabel({
+			left : 10,
+			font : font,
+			text : 'GlobalID'
+		});
+		view_global_id.add(label_global_id);
+		tableView.data[index_global_id].rows[0].add(view_global_id);
 
 		var view_label_print_base = Ti.UI.createView({
 			layout : 'vertical',
@@ -349,6 +387,7 @@
 	    win.addEventListener('focus', function (e) {
 	    	label_server.text = serverInfo();
 	    	label_account.text = accountInfo();
+	    	label_global_id.text = globalIdInfo();
 	    	label_print_status.text = LabelPrintStatus();
 	    	label_print_server.text = printServerInfo();
 	    	label_template.text = printFormatUrlInfo();
@@ -391,6 +430,15 @@
 			txt = Ti.App.Properties.getString('server');
 			return txt;
 		}
+
+		function globalIdInfo(){
+			var globalId = Ti.App.Properties.getInt('globalId');
+			if (globalId == 1){
+				return 'Input';
+			} else {
+				return 'Generate';
+			}
+		};
 
 		function printServerInfo(){
             var printServer = Ti.App.Properties.getString('printServer');
