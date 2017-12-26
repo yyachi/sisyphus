@@ -652,6 +652,9 @@
         };
 
         win.functions.printLabelfor = function(_record){
+            if (!Ti.App.Properties.getBool('printLabel')){
+                return;
+            }
             Ti.API.info('printLabelfor...');
             var _message = _record.global_id + '...' + _record.name + '...label...';
             si.app.log.info(_message + 'sending...ok');
