@@ -165,6 +165,7 @@
                 si.ui.alert_simple('Input name of new stone');
                 return;
             }
+	    win.buttons.Save.setEnabled(false);
             var params = {};
             params['name'] = win.fields.name.value;
             if (win.global_id.value){
@@ -234,6 +235,7 @@
                     var _message = 'No stone created'
                     si.ui.showErrorDialog(_message);
                     //si.ui.alert_simple('error : ' + e.error);
+                    win.buttons.Save.setEnabled(true);
                },
             });
         };
