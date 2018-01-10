@@ -372,11 +372,6 @@
             if (!Ti.App.Properties.getBool('printLabel')){
                 win.buttons.Print.setEnabled(false);
             }
-
-            if (!si.nfc.isEnabled()) {
-                win.buttons.ScanParent.setEnabled(false);
-                win.buttons.ScanChild.setEnabled(false);
-            }
         };
 
         win.functions.refresh = function(){
