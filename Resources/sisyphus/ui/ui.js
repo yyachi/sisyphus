@@ -765,12 +765,12 @@
         url += '&__format_id_number=1';
         url += '&UID=' + _global_id;
 //        url += '&UID_QRCODE=' + _global_id;
-        url += '&NAME=' + _name;
+        url += '&NAME=' + encodeURIComponent(_name);
         if (printerName != null && printerName != '') {
-           url += '&printer=' + printerName;
+          url += '&printer=' + encodeURIComponent(printerName);
         }
         if (templateName != null && templateName != '') {
-           url += '&template=' + templateName;
+          url += '&template=' + encodeURIComponent(templateName);
         }
         url += '&SET=1';
 //        url += '&(発行枚数)=1';
