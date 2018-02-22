@@ -15,10 +15,10 @@
 			//{title:'----', hasChild:false, target:'PrintServer', header:'print server', font: font},
 			//{title:'----', hasChild:false, target:'PrintFormatUrl', header:'print format url', font: font},
 			{title:'----', hasChild:false, target:'ScanToLoad', header:'Home', font: font},
-			{title:'----', hasChild:false, target:'BarcodeReader', header: 'Barcode reader', font: font},
+			{title:'----', hasChild:false, target:'BarcodeReader', header: 'Barcode tag', font: font},
 			//{title:'----', hasChild:false, target:'ScanCamera', header: 'Barcode reader', font: font}
-			{title: '----', hasChild: false, target: 'TagReader', header: 'Tag reader', font: font},
-		        {title: '----', hasChild: false, target: 'TagWriter', header: 'Tag writer', font: font}
+			{title: '----', hasChild: false, target: 'TagReader', header: 'Read', font: font},
+		        {title: '----', hasChild: false, target: 'TagWriter', header: 'Write', font: font}
 //			{title: '----', hasChild: false, target: 'NewStone', header: 'New stone', font: font}
 		];
 		var index_medusa_server = findIndex('Server');
@@ -88,7 +88,7 @@
             options : ['Rear camera', 'Front camera'],
             //cancel : 2,
             selectedIndex: Ti.App.Properties.getInt('facing'),
-            title : 'Barcode reader setting'
+            title : 'Barcode tag'
 
         });
 
@@ -113,14 +113,14 @@
 			label_barcode_reader.text = ScanCameraInfo();
         });
 
-        var optionsForTagReader = ['Rear camera', 'Front camera'];
+        var optionsForTagReader = ['Barcode tag', 'Barcode tag (front camera)'];
         if (si.nfc.isEnabled()) {
-            optionsForTagReader.push('NFC reader');
+            optionsForTagReader.push('NFC tag');
         }
         var optionDialogForTagReader = Ti.UI.createOptionDialog({
             options : optionsForTagReader,
             selectedIndex: Ti.App.Properties.getInt('tagReader'),
-            title : 'Tag reader setting'
+            title : 'Read'
         });
         optionDialogForTagReader.addEventListener('click', function(e) {
             switch (e.index) {
@@ -135,14 +135,14 @@
             label_tag_reader.text = TagReaderInfo();
         });
         
-        var optionsForTagWriter = ['Label printer'];
+        var optionsForTagWriter = ['Barcode tag'];
         if (si.nfc.isEnabled()) {
-            optionsForTagWriter.push('NFC writer');
+            optionsForTagWriter.push('NFC tag');
         }
         var optionDialogForTagWriter = Ti.UI.createOptionDialog({
             options : optionsForTagWriter,
             selectedIndex: Ti.App.Properties.getInt('tagWriter'),
-            title : 'Tag writer setting'
+            title : 'Write'
         });
         optionDialogForTagWriter.addEventListener('click', function(e) {
             switch (e.index) {
@@ -483,20 +483,20 @@
 		function TagReaderInfo(){
 			var tagReader = Ti.App.Properties.getInt('tagReader');
 			if (tagReader == 1){
-				return 'Front camera';
+				return 'Barcode tag (front camera)';
 			} else if (tagReader == 0) {
-				return 'Rear camera';
+				return 'Barcode tag';
 			} else {
-			    return 'NFC reader';
+			    return 'NFC tag';
 			}
 		}
 		
 		function TagWriterInfo(){
 			var tagWriter = Ti.App.Properties.getInt('tagWriter');
 			if (tagWriter == 1){
-				return 'NFC writer';
+				return 'NFC tag';
 			} else {
-				return 'Label printer';
+				return 'Barcode tag';
 			}
 		}
 
