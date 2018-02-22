@@ -9,7 +9,8 @@
 		var data = [
 //			{title:'----', hasChild:false, target:'Server', header:'Medusa server', font: font},
 			{title:'----', hasChild:false, target:'LogIn', header:'Account', font: font},
-			{title:'----', hasChild:false, target:'GlobalID', header:'GlobalID', font: font},
+			{title:'----', hasChild:false, target:'GlobalID', header:'Manual ID on new stone', font: font},
+			{title: '----', hasChild: false, target: 'NewStone', header: 'Open camera on new stone', font: font},
 			{title:'----', hasChild:false, target:'PrintLabel', header:'Label', font: font},			
 			//{title:'----', hasChild:false, target:'PrintServer', header:'print server', font: font},
 			//{title:'----', hasChild:false, target:'PrintFormatUrl', header:'print format url', font: font},
@@ -17,8 +18,8 @@
 			{title:'----', hasChild:false, target:'BarcodeReader', header: 'Barcode reader', font: font},
 			//{title:'----', hasChild:false, target:'ScanCamera', header: 'Barcode reader', font: font}
 			{title: '----', hasChild: false, target: 'TagReader', header: 'Tag reader', font: font},
-		        {title: '----', hasChild: false, target: 'TagWriter', header: 'Tag writer', font: font},
-			{title: '----', hasChild: false, target: 'NewStone', header: 'New stone', font: font}
+		        {title: '----', hasChild: false, target: 'TagWriter', header: 'Tag writer', font: font}
+//			{title: '----', hasChild: false, target: 'NewStone', header: 'New stone', font: font}
 		];
 		var index_medusa_server = findIndex('Server');
 		var index_account = findIndex('LogIn');
@@ -43,10 +44,10 @@
 
 
         var optionDialogForGlobalId = Ti.UI.createOptionDialog({
-            options : ['Generate', 'Input'],
+            options : ['no', 'yes'],
             //cancel : 2,
             selectedIndex: Ti.App.Properties.getInt('globalId'),
-            title : 'GlobalID setting'
+            title : 'Manual ID on new stone'
 
         });
         optionDialogForGlobalId.addEventListener('click', function(e) {
@@ -155,9 +156,9 @@
             label_tag_writer.text = TagWriterInfo();
         });
         var optionDialogForNewStone = Ti.UI.createOptionDialog({
-            options : ['input', 'camera'],
+            options : ['no', 'yes'],
             selectedIndex: Ti.App.Properties.getInt('newStone'),
-            title : 'New stone'
+            title : 'Open camera on new stone'
         });
         optionDialogForNewStone.addEventListener('click', function(e) {
             switch (e.index) {
@@ -434,9 +435,9 @@
 		function globalIdInfo(){
 			var globalId = Ti.App.Properties.getInt('globalId');
 			if (globalId == 1){
-				return 'Input';
+				return 'yes';
 			} else {
-				return 'Generate';
+				return 'no';
 			}
 		};
 
@@ -502,9 +503,9 @@
 	        function NewStoneInfo() {
 		        var newStone = Ti.App.Properties.getInt('newStone');
 		        if (newStone == 1) {
-			        return 'Show camera';
+			        return 'yes';
 			} else {
-			        return 'Input attribute';
+			        return 'no';
 			}
 		}
 
