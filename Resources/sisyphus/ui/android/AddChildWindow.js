@@ -420,7 +420,7 @@
         win.functions.clickMenuButton = function(){
             var options = ['Open with browser', 'Add a local file', 'Edit'];
             if (si.nfc.isEnabled()) {
-                options = options.concat(['NFC read', 'NFC write']);
+                options = options.concat(['Read NFC tag', 'Write NFC tag']);
             }
             
             var optionDialogForMenu = Ti.UI.createOptionDialog({
