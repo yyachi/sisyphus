@@ -579,7 +579,7 @@
         win.functions.clickScanParentButton = function () {
             if (!si.config.Medusa.debug) {
                 var _win = null;
-                if (Ti.App.Properties.getInt('tagReader') === 2) {
+                if (Ti.App.Properties.getInt('tagReader') === 1) {
                     _win = si.nfc.createScanWindow({
                         success : function() {
                             if (si.nfc.tagDataValue) {
@@ -835,7 +835,7 @@
         function scanChild() {
             if (!si.config.Medusa.debug) {
                 var _win = null;
-                if (Ti.App.Properties.getInt('tagReader') === 2) {
+                if (Ti.App.Properties.getInt('tagReader') === 1) {
                     _win = si.nfc.createScanWindow({
                         success: function() {
                             if (si.nfc.tagDataValue) {

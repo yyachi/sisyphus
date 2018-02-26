@@ -9,7 +9,7 @@
 		defaultPrintServer: 'http://localhost:8080/',
 		defaultPrintFormatUrl : 'http://database.misasa.okayama-u.ac.jp/format_archive/dream-label.spfmtz',
 		facing: 0, //0 for backward (default) camera, 1 for front camera
-		tagReader: 0,//0 for Rear camera (default), 1 for Front camera, 2 for NFC reader
+		tagReader: 0,//0 for Barcode reader (default), 1 for NFC reader
 		tagWriter: 0,//0 for Label printer(default), 1 for NFC writer
                 newStone: 0,//0 Input attributes, 1 Show camera
                 globalId: 0, //0 for use auto assignment, 1 for input self

@@ -113,7 +113,7 @@
 			label_barcode_reader.text = ScanCameraInfo();
         });
 
-        var optionsForTagReader = ['Barcode tag', 'Barcode tag (front camera)'];
+        var optionsForTagReader = ['Barcode tag'];
         if (si.nfc.isEnabled()) {
             optionsForTagReader.push('NFC tag');
         }
@@ -126,7 +126,6 @@
             switch (e.index) {
                 case 0:
                 case 1:
-                case 2:
                     Ti.App.Properties.setInt('tagReader', e.index);
                     break;
                 default:
@@ -483,11 +482,9 @@
 		function TagReaderInfo(){
 			var tagReader = Ti.App.Properties.getInt('tagReader');
 			if (tagReader == 1){
-				return 'Barcode tag (front camera)';
-			} else if (tagReader == 0) {
-				return 'Barcode tag';
-			} else {
 			    return 'NFC tag';
+			} else {
+			    return 'Barcode tag';
 			}
 		}
 		
@@ -573,7 +570,7 @@
 		function scanAndLoadDefaultBox(){
             if (!si.config.Medusa.debug){
                 var _win = null;
-                if (Ti.App.Properties.getInt('tagReader') === 2) {
+                if (Ti.App.Properties.getInt('tagReader') === 1) {
                     _win = si.nfc.createScanWindow({
                         success: function() {
                             if (si.nfc.tagDataValue) {
