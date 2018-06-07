@@ -457,7 +457,7 @@
                         si.app.tabGroup.activeTab.open(windowSearch,{animated:true});
                         break;
                     case 4:
-                        var windowSearch = win.functions.clickSearchButton();
+                        var windowHistory = win.functions.clickSearchButton();
                         si.app.tabGroup.activeTab.open(windowHistory,{animated:true});
                         break;
                     case 5:
