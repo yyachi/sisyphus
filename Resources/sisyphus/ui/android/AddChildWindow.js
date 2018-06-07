@@ -107,7 +107,7 @@
         });
         //view
         var viewBase = Ti.UI.createView({
-            //backgroundColor : 'red',
+            backgroundColor : 'white',
             top : 0,
             width : '99%',
             height : '100%',
@@ -123,7 +123,7 @@
         });
 
         var viewToolBar = Ti.UI.createView({
-            //backgroundColor : 'red',
+            //backgroundColor : 'white',
             //top : 0,
             //layout : 'horizontal',
             //height : '15%'
@@ -221,7 +221,7 @@
             height : 90,
             imgDimensions : 30,
             onclick : function(e) {
-                var windowLogin = win.functions.clickHistoryButton();
+                var windowLogin = win.functions.clickSearchButton();
                 si.app.tabGroup.activeTab.open(windowLogin,{animated:true});
             }
         });
@@ -302,8 +302,8 @@
         viewToolLeft.add(win.buttons.Home);
         viewToolLeft.add(win.buttons.Logout);
         viewToolLeft.add(win.buttons.ScanParent);
-        viewToolLeft.add(win.buttons.Search);
-        viewToolLeft.add(win.buttons.History);
+        //viewToolLeft.add(win.buttons.Search);
+        //viewToolLeft.add(win.buttons.History);
         viewToolRight.add(win.buttons.Print);
         viewToolRight.add(win.buttons.Camera);        
         //viewToolRight.add(win.buttons.Clip);
@@ -418,11 +418,10 @@
         };
 
         win.functions.clickMenuButton = function(){
-            var options = ['Open with browser', 'Add a local file', 'Edit'];
+            var options = ['Open with browser', 'Add a local file', 'Edit', 'Search', 'History','Read barcode tag','Write barcode tag'];
             if (si.nfc.isEnabled()) {
                 options = options.concat(['Read NFC tag', 'Write NFC tag']);
             }
-            
             var optionDialogForMenu = Ti.UI.createOptionDialog({
                 options : options,
                 title : ''
@@ -454,6 +453,32 @@
                         });
                         break;
                     case 3:
+                        var windowSearch = win.functions.clickSearchButton();
+                        si.app.tabGroup.activeTab.open(windowSearch,{animated:true});
+                        break;
+                    case 4:
+                        var windowSearch = win.functions.clickSearchButton();
+                        si.app.tabGroup.activeTab.open(windowHistory,{animated:true});
+                        break;
+                    case 5:
+                        var _win = si.BarcodeReader.createScanWindow({
+                                     success : function(_data) {
+                                       if (_data && _data.barcode) {
+                                         loadParent(_data.barcode);
+                                       }
+                                       _win.close();
+                                     },
+                                     cancel : function() { _win.close(); },
+                                     error : function() { _win.close(); }
+                        });
+                        si.app.tabGroup.activeTab.open(_win, {
+                            animated : true
+                        });
+                        break;
+                    case 6:
+                        win.functions.printLabelfor(parent);
+                        break;
+                    case 7:
                         var windowScan = si.nfc.createScanWindow({
                             obj: parent,
                             success : function(global_id) {
@@ -467,7 +492,7 @@
                             animated : true
                         });
                         break;
-                    case 4:
+                    case 8:
                         win.functions.printProcess(parent);
                         break;
                     default:
