@@ -221,7 +221,7 @@
             height : 90,
             imgDimensions : 30,
             onclick : function(e) {
-                var windowLogin = win.functions.clickSearchButton();
+                var windowLogin = win.functions.clickHistoryButton();
                 si.app.tabGroup.activeTab.open(windowLogin,{animated:true});
             }
         });
@@ -465,7 +465,7 @@
                         si.app.tabGroup.activeTab.open(windowSearch,{animated:true});
                         break;
                     case 'History':
-                        var windowHistory = win.functions.clickSearchButton();
+                        var windowHistory = win.functions.clickHistoryButton();
                         si.app.tabGroup.activeTab.open(windowHistory,{animated:true});
                         break;
                     case 'Read barcode tag':
