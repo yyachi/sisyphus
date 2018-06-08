@@ -107,7 +107,7 @@
         });
         //view
         var viewBase = Ti.UI.createView({
-            backgroundColor : 'white',
+            backgroundColor : '#f0f0f0',
             top : 0,
             width : '99%',
             height : '100%',
@@ -123,7 +123,7 @@
         });
 
         var viewToolBar = Ti.UI.createView({
-            //backgroundColor : 'white',
+            //backgroundColor : '#f0f0f0',
             //top : 0,
             //layout : 'horizontal',
             //height : '15%'
@@ -152,7 +152,7 @@
         });
 
         var viewButton = Ti.UI.createView({
-            //backgroundColor : 'green',
+            //backgroundColor : '#f0f0f0',
             //top : 0,
             height : '45%',
             layout : 'vertical'
@@ -300,12 +300,12 @@
         }));
 
         viewToolLeft.add(win.buttons.Home);
-        viewToolLeft.add(win.buttons.Logout);
+        //viewToolLeft.add(win.buttons.Logout);
         viewToolLeft.add(win.buttons.ScanParent);
-        //viewToolLeft.add(win.buttons.Search);
+        viewToolLeft.add(win.buttons.Search);
         //viewToolLeft.add(win.buttons.History);
         viewToolRight.add(win.buttons.Print);
-        viewToolRight.add(win.buttons.Camera);        
+        //viewToolRight.add(win.buttons.Camera);        
         //viewToolRight.add(win.buttons.Clip);
         viewToolRight.add(win.buttons.Menu);
         viewToolBar.add(viewToolLeft);
@@ -418,28 +418,36 @@
         };
 
         win.functions.clickMenuButton = function(){
-            var options = ['Open with browser', 'Add a local file', 'Edit', 'Search', 'History','Read barcode tag','Write barcode tag'];
+            var options = ['Open with browser', 'Take a photo', 'Add a local file', 'Edit', 'Search', 'History','Read barcode tag','Write barcode tag'];
             if (si.nfc.isEnabled()) {
                 options = options.concat(['Read NFC tag', 'Write NFC tag']);
             }
+            options = options.concat(['Logout']);
             var optionDialogForMenu = Ti.UI.createOptionDialog({
                 options : options,
                 title : ''
             });
             optionDialogForMenu.addEventListener('click', function(e) {
-                switch (e.index) {
-                    case 0:
+                Ti.API.info(options[e.index]);
+                switch (options[e.index]) {
+                    case 'Take a photo':
+                        win.functions.clickCameraButton();
+                        break;
+                    case 'Logout':
+                        win.functions.clickLogoutButton();
+                        break; 
+                    case 'Open with browser':
                         var url = si.model.medusa.getResourceURLwithAuth(parent);
                         Ti.Platform.openURL(url);
                         break;
-                    case 1:
+                    case 'Add a local file':
                         if (parent == null){
                             si.ui.alert_no_parent();
                             return;
                         }
                         uploadImageFromAlbum();
                         break;
-                    case 2:
+                    case 'Edit':
                         var windowEdit = si.ui.createEditWindow({
                             obj: parent,
                             // var _message = _new.global_id + '...' + _new.name + '...';
@@ -452,15 +460,15 @@
                             animated : true
                         });
                         break;
-                    case 3:
+                    case 'Search':
                         var windowSearch = win.functions.clickSearchButton();
                         si.app.tabGroup.activeTab.open(windowSearch,{animated:true});
                         break;
-                    case 4:
+                    case 'History':
                         var windowHistory = win.functions.clickSearchButton();
                         si.app.tabGroup.activeTab.open(windowHistory,{animated:true});
                         break;
-                    case 5:
+                    case 'Read barcode tag':
                         var _win = si.BarcodeReader.createScanWindow({
                                      success : function(_data) {
                                        if (_data && _data.barcode) {
@@ -475,10 +483,10 @@
                             animated : true
                         });
                         break;
-                    case 6:
+                    case 'Write barcode tag':
                         win.functions.printLabelfor(parent);
                         break;
-                    case 7:
+                    case 'Read NFC tag':
                         var windowScan = si.nfc.createScanWindow({
                             obj: parent,
                             success : function(global_id) {
@@ -492,7 +500,7 @@
                             animated : true
                         });
                         break;
-                    case 8:
+                    case 'Write NFC tag':
                         win.functions.printProcess(parent);
                         break;
                     default:
@@ -940,21 +948,34 @@
             });
         };
 
-       win.functions.clickLogoutButton = function () {
-           Ti.App.Properties.setString('loginUsername', '');
-           Ti.App.Properties.setString('username', '');
-           Ti.App.Properties.setString('password', '');
-           Ti.App.Properties.setString('cardId', '');
-           Ti.App.Properties.setString('staffId', '');
-           Ti.App.Properties.setString('token', '');
-           var windowLogin = si.ui.createLoginWindow({
-               onsuccess : function(){
-                   si.ui.myAlert({message: 'Login successful with ' + Ti.App.Properties.getString('loginUsername')});
-               }
-           });
-           si.app.tabGroup.activeTab.open(windowLogin,{animated:true});
-           alert('Logged out.');
-       };
+        win.functions.clickLogoutButton = function () {
+            var dialog = Ti.UI.createAlertDialog({
+                cancel: 1,
+                buttonNames: ['OK', 'Cancel'],
+                message: 'Would you like to logout?',
+                title: 'Logout'
+            });
+            dialog.addEventListener('click', function(e){
+                if (e.index === e.source.cancel){
+                    Ti.API.info('The cancel button was clicked');
+                } else {
+                    Ti.App.Properties.setString('loginUsername', '');
+                    Ti.App.Properties.setString('username', '');
+                    Ti.App.Properties.setString('password', '');
+                    Ti.App.Properties.setString('cardId', '');
+                    Ti.App.Properties.setString('staffId', '');
+                    Ti.App.Properties.setString('token', '');
+                    var windowLogin = si.ui.createLoginWindow({
+                        onsuccess : function(){
+                            si.ui.myAlert({message: 'Login successful with ' + Ti.App.Properties.getString('loginUsername')});
+                        }
+                    });
+                    si.app.tabGroup.activeTab.open(windowLogin,{animated:true});
+                    alert('Logged out.');
+                }
+            });
+            dialog.show();
+        };
 
         win.addChild = addChild;
         win.loadParent = loadParent;
