@@ -952,7 +952,7 @@
             var dialog = Ti.UI.createAlertDialog({
                 cancel: 1,
                 buttonNames: ['OK', 'Cancel'],
-                message: 'Would you like to logout?',
+                message: 'Are you sure you want to logout?',
                 title: 'Logout'
             });
             dialog.addEventListener('click', function(e){
