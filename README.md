@@ -4,7 +4,8 @@ Create stone, box, and link in Medusa
 
 # Description
 
-Create stone, box, and link in Medusa.  This App runs on Android to be
+The App for Android is designed to register a new sample, to update sample info,
+and to construct a relationship between parent and daughter. This App runs on Android to be
 a client of the Medusa server.  Download the App from [website of
 DREAM](http://dream.misasa.okayama-u.ac.jp/documentation/Archives/client-Android.apk).
 
