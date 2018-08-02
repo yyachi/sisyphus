@@ -18,9 +18,9 @@
     <name>Sisyphus</name>
     <version>2.10.19</version>
     <publisher>yyachi</publisher>
-    <url>http://dream.misasa.okayama-u.ac.jp</url>
+    <url>https://dream.misasa.okayama-u.ac.jp</url>
     <description>not specified</description>
-    <copyright>2013 by yyachi</copyright>
+    <copyright>2013-2018 by Okayama University</copyright>
     <icon>appicon.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>
