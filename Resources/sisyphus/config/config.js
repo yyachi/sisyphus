@@ -7,7 +7,7 @@
 		defaultPassword: 'admin',
 		//defaultServer: 'http://192.168.56.102:3000/',
 		defaultPrintServer: 'http://localhost:8080/',
-		defaultPrintFormatUrl : 'http://database.misasa.okayama-u.ac.jp/format_archive/dream-label.spfmtz',
+		defaultPrintFormatUrl : 'https://database.misasa.okayama-u.ac.jp/format_archive/dream-label.spfmtz',
 		facing: 0, //0 for backward (default) camera, 1 for front camera
 		tagReader: 0,//0 for Barcode reader (default), 1 for NFC reader
 		tagWriter: 0,//0 for Label printer(default), 1 for NFC writer
