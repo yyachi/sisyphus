@@ -1,6 +1,6 @@
 # Sisyphus for Android
 
-Create stone, box, and link in Medusa using Android
+Create stone, box, and link in Medusa using Android.
 
 # Description
 
