@@ -7,4 +7,5 @@ build_apk:
     - titanium
   script:
     - echo "build_apk"
+    - pwd
     - titanium build -b -p android
