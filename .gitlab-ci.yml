@@ -1,0 +1,7 @@
+stages:
+  - build
+
+build_apk
+  stage: build
+  script:
+    - echo "build_apk"
