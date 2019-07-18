@@ -9,3 +9,4 @@ build_apk:
     - echo "build_apk"
     - mkdir -p appify
     - tishadow appify -d appify/
+    - tishadow run
