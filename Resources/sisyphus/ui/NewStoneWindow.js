@@ -235,7 +235,7 @@
             }
 
             if (win.fields.absolute_age.value){
-                params['absolute_age'] = win.fields.absolute_age.value;
+                params['abs_age'] = win.fields.absolute_age.value;
             }
             
             
