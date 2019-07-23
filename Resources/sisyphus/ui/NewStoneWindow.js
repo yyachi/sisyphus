@@ -75,6 +75,14 @@
             hintText : 'input age_max'            
         });
         
+        win.fields.age_unit = Ti.UI.createTextField({
+            value : p_params['age_unit'],
+            width : Ti.UI.FILL,
+            keyboardType : Ti.UI.KEYBOARD_DEFAULT,
+            hintText : 'input age unit'            
+        });
+        
+        
         win.fields.absolute_age = Ti.UI.createTextField({
             value : p_params['absolute_age'],
             width : Ti.UI.FILL,
@@ -158,6 +166,7 @@
         table.add(si.ui.createInputRow("Quantity unit", win.fields.quantity_unit, {}));
         table.add(si.ui.createInputRow("Age minimum", win.fields.age_min, {}));
         table.add(si.ui.createInputRow("Age maximum", win.fields.age_max, {}));
+        table.add(si.ui.createInputRow("Age unit", win.fields.age_unit, {}));
         table.add(si.ui.createInputRow("Absolute age", win.fields.absolute_age, {}));
         table.add(si.ui.createInputRow("Description", win.fields.description, {}));
         table.add(si.ui.createInputRow("Group", win.fields.group, {}));
@@ -219,6 +228,10 @@
 
             if (win.fields.age_max.value){
                 params['age_max'] = win.fields.age_max.value;
+            }
+            
+            if (win.fields.age_unit.value){
+                params['age_unit'] = win.fields.age_unit.value;
             }
 
             if (win.fields.absolute_age.value){
