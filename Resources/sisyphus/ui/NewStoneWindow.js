@@ -61,6 +61,13 @@
             hintText : 'input quantity unit'            
         });
 
+        win.fields.absolute_age = Ti.UI.createTextField({
+            value : p_params['absolute_age'],
+            width : Ti.UI.FILL,
+            keyboardType : Ti.UI.KEYBOARD_NUMBER_PAD,
+            hintText : 'input absolute age'            
+        });
+
         win.fields.description = Ti.UI.createTextArea({
             value : p_params['description'],
             width : Ti.UI.FILL,
@@ -135,6 +142,7 @@
         table.add(si.ui.createInputRow("Physical form", win.fields.physical_form, {}));
         table.add(si.ui.createInputRow("Quantity", win.fields.quantity, {}));
         table.add(si.ui.createInputRow("Quantity unit", win.fields.quantity_unit, {}));
+        table.add(si.ui.createInputRow("Absolute age", win.fields.absolute_age, {}));
         table.add(si.ui.createInputRow("Description", win.fields.description, {}));
         table.add(si.ui.createInputRow("Group", win.fields.group, {}));
 
@@ -188,6 +196,12 @@
             if (win.fields.quantity_unit.value){
                 params['quantity_unit'] = win.fields.quantity_unit.value;
             }
+
+            if (win.fields.absolute_age.value){
+                params['absolute_age'] = win.fields.absolute_age.value;
+            }
+            
+            
             if (win.fields.description.value){
                 params['description'] = win.fields.description.value;
             }
