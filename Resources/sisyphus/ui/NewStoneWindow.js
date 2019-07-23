@@ -157,7 +157,7 @@
         table.add(si.ui.createInputRow("Quantity", win.fields.quantity, {}));
         table.add(si.ui.createInputRow("Quantity unit", win.fields.quantity_unit, {}));
         table.add(si.ui.createInputRow("Age minimum", win.fields.age_min, {}));
-        table.add(si.ui.createInputRow("Age max", win.fields.age_max, {}));
+        table.add(si.ui.createInputRow("Age maximum", win.fields.age_max, {}));
         table.add(si.ui.createInputRow("Absolute age", win.fields.absolute_age, {}));
         table.add(si.ui.createInputRow("Description", win.fields.description, {}));
         table.add(si.ui.createInputRow("Group", win.fields.group, {}));
