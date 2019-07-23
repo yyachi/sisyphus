@@ -60,7 +60,14 @@
             keyboardType : Ti.UI.KEYBOARD_DEFAULT,
             hintText : 'input quantity unit'            
         });
-
+        
+         win.fields.age_min = Ti.UI.createTextField({
+            value : p_params['age_min'],
+            width : Ti.UI.FILL,
+            keyboardType : Ti.UI.KEYBOARD_NUMBER_PAD,
+            hintText : 'input age_min'            
+        });
+        
         win.fields.absolute_age = Ti.UI.createTextField({
             value : p_params['absolute_age'],
             width : Ti.UI.FILL,
@@ -142,6 +149,7 @@
         table.add(si.ui.createInputRow("Physical form", win.fields.physical_form, {}));
         table.add(si.ui.createInputRow("Quantity", win.fields.quantity, {}));
         table.add(si.ui.createInputRow("Quantity unit", win.fields.quantity_unit, {}));
+        table.add(si.ui.createInputRow("Age minimum", win.fields.age_min, {}));
         table.add(si.ui.createInputRow("Absolute age", win.fields.absolute_age, {}));
         table.add(si.ui.createInputRow("Description", win.fields.description, {}));
         table.add(si.ui.createInputRow("Group", win.fields.group, {}));
@@ -195,6 +203,10 @@
 
             if (win.fields.quantity_unit.value){
                 params['quantity_unit'] = win.fields.quantity_unit.value;
+            }
+
+            if (win.fields.age_min.value){
+                params['age_min'] = win.fields.age_min.value;
             }
 
             if (win.fields.absolute_age.value){
