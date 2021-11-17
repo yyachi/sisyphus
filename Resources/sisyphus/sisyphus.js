@@ -385,7 +385,10 @@ var si = {};
             hash: match[7]
         }
     };
-
+//    si.nfc = {};
+//    si.nfc.isEnabled = function() {
+//        return false;
+//    }
 })();
 
 Ti.include(

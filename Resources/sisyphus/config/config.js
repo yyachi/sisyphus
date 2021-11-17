@@ -16,7 +16,7 @@
                 printLabel: false, //0 for does not print label, 1 for print label
                 printTimeout: 15, //15 for timeout of print label. [seconds]
 		debug: false,
-		test: true
+		test: false
 	};
 
 	si.config.BarcodeReader = {

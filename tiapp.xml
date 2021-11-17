@@ -16,11 +16,11 @@
     <sdk-version>3.5.0.GA</sdk-version>
     <id>jp.ac.okayama.misasa.Sisyphus</id>
     <name>Sisyphus</name>
-    <version>2.10.21</version>
+    <version>2.11.0</version>
     <publisher>yyachi</publisher>
     <url>https://dream.misasa.okayama-u.ac.jp</url>
     <description>not specified</description>
-    <copyright>2013-2018 by Okayama University</copyright>
+    <copyright>2013-2021 by Okayama University</copyright>
     <icon>appicon.png</icon>
     <persistent-wifi>false</persistent-wifi>
     <prerendered-icon>false</prerendered-icon>

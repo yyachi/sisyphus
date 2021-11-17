@@ -418,7 +418,7 @@
         };
 
         win.functions.clickMenuButton = function(){
-            var options = ['Open with browser', 'Take a photo', 'Add a local file', 'Edit', 'Search', 'History','Read barcode tag','Write barcode tag'];
+            var options = ['Open with browser', 'Take a photo', 'Add a local file', 'Edit', 'Search', 'History','Surface','Read barcode tag','Write barcode tag'];
             if (si.nfc.isEnabled()) {
                 options = options.concat(['Read NFC tag', 'Write NFC tag']);
             }
@@ -440,6 +440,10 @@
                         var url = si.model.medusa.getResourceURLwithAuth(parent);
                         Ti.Platform.openURL(url);
                         break;
+                    case 'Surface':
+                        var url = si.model.medusa.getSurfaceURLwithAuth(parent);
+                        Ti.Platform.openURL(url);
+                        break;    
                     case 'Add a local file':
                         if (parent == null){
                             si.ui.alert_no_parent();

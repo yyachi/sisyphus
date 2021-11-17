@@ -46,6 +46,23 @@
         return hostname_with_port + _path.replace(/\.json/,'');
     }
 
+    si.model.medusa.getSurfaceURLwithAuth = function(_record, _args) {
+        //var _path = si.model.medusa.getResourcePath(_record);
+        var _path = "/surfaces.json";
+        var server_url = si.serverURL();
+        var username = Ti.App.Properties.getString('username');
+        var password = Ti.App.Properties.getString('password');
+        var url = si.parseURL(server_url);
+        var hostname_with_port = url.protocol + '//' + username + ':' + password + '@' + url.hostname;
+        if (url.port){
+            hostname_with_port += ':' + url.port;
+        }
+        if (url.pathname){
+            hostname_with_port += url.pathname.replace(/\/$/,'');            
+        }
+        return hostname_with_port + _path.replace(/\.json/,'');
+    }
+
     si.model.medusa.host = function() {
         var url = Ti.App.Properties.getString('server');
         var result = url.split('\/\/');
